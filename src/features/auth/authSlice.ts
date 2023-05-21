@@ -1,11 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { CaseReducer, createSlice } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
-import { RootState } from "../app/store";
-import isTokenErrorPayload from "../helpers/isTokenErrorPayload";
-import retriveToken from "../helpers/retriveToken";
-import { checkUserEndpoint } from "./api/authApiSlice";
-import { User } from "./userSlice";
+import { RootState } from "../../app/store";
+import isTokenErrorPayload from "../../helpers/isTokenErrorPayload";
+import { checkUserEndpoint } from "./authApiSlice";
 
 type State = {
 	accessToken: string | null;
@@ -19,24 +17,15 @@ export const authSlice = createSlice({
 	reducers: {
 		setAccessToken: (state, action: PayloadAction<string | null>) => {
 			state.accessToken = action.payload;
-			localStorage.setItem("token", action.payload || "");
 		},
 	},
 	extraReducers: (builder) => {
-		builder
-			.addMatcher(checkUserEndpoint.matchFulfilled, onCheckUserFulfilled)
-			.addMatcher(checkUserEndpoint.matchRejected, onCheckUserRejected);
+		builder.addMatcher(
+			checkUserEndpoint.matchRejected,
+			onCheckUserRejected
+		);
 	},
 });
-
-const onCheckUserFulfilled: CaseReducer<State, PayloadAction<User>> = ({
-	accessToken,
-}) => {
-	const token = retriveToken();
-	if (!accessToken && token) {
-		accessToken = token;
-	}
-};
 
 const onCheckUserRejected: CaseReducer<
 	State,
@@ -45,7 +34,6 @@ const onCheckUserRejected: CaseReducer<
 	if (isTokenErrorPayload(payload)) {
 		console.log(payload);
 		state.accessToken = null;
-		localStorage.setItem("token", "");
 	}
 };
 

@@ -1,8 +1,9 @@
-import { User } from "../userSlice";
-import apiSlice from "./apiSlice";
+import { User } from "../user/userSlice";
+import apiSlice from "../../app/api/apiSlice";
 
 type SignUpResponse = User;
-type SignUpBody = {
+export type SignUpBody = {
+	username: string;
 	name: string;
 	email: string;
 	password: string;
@@ -17,7 +18,7 @@ type LoginBody = {
 const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		checkUser: builder.query<User, void>({
-			query: () => "/users/me",
+			query: () => ({ url: "/users/me", timeout: 2 * 60 * 1000 }),
 		}),
 
 		signUp: builder.mutation<SignUpResponse, SignUpBody>({

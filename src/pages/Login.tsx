@@ -1,24 +1,25 @@
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../app/hooks";
 import {
 	Label,
 	StyledForm,
 	StyledInputBase,
 	SubmitButton,
 } from "../components/AuthForm";
-import { useLoginMutation } from "../features/api/authApiSlice";
+import FormErrror from "../components/FormError";
+import { useLoginMutation } from "../features/auth/authApiSlice";
+import { setAccessToken } from "../features/auth/authSlice";
+import { setUser } from "../features/user/userSlice";
 import TwitterBird from "../img/twitter-bird-logo.svg";
-import { setAccessToken } from "../features/authSlice";
-import { useAppDispatch } from "../app/hooks";
-import { setUser } from "../features/userSlice";
 
-const Login = () => {
+export default function Login () {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const [login, { isLoading }] = useLoginMutation();
+	const [login, { isLoading, isError, error }] = useLoginMutation();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -50,7 +51,7 @@ const Login = () => {
 	};
 
 	return (
-		<Box p="1rem">
+		<Box p="1rem" bgcolor="bg.auth" height="100vh">
 			<Link to="/" style={{ textDecoration: "none" }}>
 				<Button
 					startIcon={<ArrowBackRoundedIcon />}
@@ -70,7 +71,7 @@ const Login = () => {
 					<Stack
 						direction={{ xs: "column", ss: "row" }}
 						justifyContent="center"
-						alignItems={{ xs: "start", ss: "center" }}
+						alignItems={{ xs: "center", ss: "center" }}
 						spacing={{ xs: 0.5, ss: 1 }}
 						mb="1.5rem"
 					>
@@ -91,14 +92,21 @@ const Login = () => {
 						</Box>
 
 						<Typography
-							// textAlign={"center"}
+							color="text.primary"
 							variant="h4"
 							fontWeight={"bold"}
-							color={blue[500]}
+							sx={{
+								fontSize: {
+									xs: "1.7rem",
+									md: "2rem",
+								},
+							}}
 						>
 							Login to Twitter
 						</Typography>
 					</Stack>
+
+					{!!error && <FormErrror error={error} />}
 
 					<StyledForm onSubmit={onFormSubmit}>
 						<Label
@@ -113,6 +121,13 @@ const Login = () => {
 							value={email}
 							onChange={onEmailChange}
 							placeholder="john@test.com"
+							autoComplete="off"
+							sx={{
+								borderColor: isError ? "red" : grey[500],
+								"&:focus-within": {
+									borderColor: isError ? "red" : blue[600],
+								},
+							}}
 						/>
 
 						<Label
@@ -127,6 +142,13 @@ const Login = () => {
 							value={password}
 							onChange={onPasswordChange}
 							placeholder="your-password"
+							autoComplete="off"
+							sx={{
+								borderColor: isError ? "red" : grey[500],
+								"&:focus-within": {
+									borderColor: isError ? "red" : blue[600],
+								},
+							}}
 						/>
 
 						<SubmitButton isLoading={isLoading}>
@@ -139,7 +161,11 @@ const Login = () => {
 						direction={"row"}
 						justifyContent={"space-between"}
 					>
-						<Typography variant="body1" fontWeight="500">
+						<Typography
+							color="text.primary"
+							variant="body1"
+							fontWeight="500"
+						>
 							Don't have account?
 						</Typography>
 
@@ -163,6 +189,5 @@ const Login = () => {
 			</Stack>
 		</Box>
 	);
-};
+}
 
-export default Login;
