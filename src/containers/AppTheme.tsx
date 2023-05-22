@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 import { ReactNode, useMemo } from "react";
-import useThemeMode from "../hooks/useThemeMode";
+import useColorMode from "../hooks/useColorMode";
 
 declare module "@mui/material/styles" {
 	interface Palette {
@@ -62,7 +62,7 @@ const lightModeColors = {
 
 type Props = { children: ReactNode };
 export default function AppTheme({ children }: Props) {
-	const { mode, systemMode } = useThemeMode();
+	const { mode, systemMode } = useColorMode();
 
 	const theme = useMemo(
 		() =>

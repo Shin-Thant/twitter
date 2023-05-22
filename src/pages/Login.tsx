@@ -9,14 +9,14 @@ import {
 	StyledForm,
 	StyledInputBase,
 	SubmitButton,
-} from "../components/AuthForm";
-import FormErrror from "../components/FormError";
+} from "../components/forms/AuthForm";
+import FormErrror from "../components/forms/FormError";
 import { useLoginMutation } from "../features/auth/authApiSlice";
 import { setAccessToken } from "../features/auth/authSlice";
 import { setUser } from "../features/user/userSlice";
 import TwitterBird from "../img/twitter-bird-logo.svg";
 
-export default function Login () {
+export default function Login() {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const [login, { isLoading, isError, error }] = useLoginMutation();
@@ -190,4 +190,3 @@ export default function Login () {
 		</Box>
 	);
 }
-

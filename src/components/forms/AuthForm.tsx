@@ -13,9 +13,9 @@ export const StyledInputBase = styled(InputBase)(() => ({
 	marginBottom: "1.3rem",
 	border: "2px solid",
 	borderRadius: "6px",
-	borderColor: grey[400],
+	borderColor: grey[500],
 	"&:focus-within": {
-		borderColor: blue[500],
+		borderColor: blue[600],
 	},
 }));
 
@@ -23,6 +23,7 @@ type LabelProps = { htmlFor: string; sx?: object; children: ReactNode };
 export const Label = ({ htmlFor, sx, children }: LabelProps) => {
 	return (
 		<Typography
+			color="text.primary"
 			component={"label"}
 			variant="body1"
 			fontWeight="400"

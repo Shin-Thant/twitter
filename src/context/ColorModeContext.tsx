@@ -9,7 +9,7 @@ type ThemeMode = {
 	setSystemMode: React.Dispatch<React.SetStateAction<ColorMode>>;
 };
 
-export const ThemeModeContext = createContext<ThemeMode>({
+export const ColorModeContext = createContext<ThemeMode>({
 	mode: "system",
 	systemMode: "dark",
 	setMode: () => undefined,
@@ -17,15 +17,15 @@ export const ThemeModeContext = createContext<ThemeMode>({
 });
 
 type Props = { children: ReactElement };
-export default function ThemeModeProvider({ children }: Props) {
+export default function ColorModeProvider({ children }: Props) {
 	const [mode, setMode] = useState<Mode>("system");
 	const [systemMode, setSystemMode] = useState<ColorMode>("dark");
 
 	return (
-		<ThemeModeContext.Provider
+		<ColorModeContext.Provider
 			value={{ systemMode, setSystemMode, mode, setMode }}
 		>
 			{children}
-		</ThemeModeContext.Provider>
+		</ColorModeContext.Provider>
 	);
 }

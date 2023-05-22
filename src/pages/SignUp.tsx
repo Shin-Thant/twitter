@@ -8,15 +8,15 @@ import {
 	StyledForm,
 	StyledInputBase,
 	SubmitButton,
-} from "../components/AuthForm";
+} from "../components/forms/AuthForm";
 import TwitterBird from "../img/twitter-bird-logo.svg";
 import { useAppDispatch } from "../app/hooks";
 import { useSignUpMutation } from "../features/auth/authApiSlice";
-import FormError from "../components/FormError";
+import FormError from "../components/forms/FormError";
 
 // TODO: continue this
 
-export default function SignUp () {
+export default function SignUp() {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const [signup, { isLoading, isError, error }] = useSignUpMutation();
@@ -253,4 +253,3 @@ export default function SignUp () {
 		</Box>
 	);
 }
-

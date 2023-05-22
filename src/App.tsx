@@ -1,20 +1,13 @@
+import { Suspense, lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material";
-import Login from "./pages/Login";
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-
-declare module "@mui/material/styles" {
-	interface BreakpointOverrides {
-		xs: true;
-		ss: true;
-		sm: true;
-		md: true;
-		lg: true;
-		xl: true;
-	}
-}
+import AppTheme from "./containers/AppTheme";
+import ColorModeProvider from "./context/ColorModeContext";
+import DrawerControllerProvider from "./context/DrawerControllerContext";
+import ThemeModalProvider from "./context/ThemeModalContext";
+const Login = lazy(() => import("./pages/Login"));
+const Layout = lazy(() => import("./containers/Layout"));
+const Home = lazy(() => import("./pages/Home"));
+const SignUp = lazy(() => import("./pages/SignUp"));
 
 const router = createBrowserRouter([
 	{
@@ -33,23 +26,19 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-	const theme = createTheme({
-		breakpoints: {
-			values: {
-				xs: 0,
-				ss: 500,
-				sm: 600,
-				md: 900,
-				lg: 1200,
-				xl: 1536,
-			},
-		},
-	});
 	return (
 		<>
-			<ThemeProvider theme={theme}>
-				<RouterProvider router={router} />
-			</ThemeProvider>
+			<ColorModeProvider>
+				<DrawerControllerProvider>
+					<ThemeModalProvider>
+						<AppTheme>
+							<Suspense fallback={<h1>loading...</h1>}>
+								<RouterProvider router={router} />
+							</Suspense>
+						</AppTheme>
+					</ThemeModalProvider>
+				</DrawerControllerProvider>
+			</ColorModeProvider>
 		</>
 	);
 }
