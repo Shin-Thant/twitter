@@ -7,49 +7,39 @@ import {
 	Typography,
 	styled,
 } from "@mui/material";
-import { ChangeEvent, startTransition } from "react";
+import { ChangeEvent } from "react";
 import useThemeModal from "../../hooks/useThemeModal";
-import { Mode } from "../../context/ColorModeContext";
 import useColorMode from "../../hooks/useColorMode";
-import useDeviceTheme from "../../hooks/useDeviceTheme";
+import isValidColorMode from "../../helpers/isValidColorMode";
 
 const style = {
 	position: "absolute",
-	top: "50%",
+	top: { xs: "100%", normal_sm: "50%" },
 	left: "50%",
-	transform: "translate(-50%, -50%)",
-	width: 400,
+	transform: {
+		xs: "translate(-50%, -100%)",
+		normal_sm: "translate(-50%, -50%)",
+	},
+	width: { xs: "100%", normal_sm: 350, sm: 400 },
 	bgcolor: "bg.navbar",
 	boxShadow: 24,
-	p: 4,
+	p: { xs: 2, normal_sm: 4 },
 	color: "text.primary",
-	borderRadius: "10px",
+	borderRadius: { xs: "10px 10px 0 0", normal_sm: "10px" },
 };
-
-const ALLOWED_MODES = ["dark", "light", "system"];
-
-function isValidMode(mode: string): mode is Mode {
-	return ALLOWED_MODES.indexOf(mode) !== -1;
-}
 
 export default function ThemeModal() {
 	const { isOpen, setIsOpen } = useThemeModal();
-	const { mode, setMode, setSystemMode } = useColorMode();
-	const deviceTheme = useDeviceTheme();
+	const { mode, changeMode } = useColorMode();
 
-	const onRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const onModeChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selectedMode = e.target.value;
 
-		if (!isValidMode(selectedMode)) {
+		if (!isValidColorMode(selectedMode)) {
 			return;
 		}
 
-		startTransition(() => {
-			if (selectedMode === "system") {
-				setSystemMode(deviceTheme);
-			}
-			setMode(selectedMode);
-		});
+		changeMode(selectedMode);
 	};
 
 	return (
@@ -66,7 +56,7 @@ export default function ThemeModal() {
 					Theme
 				</Typography>
 
-				<RadioGroup onChange={onRadioChange} value={mode}>
+				<RadioGroup onChange={onModeChange} value={mode}>
 					<Label value="light" label="Light" control={<Radio />} />
 					<Label value="dark" label="Dark" control={<Radio />} />
 					<Label value="system" label="System" control={<Radio />} />
@@ -81,7 +71,14 @@ const Label = styled(FormControlLabel)(({ theme }) => ({
 	justifyContent: "space-between",
 	paddingRight: "0.8rem",
 	borderRadius: "50px",
+	[theme.breakpoints.up("xs")]: {
+		opacity: 1,
+	},
+	[theme.breakpoints.up("sm")]: {
+		opacity: 0.8,
+	},
 	"&:hover": {
+		opacity: 1,
 		backgroundColor:
 			theme.palette.mode === "dark"
 				? "hsl(0, 0%, 100%, 0.1)"

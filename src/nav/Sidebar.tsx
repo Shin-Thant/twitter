@@ -3,7 +3,7 @@ import useDrawerController from "../hooks/useDrawerController";
 import SidebarContent from "./SidebarContent";
 
 export default function Sidebar() {
-	const { isOpen, toggleDrawer } = useDrawerController();
+	const { isOpen, setIsOpen } = useDrawerController();
 
 	return (
 		<>
@@ -12,7 +12,7 @@ export default function Sidebar() {
 				anchor="left"
 				variant="temporary"
 				open={isOpen}
-				onClose={toggleDrawer}
+				onClose={() => setIsOpen(false)}
 				sx={{
 					display: { xs: "block", md: "none" },
 					"& .MuiDrawer-paper": {

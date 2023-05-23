@@ -9,7 +9,7 @@ import {
 	StyledForm,
 	StyledInputBase,
 	SubmitButton,
-} from "../components/forms/AuthForm";
+} from "../components/forms/AuthFormComponents";
 import FormErrror from "../components/forms/FormError";
 import { useLoginMutation } from "../features/auth/authApiSlice";
 import { setAccessToken } from "../features/auth/authSlice";
@@ -55,7 +55,7 @@ export default function Login() {
 			<Link to="/" style={{ textDecoration: "none" }}>
 				<Button
 					startIcon={<ArrowBackRoundedIcon />}
-					sx={{ textTransform: "none", fontSize: "1rem" }}
+					sx={{ textTransform: "none", fontSize: "0.95rem" }}
 				>
 					Back to Home
 				</Button>

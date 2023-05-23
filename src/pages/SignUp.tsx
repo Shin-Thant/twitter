@@ -8,7 +8,7 @@ import {
 	StyledForm,
 	StyledInputBase,
 	SubmitButton,
-} from "../components/forms/AuthForm";
+} from "../components/forms/AuthFormComponents";
 import TwitterBird from "../img/twitter-bird-logo.svg";
 import { useAppDispatch } from "../app/hooks";
 import { useSignUpMutation } from "../features/auth/authApiSlice";
@@ -71,7 +71,7 @@ export default function SignUp() {
 						startIcon={<ArrowBackRoundedIcon />}
 						sx={{
 							textTransform: "none",
-							fontSize: "1rem",
+							fontSize: "0.95rem",
 						}}
 					>
 						Back to Home

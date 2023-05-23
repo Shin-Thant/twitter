@@ -4,6 +4,7 @@ import AppTheme from "./containers/AppTheme";
 import ColorModeProvider from "./context/ColorModeContext";
 import DrawerControllerProvider from "./context/DrawerControllerContext";
 import ThemeModalProvider from "./context/ThemeModalContext";
+import Loading from "./pages/Loading";
 const Login = lazy(() => import("./pages/Login"));
 const Layout = lazy(() => import("./containers/Layout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -32,7 +33,7 @@ function App() {
 				<DrawerControllerProvider>
 					<ThemeModalProvider>
 						<AppTheme>
-							<Suspense fallback={<h1>loading...</h1>}>
+							<Suspense fallback={<Loading />}>
 								<RouterProvider router={router} />
 							</Suspense>
 						</AppTheme>

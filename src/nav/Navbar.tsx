@@ -10,9 +10,6 @@ const Navigation = () => {
 
 	const iconClick = () => {
 		if (location.pathname === "/") {
-			console.log("home");
-			console.log({ window });
-
 			window.scrollTo({ top: 0, left: 0 });
 			document.documentElement.scrollTop = 0;
 			// return;
