@@ -84,7 +84,7 @@ function createFetchError() {
 const apiSlice = createApi({
 	reducerPath: "api",
 	baseQuery: baseQueryWithReauth,
-	endpoints: (builder) => ({}),
+	endpoints: () => ({}),
 });
 
 export default apiSlice;
