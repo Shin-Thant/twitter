@@ -13,8 +13,10 @@ import {
 } from "../../helpers/errorHelpers";
 import { RootState } from "../store";
 
+const URL = "https://twitter-api-hj4f.onrender.com/api/v1" as const;
+
 const baseQuery = fetchBaseQuery({
-	baseUrl: "http://localhost:3500/api/v1",
+	baseUrl: URL,
 	credentials: "include",
 	prepareHeaders(headers, { getState }) {
 		const state = getState() as RootState;
