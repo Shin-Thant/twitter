@@ -10,7 +10,6 @@ import {
 	SubmitButton,
 } from "../components/forms/AuthFormComponents";
 import TwitterBird from "../img/twitter-bird-logo.svg";
-import { useAppDispatch } from "../app/hooks";
 import { useSignUpMutation } from "../features/auth/authApiSlice";
 import FormError from "../components/forms/FormError";
 
@@ -18,7 +17,6 @@ import FormError from "../components/forms/FormError";
 
 export default function SignUp() {
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
 	const [signup, { isLoading, isError, error }] = useSignUpMutation();
 
 	const [username, setUserName] = useState("");
@@ -52,7 +50,9 @@ export default function SignUp() {
 			console.log(res.error);
 			return;
 		}
-		console.log(res.data);
+		
+		navigate('/login')
+		// console.log(res.data);
 	};
 
 	function checksValuesExist() {
