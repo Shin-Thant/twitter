@@ -1,5 +1,5 @@
 import { Box, Typography, styled } from "@mui/material";
-import TwitterIcon from "../../img/twitter-icon-circle.svg";
+import TwitterIcon from "../img/twitter-icon-circle.svg";
 
 export default function LoadingPage() {
 	return (
