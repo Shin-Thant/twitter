@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import React from "react";
 
 export default function LogoutButton() {
 	return <Button
