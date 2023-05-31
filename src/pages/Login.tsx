@@ -1,55 +1,11 @@
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { blue, grey } from "@mui/material/colors";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
-import {
-	Label,
-	StyledForm,
-	StyledInputBase,
-	SubmitButton,
-} from "../components/forms/AuthFormComponents";
-import FormErrror from "../components/forms/FormError";
-import { useLoginMutation } from "../features/auth/authApiSlice";
-import { setAuth } from "../features/auth/authSlice";
-import { setUser } from "../features/user/userSlice";
+import { blue } from "@mui/material/colors";
+import { Link } from "react-router-dom";
+import LoginForm from "../components/forms/LoginForm";
 import TwitterBird from "../img/twitter-bird-logo.svg";
 
 export default function Login() {
-	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
-	const [login, { isLoading, isError, error }] = useLoginMutation();
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-
-	const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setEmail(e.target.value);
-	};
-	const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setPassword(e.target.value);
-	};
-
-	const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		if (isLoading || !email || !password) {
-			return;
-		}
-
-		// TODO: Should this login logic be separated to a new hook or function? Or not?
-		const response = await login({ email, password });
-		if ("error" in response) {
-			console.log(response.error);
-			return;
-		}
-
-		const data = response.data;
-		dispatch(setAuth(data.accessToken));
-		dispatch(setUser(data.user));
-		navigate("/");
-	};
-
 	return (
 		<Box p="1rem" bgcolor="bg.auth" height="100vh">
 			<Link to="/" style={{ textDecoration: "none" }}>
@@ -106,55 +62,7 @@ export default function Login() {
 						</Typography>
 					</Stack>
 
-					{!!error && <FormErrror error={error} />}
-
-					<StyledForm onSubmit={onFormSubmit}>
-						<Label
-							htmlFor="email--login"
-							sx={{ display: "block", mb: "0.3rem" }}
-						>
-							Email
-						</Label>
-						<StyledInputBase
-							id="email--login"
-							type="email"
-							value={email}
-							onChange={onEmailChange}
-							placeholder="john@test.com"
-							autoComplete="off"
-							sx={{
-								borderColor: isError ? "red" : grey[500],
-								"&:focus-within": {
-									borderColor: isError ? "red" : blue[600],
-								},
-							}}
-						/>
-
-						<Label
-							htmlFor="pwd--login"
-							sx={{ display: "block", mb: "0.3rem" }}
-						>
-							Password
-						</Label>
-						<StyledInputBase
-							id="pwd--login"
-							type="password"
-							value={password}
-							onChange={onPasswordChange}
-							placeholder="your-password"
-							autoComplete="off"
-							sx={{
-								borderColor: isError ? "red" : grey[500],
-								"&:focus-within": {
-									borderColor: isError ? "red" : blue[600],
-								},
-							}}
-						/>
-
-						<SubmitButton isLoading={isLoading}>
-							{isLoading ? "Loading..." : "Login"}
-						</SubmitButton>
-					</StyledForm>
+					<LoginForm />
 
 					<Stack
 						mt={"1.3rem"}

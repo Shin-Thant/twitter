@@ -3,6 +3,7 @@ import { AppBar, IconButton, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import DrawerToggle from "../components/buttons/DrawerToggle";
 import SearchInput from "../components/forms/SearchInput";
+import GoAuthButton from "../components/buttons/GoAuthButton";
 
 const Navigation = () => {
 	const navigate = useNavigate();
@@ -50,6 +51,8 @@ const Navigation = () => {
 					</IconButton>
 
 					<SearchInput />
+					<GoAuthButton route="login">Login</GoAuthButton>
+					<GoAuthButton route="signup">Sign Up</GoAuthButton>
 				</Stack>
 			</Toolbar>
 		</AppBar>

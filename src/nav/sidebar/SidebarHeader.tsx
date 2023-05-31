@@ -49,6 +49,7 @@ export default function SidebarHeader() {
 							<Typography
 								variant="h6"
 								sx={{
+									width: "max-content",
 									color: "text.primary",
 									fontWeight: "500",
 									textDecoration: "none",
@@ -62,6 +63,7 @@ export default function SidebarHeader() {
 								component="h1"
 								variant="body1"
 								sx={{
+									width: "max-content",
 									color: "text.secondary",
 									textDecoration: "none",
 								}}

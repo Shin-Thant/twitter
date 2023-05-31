@@ -1,62 +1,11 @@
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { blue, grey } from "@mui/material/colors";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-	Label,
-	StyledForm,
-	StyledInputBase,
-	SubmitButton,
-} from "../components/forms/AuthFormComponents";
+import { blue } from "@mui/material/colors";
+import { Link } from "react-router-dom";
 import TwitterBird from "../img/twitter-bird-logo.svg";
-import { useSignUpMutation } from "../features/auth/authApiSlice";
-import FormError from "../components/forms/FormError";
-
-// TODO: continue this
+import SignUpForm from "../components/forms/SignUpForm";
 
 export default function SignUp() {
-	const navigate = useNavigate();
-	const [signup, { isLoading, isError, error }] = useSignUpMutation();
-
-	const [username, setUserName] = useState("");
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-
-	const onUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setUserName(e.target.value);
-	};
-	const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setName(e.target.value);
-	};
-	const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setEmail(e.target.value);
-	};
-	const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setPassword(e.target.value);
-	};
-
-	const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		if (!checksValuesExist()) {
-			return;
-		}
-		const res = await signup({ username, name, email, password });
-		if ("error" in res) {
-			console.log(res.error);
-			return;
-		}
-
-		navigate("/login");
-		// console.log(res.data);
-	};
-
-	function checksValuesExist() {
-		return !!username || !!name || !!email || !!password;
-	}
-
 	return (
 		<Box p="1rem" height="min-content" bgcolor="bg.auth">
 			<Box
@@ -120,101 +69,7 @@ export default function SignUp() {
 						</Typography>
 					</Stack>
 
-					{!!error && <FormError error={error} />}
-
-					<StyledForm onSubmit={onFormSubmit}>
-						<Label
-							htmlFor="username--signup"
-							sx={{ display: "block", mb: "0.3rem" }}
-						>
-							User Name
-						</Label>
-						<StyledInputBase
-							id="username--signup"
-							type="name"
-							value={username}
-							onChange={onUserNameChange}
-							placeholder="john-doe2508"
-							required={true}
-							autoComplete="off"
-							sx={{
-								borderColor: isError ? "red" : grey[500],
-								"&:focus-within": {
-									borderColor: isError ? "red" : blue[600],
-								},
-							}}
-						/>
-
-						<Label
-							htmlFor="name--signup"
-							sx={{ display: "block", mb: "0.3rem" }}
-						>
-							Name
-						</Label>
-						<StyledInputBase
-							id="name--signup"
-							type="name"
-							value={name}
-							onChange={onNameChange}
-							placeholder="John Doe"
-							required={true}
-							autoComplete="off"
-							sx={{
-								borderColor: isError ? "red" : grey[500],
-								"&:focus-within": {
-									borderColor: isError ? "red" : blue[600],
-								},
-							}}
-						/>
-
-						<Label
-							htmlFor="email--signup"
-							sx={{ display: "block", mb: "0.3rem" }}
-						>
-							Email
-						</Label>
-						<StyledInputBase
-							id="email--signup"
-							type="email"
-							value={email}
-							onChange={onEmailChange}
-							placeholder="john@test.com"
-							required={true}
-							autoComplete="off"
-							sx={{
-								borderColor: isError ? "red" : grey[500],
-								"&:focus-within": {
-									borderColor: isError ? "red" : blue[600],
-								},
-							}}
-						/>
-
-						<Label
-							htmlFor="pwd--signup"
-							sx={{ display: "block", mb: "0.3rem" }}
-						>
-							Password
-						</Label>
-						<StyledInputBase
-							id="pwd--signup"
-							type="password"
-							value={password}
-							onChange={onPasswordChange}
-							placeholder="your-password"
-							required={true}
-							autoComplete="off"
-							sx={{
-								borderColor: isError ? "red" : grey[500],
-								"&:focus-within": {
-									borderColor: isError ? "red" : blue[600],
-								},
-							}}
-						/>
-
-						<SubmitButton isLoading={isLoading}>
-							{isLoading ? "Loading..." : "Sign Up"}
-						</SubmitButton>
-					</StyledForm>
+					<SignUpForm />
 
 					<Stack
 						mt={"1.3rem"}

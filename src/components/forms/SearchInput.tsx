@@ -11,7 +11,7 @@ export default function SearchInput() {
 
 	return (
 		<>
-			<InputWrapper sx={{ display: { xs: "none", mm: "inline-flex" } }}>
+			<InputWrapper sx={{ display: { xs: "none", md: "inline-flex" } }}>
 				<IconWrapper>
 					<SearchRoundedIcon sx={{ fontSize: "1.3rem" }} />
 				</IconWrapper>
@@ -20,7 +20,7 @@ export default function SearchInput() {
 
 			<IconButton
 				onClick={iconClick}
-				sx={{ display: { xs: "inline-flex", mm: "none" } }}
+				sx={{ display: { xs: "inline-flex", md: "none" } }}
 			>
 				<PersonSearchRoundedIcon />
 			</IconButton>

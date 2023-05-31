@@ -1,16 +1,20 @@
 import { ReactNode } from "react";
 import { styled } from "@mui/material/styles";
 import { grey, blue } from "@mui/material/colors";
-import { Button, InputBase, Typography } from "@mui/material";
+import { Button, InputBase, Typography, Box } from "@mui/material";
 
 export const StyledForm = styled("form")(() => ({
 	display: "block",
 }));
 
+export const FieldContainer = styled(Box)(() => ({
+	marginBottom: '1.3rem'
+}))
+
 export const StyledInputBase = styled(InputBase)(() => ({
 	display: "grid",
 	padding: "0.3rem 0.8rem",
-	marginBottom: "1.3rem",
+	// marginBottom: "1.3rem",
 	border: "2px solid",
 	borderRadius: "6px",
 	borderColor: grey[500],
