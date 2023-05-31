@@ -10,17 +10,23 @@ const Navigation = () => {
 
 	const iconClick = () => {
 		if (location.pathname === "/") {
+			// TODO: make this works
 			window.scrollTo({ top: 0, left: 0 });
 			document.documentElement.scrollTop = 0;
-			// return;
-		} else {
-			navigate("/");
+			return;
 		}
+		navigate("/");
 	};
 
 	return (
-		<AppBar position="sticky">
-			<Toolbar sx={{ backgroundColor: "bg.navbar" }}>
+		<AppBar
+			position="sticky"
+			sx={{
+				backgroundImage: "none",
+				backgroundColor: "bg.navbar",
+			}}
+		>
+			<Toolbar>
 				<Stack
 					width={"100%"}
 					direction="row"

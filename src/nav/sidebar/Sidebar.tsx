@@ -1,5 +1,5 @@
 import Drawer from "@mui/material/Drawer";
-import useDrawerController from "../hooks/useDrawerController";
+import useDrawerController from "../../hooks/useDrawerController";
 import SidebarContent from "./SidebarContent";
 
 export default function Sidebar() {
@@ -17,7 +17,7 @@ export default function Sidebar() {
 					display: { xs: "block", md: "none" },
 					"& .MuiDrawer-paper": {
 						backgroundImage: "none",
-						background: "bg.navbar",
+						bgcolor: "bg.navbar",
 						width: { xs: "85%", normal_sm: 300, sm: 330 },
 						boxSizing: "border-box",
 					},
@@ -38,7 +38,7 @@ export default function Sidebar() {
 					},
 					width: { md: 300, lg: 330 },
 					"& .MuiDrawer-paper": {
-						backgroundColor: "bg.navbar",
+						bgcolor: "bg.navbar",
 						width: { md: 300, lg: 330 },
 						boxSizing: "border-box",
 					},

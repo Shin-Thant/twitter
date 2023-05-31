@@ -12,7 +12,7 @@ import {
 } from "../components/forms/AuthFormComponents";
 import FormErrror from "../components/forms/FormError";
 import { useLoginMutation } from "../features/auth/authApiSlice";
-import { setAccessToken } from "../features/auth/authSlice";
+import { setAuth } from "../features/auth/authSlice";
 import { setUser } from "../features/user/userSlice";
 import TwitterBird from "../img/twitter-bird-logo.svg";
 
@@ -45,7 +45,7 @@ export default function Login() {
 		}
 
 		const data = response.data;
-		dispatch(setAccessToken(data.accessToken));
+		dispatch(setAuth(data.accessToken));
 		dispatch(setUser(data.user));
 		navigate("/");
 	};

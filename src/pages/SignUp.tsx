@@ -41,8 +41,6 @@ export default function SignUp() {
 		e.preventDefault();
 
 		if (!checksValuesExist()) {
-			// setOpen(true);
-			// console.log("something left!");
 			return;
 		}
 		const res = await signup({ username, name, email, password });
@@ -50,8 +48,8 @@ export default function SignUp() {
 			console.log(res.error);
 			return;
 		}
-		
-		navigate('/login')
+
+		navigate("/login");
 		// console.log(res.data);
 	};
 

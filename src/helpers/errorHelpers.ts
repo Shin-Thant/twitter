@@ -1,5 +1,14 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 
+export function createFetchError() {
+	return {
+		error: {
+			status: "FETCH_ERROR",
+			error: "Something went wrong!",
+		} as FetchBaseQueryError,
+	};
+}
+
 type DataWithToken = {
 	accessToken: string;
 };

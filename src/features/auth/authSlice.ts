@@ -5,18 +5,24 @@ import { RootState } from "../../app/store";
 import isTokenErrorPayload from "../../helpers/isTokenErrorPayload";
 import { checkUserEndpoint } from "./authApiSlice";
 
-type State = {
+type AuthState = {
+	status: "login" | "logout" | "loading";
 	accessToken: string | null;
 };
 
-const initialState: State = { accessToken: null };
+const initialState: AuthState = { status: "loading", accessToken: null };
 
 export const authSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
-		setAccessToken: (state, action: PayloadAction<string | null>) => {
-			state.accessToken = action.payload;
+		setAuth: (state, { payload }: PayloadAction<string | null>) => {
+			state.accessToken = payload;
+			if (!payload) {
+				state.status = "logout";
+			} else {
+				state.status = "login";
+			}
 		},
 	},
 	extraReducers: (builder) => {
@@ -28,15 +34,18 @@ export const authSlice = createSlice({
 });
 
 const onCheckUserRejected: CaseReducer<
-	State,
+	AuthState,
 	PayloadAction<FetchBaseQueryError | undefined>
 > = (state, { payload }) => {
 	if (isTokenErrorPayload(payload)) {
 		console.log(payload);
 		state.accessToken = null;
+		state.status = "logout";
 	}
 };
 
 export const tokenSelector = (state: RootState) => state.auth.accessToken;
-export const { setAccessToken } = authSlice.actions;
+export const authStatusSelector = (state: RootState) => state.auth.status;
+
+export const { setAuth } = authSlice.actions;
 export default authSlice.reducer;

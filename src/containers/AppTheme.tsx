@@ -4,10 +4,24 @@ import useColorMode from "../hooks/useColorMode";
 
 declare module "@mui/material/styles" {
 	interface Palette {
-		bg: { main: string; navbar: string; auth: string };
+		bg: {
+			main: string;
+			navbar: string;
+			auth: string;
+		};
+		tweet: {
+			bg: string;
+		};
 	}
 	interface PaletteOptions {
-		bg: { main: string; navbar: string; auth: string };
+		bg: {
+			main: string;
+			navbar: string;
+			auth: string;
+		};
+		tweet: {
+			bg: string;
+		};
 	}
 
 	interface PaletteColor {
@@ -40,12 +54,15 @@ const breakpointValues = {
 const darkModeColors = {
 	bg: {
 		main: "hsl(0, 0%, 0%)",
-		navbar: "hsl(0, 0%, 7%)",
+		navbar: "hsl(0, 0%, 5%)",
 		auth: "hsl(0, 0%, 0%)",
 	},
 	text: {
 		primary: "#fff",
 		secondary: "hsl(207, 0%, 70%)",
+	},
+	tweet: {
+		bg: "#000",
 	},
 };
 const lightModeColors = {
@@ -57,6 +74,9 @@ const lightModeColors = {
 	text: {
 		primary: "#000",
 		secondary: "hsl(207, 10%, 55%)",
+	},
+	tweet: {
+		bg: "#fff",
 	},
 };
 

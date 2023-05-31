@@ -1,7 +1,7 @@
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Navbar from "../nav/Navbar";
-import Sidebar from "../nav/Sidebar";
+import Sidebar from "../nav/sidebar/Sidebar";
 import ThemeModal from "../components/modals/ThemeModal";
 
 export default function Layout() {
