@@ -1,3 +1,4 @@
+import { createEntityAdapter } from "@reduxjs/toolkit";
 import apiSlice from "../../app/api/apiSlice";
 import { User } from "../user/userSlice";
 
@@ -9,6 +10,8 @@ export interface BasicTweet {
 	likes: string[];
 	createdAt: string;
 	updatedAt: string;
+	comments: string[];
+	shares: number;
 }
 export interface PostTweet extends BasicTweet {
 	type: "post";
@@ -46,6 +49,15 @@ type Res = {
 	data: Tweet[];
 };
 
+const tweetsAdapter = createEntityAdapter<Tweet>({
+	selectId: (entity) => entity._id,
+	sortComparer: (a, b) => {
+		return b._id.localeCompare(a._id);
+	},
+});
+
+const initialState = tweetsAdapter.getInitialState();
+
 const tweetApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getTweets: builder.query<
@@ -54,7 +66,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 		>({
 			query: ({ itemsPerPage, currentPage }) =>
 				`/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`,
-			providesTags: (result, error, page) => {
+			providesTags: (result) => {
 				if (!result) {
 					return [{ type: "Tweets", id: "LIST" }];
 				}
@@ -67,8 +79,45 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				];
 			},
 		}),
+		handleLikes: builder.mutation<
+			Tweet,
+			{ tweetId: string; likes: string[]; cacheKey: number }
+		>({
+			query: ({ tweetId }) => ({
+				method: "POST",
+				url: `/tweets/${tweetId}/like`,
+			}),
+			async onQueryStarted(
+				{ tweetId, likes, cacheKey },
+				{ dispatch, queryFulfilled }
+			) {
+				console.time("op");
+				const result = dispatch(
+					tweetApiSlice.util.updateQueryData(
+						"getTweets",
+						{ currentPage: cacheKey, itemsPerPage: 10 },
+						(draft) => {
+							const foundTweet = draft.data.find(
+								(tweet) => tweet._id === tweetId
+							);
+
+							if (foundTweet) {
+								foundTweet.likes = likes;
+							}
+						}
+					)
+				);
+				console.timeEnd("op");
+
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					result.undo();
+				}
+			},
+		}),
 	}),
 });
 
-export const { useGetTweetsQuery } = tweetApiSlice;
+export const { useGetTweetsQuery, useHandleLikesMutation } = tweetApiSlice;
 export default tweetApiSlice;

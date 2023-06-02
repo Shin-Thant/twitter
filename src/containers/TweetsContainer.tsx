@@ -27,13 +27,20 @@ export default function TweetsContainer() {
 		? "no tweet"
 		: data?.data.map((tweet, index) => {
 				if (index !== data.data.length - 1) {
-					return <TweetCard key={tweet._id} tweet={tweet} />;
+					return (
+						<TweetCard
+							key={tweet._id}
+							tweet={tweet}
+							cacheKey={currentPage}
+						/>
+					);
 				}
 				return (
 					<TweetCard
 						ref={lastTweetRef}
 						key={tweet._id}
 						tweet={tweet}
+						cacheKey={currentPage}
 					/>
 				);
 				// eslint-disable-next-line no-mixed-spaces-and-tabs

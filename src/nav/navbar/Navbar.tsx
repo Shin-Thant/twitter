@@ -1,13 +1,16 @@
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { AppBar, IconButton, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import DrawerToggle from "../components/buttons/DrawerToggle";
-import SearchInput from "../components/forms/SearchInput";
-import GoAuthButton from "../components/buttons/GoAuthButton";
+import DrawerToggle from "../../components/buttons/DrawerToggle";
+import SearchInput from "../../components/forms/SearchInput";
+import AuthBtn from "./AuthBtn";
+import { useAppSelector } from "../../app/hooks";
+import { authStatusSelector } from "../../features/auth/authSlice";
 
 const Navigation = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const authStatus = useAppSelector(authStatusSelector);
 
 	const iconClick = () => {
 		if (location.pathname === "/") {
@@ -36,7 +39,6 @@ const Navigation = () => {
 					spacing={2}
 				>
 					<DrawerToggle />
-
 					<IconButton
 						onClick={iconClick}
 						aria-label="home"
@@ -49,10 +51,8 @@ const Navigation = () => {
 					>
 						<TwitterIcon fontSize="large" />
 					</IconButton>
-
 					<SearchInput />
-					<GoAuthButton route="login">Login</GoAuthButton>
-					<GoAuthButton route="signup">Sign Up</GoAuthButton>
+					{authStatus === "logout" && <AuthBtn />}
 				</Stack>
 			</Toolbar>
 		</AppBar>

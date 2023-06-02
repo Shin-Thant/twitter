@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import Navbar from "../nav/Navbar";
+import Navbar from "../nav/navbar/Navbar";
 import Sidebar from "../nav/sidebar/Sidebar";
 import ThemeModal from "../components/modals/ThemeModal";
 

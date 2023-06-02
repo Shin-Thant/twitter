@@ -15,14 +15,14 @@ import getRelativeTime from "../../helpers/getRelativeTime";
 import TweetHeader from "./TweetHeader";
 import TweetActions from "./TweetActions";
 
-
 // TODO: refactor card body
 
 type Props = {
 	tweet: Tweet;
+	cacheKey: number;
 };
 const TweetCard = forwardRef(
-	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+	({ tweet, cacheKey }: Props, ref: ForwardedRef<HTMLDivElement>) => {
 		return (
 			<Card
 				ref={ref}
@@ -142,7 +142,12 @@ const TweetCard = forwardRef(
 					)}
 				</CardContent>
 
-				<TweetActions />
+				<TweetActions
+					cacheKey={cacheKey}
+					tweet={tweet}
+					comments={tweet.comments.length}
+					shares={tweet.shares}
+				/>
 			</Card>
 		);
 	}

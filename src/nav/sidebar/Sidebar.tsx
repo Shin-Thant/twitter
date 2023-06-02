@@ -18,7 +18,7 @@ export default function Sidebar() {
 					"& .MuiDrawer-paper": {
 						backgroundImage: "none",
 						bgcolor: "bg.navbar",
-						width: { xs: "85%", normal_sm: 300, sm: 330 },
+						width: { xs: "85%", normal_sm: 300 },
 						boxSizing: "border-box",
 					},
 				}}
@@ -36,10 +36,10 @@ export default function Sidebar() {
 						xs: "none",
 						md: "block",
 					},
-					width: { md: 300, lg: 330 },
+					width: 300,
 					"& .MuiDrawer-paper": {
 						bgcolor: "bg.navbar",
-						width: { md: 300, lg: 330 },
+						width: 300,
 						boxSizing: "border-box",
 					},
 				}}
