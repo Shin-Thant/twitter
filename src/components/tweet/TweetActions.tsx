@@ -1,37 +1,39 @@
-import { Button, CardActions, ButtonBase, Typography } from "@mui/material";
-import React, { startTransition, useState, useCallback } from "react";
 import HeartOutlinedIcon from "@mui/icons-material/FavoriteBorderRounded";
-import HeartFilled from "@mui/icons-material/FavoriteRounded";
+import HeartFilledIcon from "@mui/icons-material/FavoriteRounded";
+import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import CommentOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import CommentFilledIcon from "@mui/icons-material/TextsmsRounded";
-import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import {
-	Tweet,
-	useHandleLikesMutation,
-} from "../../features/tweet/tweetApiSlice";
-import { userIdSelector } from "../../features/user/userSlice";
+import { CardActions } from "@mui/material";
+import { startTransition, useCallback, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
-import { grey, red } from "@mui/material/colors";
+import { useHandleLikesMutation } from "../../features/tweet/tweetApiSlice";
+import { userIdSelector } from "../../features/user/userSlice";
 import CardButton from "../buttons/CardButton";
+import { Tweet } from "../../features/tweet/type";
 
 // TODO: create button which has initial color grey and when hover or click, change to specific color (red, blue, green)
 type Props = {
 	cacheKey: number;
 	tweet: Tweet;
-	comments: number;
-	shares: number;
 };
-export default function TweetActions({
-	cacheKey,
-	tweet,
-	comments,
-	shares,
-}: Props) {
+export default function TweetActions({ cacheKey, tweet }: Props) {
 	const [handleLike, { isLoading }] = useHandleLikesMutation();
 	const userId = useAppSelector(userIdSelector);
+
 	const [likes, setLikes] = useState(tweet.likes);
 	const [isLiked, setIsLiked] = useState<boolean>(
 		userId ? tweet.likes.includes(userId) : false
+	);
+
+	const [isCommented, setIsCommented] = useState<boolean>(
+		userId
+			? !!tweet.comments.find((cmt) => cmt.creator._id === userId)
+			: false
+	);
+
+	const [isShared, setIsShared] = useState(
+		tweet.owner._id === (userId ?? "")
 	);
 
 	const onLike = useCallback(async () => {
@@ -80,47 +82,37 @@ export default function TweetActions({
 				handleClick={onLike}
 			>
 				{isLiked ? (
-					<HeartFilled fontSize="small" />
+					<HeartFilledIcon fontSize="small" />
 				) : (
 					<HeartOutlinedIcon fontSize="small" />
 				)}
 			</CardButton>
-			{/* <ButtonBase
-				onClick={onLike}
-				sx={{
-					display: "flex",
-					alignItems: "center",
-					gap: "0.3rem",
-					p: "0.4rem 0.8rem",
-					borderRadius: "5px",
-					color: !isLiked ? grey[500] : red[500],
-					"&:hover": {
-						color: red[500],
-						bgcolor: "hsl(0, 100%, 63%, 0.1)",
-					},
-					transition: "all 250ms ease",
-				}}
-				title="Likes"
+
+			<CardButton
+				label={tweet.comments.length}
+				isCompleted={isCommented}
+				type="comment"
+				handleClick={() => undefined}
 			>
-				{isLiked ? (
-					<HeartFilled fontSize="small" />
+				{isCommented ? (
+					<CommentFilledIcon fontSize="small" />
 				) : (
-					<HeartOutlinedIcon fontSize="small" />
+					<CommentOutlinedIcon fontSize="small" />
 				)}
-				<Typography
-					component="p"
-					variant="body2"
-					sx={{ ml: "0.1rem", fontWeight: 500 }}
-				>
-					{likes.length}
-				</Typography>
-			</ButtonBase> */}
-			<Button color="primary" startIcon={<CommentOutlinedIcon />}>
-				{comments}
-			</Button>
-			<Button color="success" startIcon={<SharedOutlinedIcon />}>
-				{shares}
-			</Button>
+			</CardButton>
+
+			<CardButton
+				label={tweet.shares}
+				isCompleted={isShared}
+				type="share"
+				handleClick={() => undefined}
+			>
+				{isShared ? (
+					<ShareRoundedIcon fontSize="small" />
+				) : (
+					<SharedOutlinedIcon fontSize="small" />
+				)}
+			</CardButton>
 		</CardActions>
 	);
 }

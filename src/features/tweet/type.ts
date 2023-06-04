@@ -1,20 +1,20 @@
-import { User } from "../user/userSlice";
+import { User } from "../user/type";
 
 export type Owner = Omit<User, "email" | "id">;
-export interface BasicTweet {
+interface BasicTweet {
 	_id: string;
 	body: string;
 	owner: Owner;
 	likes: string[];
 	createdAt: string;
 	updatedAt: string;
-	comments: string[];
+	comments: { creator: Owner }[];
 	shares: number;
 }
-export interface PostTweet extends BasicTweet {
+interface PostTweet extends BasicTweet {
 	type: "post";
 }
-export interface SharedTweet extends BasicTweet {
+interface SharedTweet extends BasicTweet {
 	type: "share";
 	origin: {
 		type: "post" | "share";
@@ -37,7 +37,7 @@ export interface SharedTweet extends BasicTweet {
 }
 export type Tweet = PostTweet | SharedTweet;
 
-type GetTweetsResponse = {
+export type GetTweetsResponse = {
 	totalPages: number;
 	totalDocs: number;
 	hasNextPage: boolean;

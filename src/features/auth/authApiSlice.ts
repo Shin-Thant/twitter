@@ -1,5 +1,5 @@
-import { User } from "../user/userSlice";
 import apiSlice from "../../app/api/apiSlice";
+import { User } from "../user/type";
 
 type SignUpResponse = User;
 export type SignUpBody = {

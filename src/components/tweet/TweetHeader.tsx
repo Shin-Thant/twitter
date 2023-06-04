@@ -2,7 +2,7 @@ import React from "react";
 import { CardHeader, Avatar, Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import getRelativeTime from "../../helpers/getRelativeTime";
-import { Owner } from "../../features/tweet/tweetApiSlice";
+import { Owner } from "../../features/tweet/type";
 
 type Props = {
 	owner: Owner;

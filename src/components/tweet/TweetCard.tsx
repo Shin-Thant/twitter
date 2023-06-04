@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import { ForwardedRef, forwardRef, memo } from "react";
 import { Link } from "react-router-dom";
-import { Tweet } from "../../features/tweet/tweetApiSlice";
 import getRelativeTime from "../../helpers/getRelativeTime";
 import TweetActions from "./TweetActions";
 import TweetHeader from "./TweetHeader";
+import { Tweet } from "../../features/tweet/type";
 
 // TODO: refactor card body
 
@@ -141,12 +141,7 @@ const TweetCard = forwardRef(
 					)}
 				</CardContent>
 
-				<TweetActions
-					cacheKey={cacheKey}
-					tweet={tweet}
-					comments={tweet.comments.length}
-					shares={tweet.shares}
-				/>
+				<TweetActions cacheKey={cacheKey} tweet={tweet} />
 			</Card>
 		);
 	}
