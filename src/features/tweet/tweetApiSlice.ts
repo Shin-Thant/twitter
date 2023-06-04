@@ -1,4 +1,3 @@
-import { createEntityAdapter } from "@reduxjs/toolkit";
 import apiSlice from "../../app/api/apiSlice";
 import { User } from "../user/userSlice";
 
@@ -39,7 +38,7 @@ export interface SharedTweet extends BasicTweet {
 }
 export type Tweet = PostTweet | SharedTweet;
 
-type Res = {
+type GetTweetsResponse = {
 	totalPages: number;
 	totalDocs: number;
 	hasNextPage: boolean;
@@ -49,23 +48,15 @@ type Res = {
 	data: Tweet[];
 };
 
-const tweetsAdapter = createEntityAdapter<Tweet>({
-	selectId: (entity) => entity._id,
-	sortComparer: (a, b) => {
-		return b._id.localeCompare(a._id);
-	},
-});
-
-const initialState = tweetsAdapter.getInitialState();
-
 const tweetApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getTweets: builder.query<
-			Res,
+			GetTweetsResponse,
 			{ itemsPerPage: number; currentPage: number }
 		>({
-			query: ({ itemsPerPage, currentPage }) =>
-				`/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`,
+			query: ({ itemsPerPage, currentPage }) => {
+				return `/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`;
+			},
 			providesTags: (result) => {
 				if (!result) {
 					return [{ type: "Tweets", id: "LIST" }];
@@ -84,14 +75,13 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			{ tweetId: string; likes: string[]; cacheKey: number }
 		>({
 			query: ({ tweetId }) => ({
-				method: "POST",
+				method: "PATCH",
 				url: `/tweets/${tweetId}/like`,
 			}),
 			async onQueryStarted(
 				{ tweetId, likes, cacheKey },
 				{ dispatch, queryFulfilled }
 			) {
-				console.time("op");
 				const result = dispatch(
 					tweetApiSlice.util.updateQueryData(
 						"getTweets",
@@ -107,11 +97,12 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 						}
 					)
 				);
-				console.timeEnd("op");
 
 				try {
 					await queryFulfilled;
 				} catch (err) {
+					console.log(err);
+
 					result.undo();
 				}
 			},

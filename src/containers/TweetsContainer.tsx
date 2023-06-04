@@ -1,11 +1,12 @@
 import { Container } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import TweetCard from "../components/tweet/TweetCard";
 import { useGetTweetsQuery } from "../features/tweet/tweetApiSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function TweetsContainer() {
 	const [currentPage, setCurrentPage] = useState(1);
+
 	const { isLoading, isFetching, data } = useGetTweetsQuery(
 		{ itemsPerPage: 10, currentPage },
 		{
@@ -15,10 +16,14 @@ export default function TweetsContainer() {
 		}
 	);
 
+	const incrementPage = useCallback(() => {
+		setCurrentPage((prev) => prev + 1);
+	}, []);
+
 	const lastTweetRef = useInfiniteScroll({
 		isFetching,
 		hasNextPage: data?.hasNextPage ?? false,
-		setCurrentPage,
+		incrementPage,
 	});
 
 	const tweetsList = isLoading
@@ -48,8 +53,6 @@ export default function TweetsContainer() {
 
 	return (
 		<>
-			{/* <button onClick={add}>add {currentPage}</button>
-			<button onClick={remove}>remove {currentPage}</button> */}
 			<Container
 				sx={{
 					maxWidth: { xs: "xs", normal_sm: "sm", md: "88%" },

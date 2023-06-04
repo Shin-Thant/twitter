@@ -1,15 +1,15 @@
-import React, { useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 type Props = {
 	isFetching: boolean;
 	hasNextPage: boolean;
-	setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+	incrementPage: () => void;
 };
 
 export default function useInfiniteScroll({
 	isFetching,
 	hasNextPage,
-	setCurrentPage,
+	incrementPage,
 }: Props) {
 	const observer = useRef<IntersectionObserver>();
 
@@ -24,14 +24,14 @@ export default function useInfiniteScroll({
 			}
 			observer.current = new IntersectionObserver(([entry]) => {
 				if (hasNextPage && entry.isIntersecting) {
-					setCurrentPage((prev) => prev + 1);
+					incrementPage();
 				}
 			});
 			if (tweet) {
 				observer.current.observe(tweet);
 			}
 		},
-		[hasNextPage, isFetching, setCurrentPage]
+		[hasNextPage, isFetching, incrementPage]
 	);
 
 	return lastItemRef;

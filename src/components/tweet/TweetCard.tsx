@@ -1,19 +1,18 @@
-import { forwardRef, ForwardedRef } from "react";
 import {
 	Avatar,
 	Box,
-	Button,
 	Card,
 	CardActions,
 	CardContent,
 	CardHeader,
 	Typography,
 } from "@mui/material";
+import { ForwardedRef, forwardRef, memo } from "react";
 import { Link } from "react-router-dom";
 import { Tweet } from "../../features/tweet/tweetApiSlice";
 import getRelativeTime from "../../helpers/getRelativeTime";
-import TweetHeader from "./TweetHeader";
 import TweetActions from "./TweetActions";
+import TweetHeader from "./TweetHeader";
 
 // TODO: refactor card body
 
@@ -152,4 +151,5 @@ const TweetCard = forwardRef(
 		);
 	}
 );
-export default TweetCard;
+const MemorizedTweetCard = memo(TweetCard);
+export default MemorizedTweetCard;
