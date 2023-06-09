@@ -1,8 +1,7 @@
-import React from "react";
-import { CardHeader, Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, CardHeader, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import getRelativeTime from "../../helpers/getRelativeTime";
 import { Owner } from "../../features/tweet/type";
+import getRelativeTime from "../../helpers/getRelativeTime";
 
 type Props = {
 	owner: Owner;
@@ -86,6 +85,7 @@ export default function TweetHeader({ owner, createdAt }: Props) {
 			}
 			subheader={
 				<Typography
+					sx={{ width: "max-content" }}
 					color="text.secondary"
 					variant="body2"
 					title={owner.username}

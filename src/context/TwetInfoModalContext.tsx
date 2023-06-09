@@ -4,12 +4,12 @@ type ContextState = {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const DrawerControllerContext = createContext<ContextState>({
+export const TweetInfoModalContext = createContext<ContextState>({
 	isOpen: false,
 	setIsOpen: () => undefined,
 });
 
-export default function DrawerControllerProvider({
+export default function TweetInfoModalProvider({
 	children,
 }: {
 	children: ReactElement;
@@ -17,8 +17,8 @@ export default function DrawerControllerProvider({
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<DrawerControllerContext.Provider value={{ isOpen, setIsOpen }}>
+		<TweetInfoModalContext.Provider value={{ isOpen, setIsOpen }}>
 			{children}
-		</DrawerControllerContext.Provider>
+		</TweetInfoModalContext.Provider>
 	);
 }

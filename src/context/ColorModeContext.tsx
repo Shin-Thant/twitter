@@ -12,7 +12,7 @@ import { getStoredMode, setStoredMode } from "../lib/handleModeLocalStorage";
 
 type ColorMode = "light" | "dark";
 export type Mode = ColorMode | "system";
-type ThemeMode = {
+type ContextState = {
 	mode: Mode;
 	systemMode: ColorMode;
 	setMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -20,14 +20,14 @@ type ThemeMode = {
 	changeMode: (newMode: Mode) => void;
 };
 
-const initValues: ThemeMode = {
+const initValues: ContextState = {
 	mode: "system",
 	systemMode: "dark",
 	setMode: () => undefined,
 	setSystemMode: () => undefined,
 	changeMode: () => undefined,
 };
-export const ColorModeContext = createContext<ThemeMode>(initValues);
+export const ColorModeContext = createContext<ContextState>(initValues);
 
 type Props = { children: ReactElement };
 export default function ColorModeProvider({ children }: Props) {

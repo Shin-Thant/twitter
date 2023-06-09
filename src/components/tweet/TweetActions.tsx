@@ -43,7 +43,6 @@ export default function TweetActions({ cacheKey, tweet }: Props) {
 			console.log("login first");
 			return;
 		}
-		console.log({ userId });
 		const tweetId = tweet._id;
 
 		const isLiked = tweet.likes.includes(userId);
@@ -71,8 +70,9 @@ export default function TweetActions({ cacheKey, tweet }: Props) {
 	return (
 		<CardActions
 			sx={{
+				pb: 0,
 				justifyContent: "space-between",
-				ml: { xs: 0, ss: "3.3rem", sm: "3.5rem" },
+				// ml: { xs: 0, ss: "3.3rem", sm: "3.5rem" },
 			}}
 		>
 			<CardButton

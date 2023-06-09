@@ -1,10 +1,10 @@
 import { ReactElement, createContext, useState } from "react";
 
-type ThemeModal = {
+type ContextState = {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const ThemeModalContext = createContext<ThemeModal>({
+export const ThemeModalContext = createContext<ContextState>({
 	isOpen: false,
 	setIsOpen: () => undefined,
 });
