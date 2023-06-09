@@ -1,16 +1,22 @@
 import { Box, Card } from "@mui/material";
 import { ForwardedRef, forwardRef, memo } from "react";
-import { Tweet } from "../../features/tweet/type";
+import { Tweet } from "../../features/tweet/types";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
 import TweetHeader from "./TweetHeader";
+import TweetLikeBtn from "./buttons/TweetLikeBtn";
+import { useAppSelector } from "../../app/hooks";
+import { userIdSelector } from "../../features/user/userSlice";
+import TweetShareBtn from "./buttons/TweetShareBtn";
+import TweetCommentBtn from "./buttons/TweetCommentBtn";
 
 type Props = {
 	tweet: Tweet;
-	cacheKey: number;
 };
 const TweetCard = forwardRef(
-	({ tweet, cacheKey }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+		const userId = useAppSelector(userIdSelector);
+
 		return (
 			<Card
 				ref={ref}
@@ -33,7 +39,29 @@ const TweetCard = forwardRef(
 				>
 					<TweetBody tweet={tweet} />
 
-					<TweetActions cacheKey={cacheKey} tweet={tweet} />
+					<TweetActions
+						likeBtn={
+							<TweetLikeBtn
+								likes={tweet.likes}
+								tweetId={tweet._id}
+								userId={userId}
+							/>
+						}
+						commentBtn={
+							<TweetCommentBtn
+								comments={tweet.comments}
+								tweetId={tweet._id}
+								userId={userId}
+							/>
+						}
+						shareBtn={
+							<TweetShareBtn
+								shares={tweet.shares}
+								tweetId={tweet._id}
+								userId={userId}
+							/>
+						}
+					/>
 				</Box>
 			</Card>
 		);

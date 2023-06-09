@@ -1,6 +1,6 @@
 import { Avatar, Box, CardHeader, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Owner } from "../../features/tweet/type";
+import { Owner } from "../../features/tweet/types";
 import getRelativeTime from "../../helpers/getRelativeTime";
 
 type Props = {

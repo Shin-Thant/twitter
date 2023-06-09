@@ -1,4 +1,4 @@
-import { User } from "../user/type";
+import { User } from "../user/types";
 
 export type Owner = Omit<User, "email" | "id">;
 interface BasicTweet {
@@ -6,10 +6,10 @@ interface BasicTweet {
 	body: string;
 	owner: Owner;
 	likes: string[];
+	comments: { creator: Owner }[];
+	shares: string[];
 	createdAt: string;
 	updatedAt: string;
-	comments: { creator: Owner }[];
-	shares: number;
 }
 interface PostTweet extends BasicTweet {
 	type: "post";

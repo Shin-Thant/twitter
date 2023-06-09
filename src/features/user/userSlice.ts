@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { checkUserEndpoint } from "../auth/authApiSlice";
 import { RootState } from "../../app/store";
 import isTokenErrorPayload from "../../helpers/isTokenErrorPayload";
-import { User } from "./type";
+import { User } from "./types";
 
 type State = {
 	user: User | null;

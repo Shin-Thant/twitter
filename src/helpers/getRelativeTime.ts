@@ -1,4 +1,7 @@
-const intl = new Intl.RelativeTimeFormat("en", { style: "narrow" });
+const intl = new Intl.RelativeTimeFormat("en", {
+	style: "long",
+	numeric: "auto",
+});
 
 // TODO: refactor this
 type Param = {

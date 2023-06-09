@@ -36,10 +36,10 @@ export default function Sidebar() {
 						xs: "none",
 						md: "block",
 					},
-					width: 300,
+					width: { md: 270, lg: 300 },
 					"& .MuiDrawer-paper": {
 						bgcolor: "bg.navbar",
-						width: 300,
+						width: { md: 270, lg: 300 },
 						boxSizing: "border-box",
 					},
 				}}

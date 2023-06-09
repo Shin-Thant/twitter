@@ -2,6 +2,58 @@ import { ButtonBase, Typography } from "@mui/material";
 import { blue, green, grey, red } from "@mui/material/colors";
 import { ReactNode } from "react";
 
+type Props = {
+	type: "like" | "comment" | "share";
+	label: string | number;
+	isLoading: boolean;
+	isCompleted: boolean;
+	handleClick: () => void;
+	children: ReactNode;
+};
+const CardButton = ({
+	type,
+	label,
+	isLoading,
+	isCompleted,
+	children,
+	handleClick,
+}: Props) => {
+	return (
+		<ButtonBase
+			disabled={isLoading}
+			onClick={handleClick}
+			sx={{
+				...styles,
+				color: isCompleted ? colors[type].color : grey[600],
+				"&:hover": colors[type].hoverColors,
+			}}
+			title={type}
+		>
+			{children}
+			<Typography
+				component="p"
+				variant="body2"
+				sx={{ ml: "0.1rem", fontWeight: 500 }}
+			>
+				{label}
+			</Typography>
+		</ButtonBase>
+	);
+};
+
+const styles = {
+	display: "flex",
+	alignItems: "center",
+	gap: "0.3rem",
+	p: "0.4rem 0.8rem",
+	borderRadius: "5px",
+	transition: "all 250ms ease",
+
+	"&:disabled": {
+		opacity: 0.5,
+	},
+};
+
 const colors = {
 	like: {
 		color: red[500],
@@ -19,46 +71,5 @@ const colors = {
 		},
 	},
 } as const;
-
-type Props = {
-	isCompleted: boolean;
-	type: "like" | "comment" | "share";
-	label: string | number;
-	handleClick: () => void;
-	children: ReactNode;
-};
-const CardButton = ({
-	type,
-	isCompleted,
-	label,
-	handleClick,
-	children,
-}: Props) => {
-	return (
-		<ButtonBase
-			onClick={handleClick}
-			sx={{
-				display: "flex",
-				alignItems: "center",
-				gap: "0.3rem",
-				p: "0.4rem 0.8rem",
-				borderRadius: "5px",
-				color: isCompleted ? colors[type].color : grey[500],
-				"&:hover": colors[type].hoverColors,
-				transition: "all 250ms ease",
-			}}
-			title={type}
-		>
-			{children}
-			<Typography
-				component="p"
-				variant="body2"
-				sx={{ ml: "0.1rem", fontWeight: 500 }}
-			>
-				{label}
-			</Typography>
-		</ButtonBase>
-	);
-};
 
 export default CardButton;

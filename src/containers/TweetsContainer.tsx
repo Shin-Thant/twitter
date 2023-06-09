@@ -1,11 +1,12 @@
 import { Container } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import TweetCard from "../components/tweet/TweetCard";
 import { useGetTweetsQuery } from "../features/tweet/tweetApiSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import useCurrentPage from "../hooks/useCurrentPage";
 
 export default function TweetsContainer() {
-	const [currentPage, setCurrentPage] = useState(1);
+	const { currentPage, setCurrentPage } = useCurrentPage();
 
 	const { isLoading, isFetching, data } = useGetTweetsQuery(
 		{ itemsPerPage: 10, currentPage },
@@ -18,7 +19,7 @@ export default function TweetsContainer() {
 
 	const incrementPage = useCallback(() => {
 		setCurrentPage((prev) => prev + 1);
-	}, []);
+	}, [setCurrentPage]);
 
 	const lastTweetRef = useInfiniteScroll({
 		isFetching,
@@ -32,20 +33,13 @@ export default function TweetsContainer() {
 		? "no tweet"
 		: data?.data.map((tweet, index) => {
 				if (index !== data.data.length - 1) {
-					return (
-						<TweetCard
-							key={tweet._id}
-							tweet={tweet}
-							cacheKey={currentPage}
-						/>
-					);
+					return <TweetCard key={tweet._id} tweet={tweet} />;
 				}
 				return (
 					<TweetCard
 						ref={lastTweetRef}
 						key={tweet._id}
 						tweet={tweet}
-						cacheKey={currentPage}
 					/>
 				);
 				// eslint-disable-next-line no-mixed-spaces-and-tabs

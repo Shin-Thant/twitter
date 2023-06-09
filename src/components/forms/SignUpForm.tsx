@@ -36,7 +36,6 @@ export default function SignUpForm() {
 
 		const res = await signup({ username, name, email, password });
 		if ("error" in res) {
-			console.log(res.error);
 			return;
 		}
 
@@ -141,7 +140,6 @@ export default function SignUpForm() {
 }
 
 const getInputStyle = (isError: boolean) => {
-	console.log({ isError });
 	return {
 		borderColor: isError ? red["A700"] : grey[500],
 		"&:focus-within": {

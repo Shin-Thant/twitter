@@ -15,7 +15,7 @@ import {
 } from "./AuthFormComponents";
 import FieldError from "./FieldError";
 import FormError from "./FormError";
-import { LoginInputs, LoginSchema } from "../../schemas/loginSchema";
+import { LoginInputs, LoginSchema } from "../../schemas/LoginSchema";
 
 const DEFAULT_VALUES: LoginInputs = {
 	email: "",
@@ -105,7 +105,6 @@ export default function LoginForm() {
 }
 
 const getInputStyle = (isError: boolean) => {
-	console.log({ isError });
 	return {
 		borderColor: isError ? red["A700"] : grey[500],
 		"&:focus-within": {
