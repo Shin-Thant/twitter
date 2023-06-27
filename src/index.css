@@ -11,9 +11,13 @@ html {
 .router_link {
 	color: inherit;
 	text-decoration: none;
-
+}
+.auto_line {
 	display: -webkit-box;
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
+}
+.no_underline {
+	text-decoration: none;
 }

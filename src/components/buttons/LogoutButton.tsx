@@ -4,15 +4,18 @@ import { useLogoutMutation } from "../../features/auth/authApiSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { setAuth } from "../../features/auth/authSlice";
 import { setUser } from "../../features/user/userSlice";
+import useDrawerController from "../../hooks/useDrawerController";
 
 export default function LogoutButton() {
 	const [logout] = useLogoutMutation();
 	const dispatch = useAppDispatch();
+	const { setIsOpen } = useDrawerController();
 
 	const handleLogout = async () => {
 		await logout();
 		dispatch(setAuth(null));
 		dispatch(setUser(null));
+		setIsOpen(false);
 	};
 
 	return (

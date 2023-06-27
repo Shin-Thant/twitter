@@ -9,10 +9,10 @@ import {
 	Label,
 	StyledForm,
 	StyledInputBase,
-	SubmitButton,
 } from "./AuthFormComponents";
 import FieldError from "./FieldError";
 import FormError from "./FormError";
+import SubmitButton from "../buttons/SubmitButton";
 
 export default function SignUpForm() {
 	const navigate = useNavigate();
@@ -131,7 +131,7 @@ export default function SignUpForm() {
 					)}
 				</FieldContainer>
 
-				<SubmitButton isLoading={isSubmitting}>
+				<SubmitButton fullWidth={true} isLoading={isSubmitting}>
 					{isSubmitting ? "Loading..." : "Sign Up"}
 				</SubmitButton>
 			</StyledForm>

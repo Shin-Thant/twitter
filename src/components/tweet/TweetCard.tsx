@@ -1,6 +1,6 @@
 import { Box, Card } from "@mui/material";
-import { ForwardedRef, forwardRef, memo } from "react";
-import { Tweet } from "../../features/tweet/types";
+import { ForwardedRef, forwardRef, memo, useState } from "react";
+import { Tweet } from "../../features/tweet/tweetTypes";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
 import TweetHeader from "./TweetHeader";
@@ -9,13 +9,16 @@ import { useAppSelector } from "../../app/hooks";
 import { userIdSelector } from "../../features/user/userSlice";
 import TweetShareBtn from "./buttons/TweetShareBtn";
 import TweetCommentBtn from "./buttons/TweetCommentBtn";
+import TweetShareModal from "../modals/tweetShareModal/TweetShareModal";
 
 type Props = {
 	tweet: Tweet;
 };
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+		// TODO: move userId to components which use it
 		const userId = useAppSelector(userIdSelector);
+		const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
 		return (
 			<Card
@@ -56,11 +59,18 @@ const TweetCard = forwardRef(
 						}
 						shareBtn={
 							<TweetShareBtn
+								setModalOpen={setIsShareModalOpen}
 								shares={tweet.shares}
-								tweetId={tweet._id}
 								userId={userId}
 							/>
 						}
+					/>
+
+					<TweetShareModal
+						tweetId={tweet._id}
+						shares={tweet.shares}
+						isOpen={isShareModalOpen}
+						setIsOpen={setIsShareModalOpen}
 					/>
 				</Box>
 			</Card>

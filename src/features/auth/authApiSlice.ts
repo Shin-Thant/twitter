@@ -1,5 +1,5 @@
 import apiSlice from "../../app/api/apiSlice";
-import { User } from "../user/types";
+import { User } from "../user/userTypes";
 
 type SignUpResponse = User;
 export type SignUpBody = {
@@ -35,11 +35,11 @@ const authApiSlice = apiSlice.injectEndpoints({
 				method: "POST",
 				body: arg,
 			}),
-			invalidatesTags: ["Tweets"],
 		}),
 
 		logout: builder.mutation<void, void>({
 			query: () => ({ url: "/auth/logout", method: "POST" }),
+			invalidatesTags: [{ type: "Tweets", id: "LIST" }],
 		}),
 	}),
 });

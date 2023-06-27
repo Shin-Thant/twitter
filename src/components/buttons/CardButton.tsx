@@ -5,9 +5,9 @@ import { ReactNode } from "react";
 type Props = {
 	type: "like" | "comment" | "share";
 	label: string | number;
-	isLoading: boolean;
 	isCompleted: boolean;
 	handleClick: () => void;
+	isLoading?: boolean;
 	children: ReactNode;
 };
 const CardButton = ({
@@ -57,17 +57,17 @@ const styles = {
 const colors = {
 	like: {
 		color: red[500],
-		hoverColors: { color: red[500], bgcolor: "hsl(0, 100%, 63%, 0.05)" },
+		hoverColors: { color: red[500], bgcolor: "hsl(0, 100%, 63%, 0.1)" },
 	},
 	comment: {
 		color: blue[500],
-		hoverColors: { color: blue[500], bgcolor: "hsl(230, 100%, 63%, 0.05)" },
+		hoverColors: { color: blue[500], bgcolor: "hsl(230, 100%, 63%, 0.1)" },
 	},
 	share: {
 		color: green[500],
 		hoverColors: {
 			color: green[500],
-			bgcolor: "hsl(130, 100%, 63%, 0.05)",
+			bgcolor: "hsl(130, 100%, 63%, 0.1)",
 		},
 	},
 } as const;

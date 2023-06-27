@@ -1,11 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import ErrorRoundedIcon from "@mui/icons-material/ErrorRounded";
+import { type BoxProps } from "@mui/material/Box";
 
-type Props = {
+interface Props {
 	message: string;
-};
+	sx?: BoxProps;
+}
 
-export default function FieldError({ message }: Props) {
+export default function FieldError({ message, sx }: Props) {
 	return (
 		<Box
 			sx={{
@@ -13,6 +15,7 @@ export default function FieldError({ message }: Props) {
 				alignItems: "center",
 				gap: "0.3rem",
 				mt: "0.5rem",
+				...sx,
 			}}
 		>
 			<ErrorRoundedIcon fontSize="small" color="error" />

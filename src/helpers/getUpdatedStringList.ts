@@ -1,5 +1,8 @@
-export default function getUpdatedStringList(list: string[], newItem: string) {
-	const isAdded = list.includes(newItem);
+export default function getUpdatedStringList(
+	isAdded: boolean,
+	list: string[],
+	newItem: string
+) {
 	let updatedStrList: string[];
 
 	if (isAdded) {

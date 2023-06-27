@@ -55,7 +55,7 @@ export default function SidebarHeader() {
 									textDecoration: "none",
 								}}
 							>
-								<Link to="/" className="router_link">
+								<Link to="/" className="router_link auto_line">
 									{user.name}
 								</Link>
 							</Typography>
@@ -68,7 +68,7 @@ export default function SidebarHeader() {
 									textDecoration: "none",
 								}}
 							>
-								<Link to="/" className="router_link">
+								<Link to="/" className="router_link auto_line">
 									@{user.username}
 								</Link>
 							</Typography>

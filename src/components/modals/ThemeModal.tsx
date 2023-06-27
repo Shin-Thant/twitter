@@ -1,32 +1,19 @@
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {
 	Box,
 	FormControlLabel,
-	Modal,
+	IconButton,
 	Radio,
 	RadioGroup,
 	Typography,
 	styled,
 } from "@mui/material";
-import { ChangeEvent } from "react";
-import useThemeModal from "../../hooks/useThemeModal";
-import useColorMode from "../../hooks/useColorMode";
+import { grey } from "@mui/material/colors";
+import { ChangeEvent, useCallback } from "react";
 import isValidColorMode from "../../helpers/isValidColorMode";
-
-const style = {
-	position: "absolute",
-	top: { xs: "100%", normal_sm: "50%" },
-	left: "50%",
-	transform: {
-		xs: "translate(-50%, -100%)",
-		normal_sm: "translate(-50%, -50%)",
-	},
-	width: { xs: "100%", normal_sm: 350, sm: 400 },
-	bgcolor: "bg.navbar",
-	boxShadow: 24,
-	p: { xs: 2, normal_sm: 4 },
-	color: "text.primary",
-	borderRadius: { xs: "10px 10px 0 0", normal_sm: "10px" },
-};
+import useColorMode from "../../hooks/useColorMode";
+import useThemeModal from "../../hooks/useThemeModal";
+import Modal from "./Modal";
 
 export default function ThemeModal() {
 	const { isOpen, setIsOpen } = useThemeModal();
@@ -42,26 +29,41 @@ export default function ThemeModal() {
 		changeMode(selectedMode);
 	};
 
-	return (
-		<Modal
-			open={isOpen}
-			onClose={() => {
-				setIsOpen(false);
-			}}
-			disableAutoFocus
-			disableEnforceFocus
-		>
-			<Box sx={style}>
-				<Typography variant="h6" component="h2" sx={{ mb: "1rem" }}>
-					Theme
-				</Typography>
+	const onClose = useCallback(() => {
+		setIsOpen(false);
+	}, [setIsOpen]);
 
-				<RadioGroup onChange={onModeChange} value={mode}>
-					<Label value="light" label="Light" control={<Radio />} />
-					<Label value="dark" label="Dark" control={<Radio />} />
-					<Label value="system" label="System" control={<Radio />} />
-				</RadioGroup>
+	return (
+		<Modal isOpen={isOpen} onClose={onClose}>
+			<Box
+				mb={3}
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+				}}
+			>
+				<Typography variant="h6">Let's connect first!</Typography>
+				<IconButton
+					onClick={onClose}
+					size="small"
+					sx={{
+						color: grey[700],
+						transition: "color 200ms ease",
+						"&:hover": {
+							color: grey[300],
+						},
+					}}
+				>
+					<CloseRoundedIcon />
+				</IconButton>
 			</Box>
+
+			<RadioGroup onChange={onModeChange} value={mode}>
+				<Label value="light" label="Light" control={<Radio />} />
+				<Label value="dark" label="Dark" control={<Radio />} />
+				<Label value="system" label="System" control={<Radio />} />
+			</RadioGroup>
 		</Modal>
 	);
 }

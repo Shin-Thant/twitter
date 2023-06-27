@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CommentOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import CommentFilledIcon from "@mui/icons-material/TextsmsRounded";
 import { Comment } from "../../../features/comment/types";
@@ -12,9 +11,9 @@ type Props = {
 };
 
 export default function TweetCommentBtn({ comments, tweetId, userId }: Props) {
-	const [isCommented, setIsCommented] = useState<boolean>(
-		userId ? !!comments.find((cmt) => cmt.creator._id === userId) : false
-	);
+	const isCommented = userId
+		? !!comments.find((cmt) => cmt.creator._id === userId)
+		: false;
 	const { setIsOpen } = useTweetInfoModal();
 
 	const onComment = () => {

@@ -1,4 +1,4 @@
 import { useContext } from "react";
-import { TweetInfoModalContext } from "../context/TwetInfoModalContext";
+import { TweetInfoModalContext } from "../context/TweetInfoModalContext";
 
 export const useTweetInfoModal = () => useContext(TweetInfoModalContext);

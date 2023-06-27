@@ -1,23 +1,10 @@
-import { Box, Button, Divider, Modal, Typography } from "@mui/material";
-import React from "react";
-import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
+import { grey } from "@mui/material/colors";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
-const style = {
-	position: "absolute",
-	top: { xs: "100%", normal_sm: "50%" },
-	left: "50%",
-	transform: {
-		xs: "translate(-50%, -100%)",
-		normal_sm: "translate(-50%, -50%)",
-	},
-	width: { xs: "100%", normal_sm: 350, sm: 400 },
-	bgcolor: "bg.navbar",
-	boxShadow: 24,
-	p: { xs: 2, normal_sm: 4 },
-	color: "text.primary",
-	borderRadius: { xs: "10px 10px 0 0", normal_sm: "10px" },
-};
+import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
+import Modal from "./Modal";
 
 export default function TweetInfoModal() {
 	const { isOpen, setIsOpen } = useTweetInfoModal();
@@ -28,40 +15,55 @@ export default function TweetInfoModal() {
 		navigate(to);
 	};
 
+	const onClose = useCallback(() => {
+		setIsOpen(false);
+	}, [setIsOpen]);
+
 	return (
-		<Modal
-			open={isOpen}
-			onClose={() => {
-				setIsOpen(false);
-			}}
-			disableAutoFocus
-			disableEnforceFocus
-		>
-			<Box sx={style}>
-				<Typography variant="h6" mb={3}>
-					Let's connect first!
-				</Typography>
-
-				<Button
-					onClick={() => closeAndNavigate("/login")}
-					variant="contained"
-					fullWidth
-					sx={{ textTransform: "none" }}
+		<Modal isOpen={isOpen} onClose={onClose}>
+			<Box
+				mb={3}
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+				}}
+			>
+				<Typography variant="h6">Let's connect first!</Typography>
+				<IconButton
+					onClick={onClose}
+					size="small"
+					sx={{
+						color: grey[700],
+						transition: "color 200ms ease",
+						"&:hover": {
+							color: grey[300],
+						},
+					}}
 				>
-					Login
-				</Button>
-
-				<Divider sx={{ my: "1rem" }}>or</Divider>
-
-				<Button
-					onClick={() => closeAndNavigate("/signup")}
-					variant="outlined"
-					fullWidth
-					sx={{ textTransform: "none" }}
-				>
-					Sign Up
-				</Button>
+					<CloseRoundedIcon />
+				</IconButton>
 			</Box>
+
+			<Button
+				onClick={() => closeAndNavigate("/login")}
+				variant="outlined"
+				fullWidth
+				sx={{ textTransform: "none" }}
+			>
+				Login
+			</Button>
+
+			<Divider sx={{ my: "1rem" }}>or</Divider>
+
+			<Button
+				onClick={() => closeAndNavigate("/signup")}
+				variant="contained"
+				fullWidth
+				sx={{ textTransform: "none" }}
+			>
+				Sign Up
+			</Button>
 		</Modal>
 	);
 }

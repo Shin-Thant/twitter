@@ -1,4 +1,4 @@
-import { createContext, ReactElement, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 type ContextState = {
 	isOpen: boolean;
@@ -12,7 +12,7 @@ export const TweetInfoModalContext = createContext<ContextState>({
 export default function TweetInfoModalProvider({
 	children,
 }: {
-	children: ReactElement;
+	children: ReactNode;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
 

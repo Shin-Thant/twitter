@@ -1,7 +1,9 @@
-import { Avatar, Box, CardHeader, Typography } from "@mui/material";
+import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import { Avatar, Box, CardHeader, IconButton, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Owner } from "../../features/tweet/types";
+import { Owner } from "../../features/tweet/tweetTypes";
 import getRelativeTime from "../../helpers/getRelativeTime";
+import { grey } from "@mui/material/colors";
 
 type Props = {
 	owner: Owner;
@@ -61,7 +63,7 @@ export default function TweetHeader({ owner, createdAt }: Props) {
 						}}
 						title={owner.name}
 					>
-						<Link className="router_link" to="/">
+						<Link className="router_link auto_line" to="/">
 							{owner.name}
 						</Link>
 					</Typography>
@@ -90,10 +92,24 @@ export default function TweetHeader({ owner, createdAt }: Props) {
 					variant="body2"
 					title={owner.username}
 				>
-					<Link className="router_link" to="/">
+					<Link className="router_link auto_line" to="/">
 						@{owner.username}
 					</Link>{" "}
 				</Typography>
+			}
+			action={
+				<IconButton
+					size="small"
+					sx={{
+						color: grey[600],
+						"&:hover": {
+							color: grey[200],
+						},
+						transition: "color 150ms ease",
+					}}
+				>
+					<MoreVertRoundedIcon />
+				</IconButton>
 			}
 			sx={{ paddingBottom: "8px" }}
 		/>

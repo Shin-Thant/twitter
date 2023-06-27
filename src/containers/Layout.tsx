@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../nav/navbar/Navbar";
 import Sidebar from "../nav/sidebar/Sidebar";
 import ThemeModal from "../components/modals/ThemeModal";
-import NotiStack from "./NotiStack";
+import NotiStack from "../components/feedbacks/ToastProvider";
 
 export default function Layout() {
 	return (

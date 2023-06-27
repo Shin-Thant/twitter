@@ -1,20 +1,19 @@
-import { ReactNode } from "react";
+import { Box, InputBase, Typography } from "@mui/material";
+import { blue, grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import { grey, blue } from "@mui/material/colors";
-import { Button, InputBase, Typography, Box } from "@mui/material";
+import { ReactNode } from "react";
 
 export const StyledForm = styled("form")(() => ({
 	display: "block",
 }));
 
-export const FieldContainer = styled(Box)(() => ({
-	marginBottom: '1.3rem'
-}))
+export const FieldContainer = styled(Box)(({ theme }) => ({
+	marginBottom: theme.spacing(3),
+}));
 
 export const StyledInputBase = styled(InputBase)(() => ({
 	display: "grid",
 	padding: "0.3rem 0.8rem",
-	// marginBottom: "1.3rem",
 	border: "2px solid",
 	borderRadius: "6px",
 	borderColor: grey[500],
@@ -36,30 +35,5 @@ export const Label = ({ htmlFor, sx, children }: LabelProps) => {
 		>
 			{children}
 		</Typography>
-	);
-};
-
-type BtnProps = { isLoading: boolean; children: ReactNode };
-export const SubmitButton = ({ isLoading, children }: BtnProps) => {
-	return (
-		<Button
-			type="submit"
-			disabled={isLoading}
-			sx={{
-				width: "100%",
-				mt: "0.3rem",
-				borderRadius: "5px",
-				textTransform: "none",
-				fontSize: "1rem",
-				pointerEvents: isLoading ? "none" : "all",
-				bgcolor: isLoading ? grey[500] : blue[500],
-				":hover, :focus": {
-					bgcolor: isLoading ? grey[500] : blue[500],
-				},
-			}}
-			variant="contained"
-		>
-			{children}
-		</Button>
 	);
 };

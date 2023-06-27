@@ -1,8 +1,9 @@
 import apiSlice from "../../app/api/apiSlice";
-import { GetTweetsResponse, Tweet } from "./types";
+import { GetTweetsResponse, Tweet } from "./tweetTypes";
 
 type LikeMutationArg = { tweetId: string; likes: string[]; cacheKey: number };
 type ShareMutationArg = { tweetId: string; body?: string };
+type DeleteMutationArg = { tweetId: string };
 
 const tweetApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -13,6 +14,10 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			query: ({ itemsPerPage, currentPage }) => {
 				return `/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`;
 			},
+			// transformResponse(result) {
+			// 	console.log(result);
+			// 	return result;
+			// },
 			providesTags: (result) => {
 				if (!result) {
 					return [{ type: "Tweets", id: "LIST" }];
@@ -32,6 +37,9 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				method: "PATCH",
 				url: `/tweets/${tweetId}/like`,
 			}),
+			// invalidatesTags: (_result, _error, arg) => [
+			// 	{ type: "Tweets", id: "LIST" },
+			// ],
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
 				const result = dispatch(optimisticLikeUpdate(arg));
 
@@ -44,18 +52,27 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 		}),
 
 		handleShare: builder.mutation<Tweet, ShareMutationArg>({
-			query: ({ tweetId, body }) => {
-				const req = {
-					url: `/tweets/${tweetId}/share`,
-					method: "POST",
-				};
-				if (!body) {
-					return req;
-				}
-				return {
-					...req,
-					body,
-				};
+			query: ({ tweetId, body }) => ({
+				url: `/tweets/${tweetId}/share`,
+				method: "POST",
+				body: { body },
+			}),
+			// TODO: make update optimistic
+			invalidatesTags(_res, _err, arg) {
+				return [{ type: "Tweets", id: arg.tweetId }];
+			},
+		}),
+
+		handleDeleteTweet: builder.mutation<
+			{ message: string },
+			DeleteMutationArg
+		>({
+			query: ({ tweetId }) => ({
+				url: `/tweets/${tweetId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags(_res, _err, arg) {
+				return [{ type: "Tweets", id: arg.tweetId }];
 			},
 		}),
 	}),
@@ -85,5 +102,6 @@ export const {
 	useGetTweetsQuery,
 	useHandleLikesMutation,
 	useHandleShareMutation,
+	useHandleDeleteTweetMutation,
 } = tweetApiSlice;
 export default tweetApiSlice;

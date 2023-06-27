@@ -1,56 +1,37 @@
 import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
-import { startTransition, useState } from "react";
-import { useHandleShareMutation } from "../../../features/tweet/tweetApiSlice";
-import useCurrentPage from "../../../hooks/useCurrentPage";
-import { showNotiBar } from "../../../lib/notiStackController";
-import CardButton from "../../buttons/CardButton";
+import React from "react";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
+import CardButton from "../../buttons/CardButton";
+import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
 
 type Props = {
-	shares: string[];
-	tweetId: string;
+	shares: SharedTweetPreview[];
 	userId: string | undefined;
+	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export default function TweetShareBtn({ shares, tweetId, userId }: Props) {
-	const { currentPage } = useCurrentPage();
-	const [handleShare, { isLoading }] = useHandleShareMutation();
-	const { setIsOpen } = useTweetInfoModal();
+export default function TweetShareBtn({ shares, userId, setModalOpen }: Props) {
+	const { setIsOpen: setTweetInfoModal } = useTweetInfoModal();
 
-	const [isShared, setIsShared] = useState(shares.includes(userId ?? ""));
+	const isShared = userId
+		? !!shares.find((share) => share.owner === userId)
+		: false;
 
-	const onShare = async () => {
-		if (isLoading) return;
-
+	const handleModal = () => {
 		if (!userId) {
-			setIsOpen(true);
-			// TODO: show modal when user is not sign in
+			setTweetInfoModal(true);
 			console.log("login first");
 			return;
 		}
-
-		try {
-			// await handleShare({ tweetId });
-			startTransition(() => {
-				setIsShared((prev) => !prev);
-			});
-			showNotiBar({
-				message: "Shared post successfully!",
-				variant: "success",
-				autoHideDuration: 1200,
-			});
-		} catch (err) {
-			// error
-		}
+		setModalOpen(true);
 	};
 
 	return (
 		<CardButton
-			isLoading={isLoading}
 			label={shares.length}
 			isCompleted={isShared}
 			type="share"
-			handleClick={onShare}
+			handleClick={handleModal}
 		>
 			{isShared ? (
 				<ShareRoundedIcon fontSize="small" />

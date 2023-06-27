@@ -8,7 +8,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { Tweet } from "../../features/tweet/types";
+import { Tweet } from "../../features/tweet/tweetTypes";
 import getRelativeTime from "../../helpers/getRelativeTime";
 
 // TODO: refactor
@@ -63,7 +63,10 @@ const TweetBody = ({ tweet }: Props) => {
 									variant="body2"
 									sx={{ fontWeight: "600" }}
 								>
-									<Link className="router_link" to="/">
+									<Link
+										className="router_link auto_line"
+										to="/"
+									>
 										{tweet.origin.owner.name}
 									</Link>
 								</Typography>
@@ -91,7 +94,7 @@ const TweetBody = ({ tweet }: Props) => {
 						}
 						subheader={
 							<Typography color="text.secondary" variant="body2">
-								<Link className="router_link" to="/">
+								<Link className="router_link auto_line" to="/">
 									@{tweet.origin.owner.username}
 								</Link>{" "}
 							</Typography>

@@ -11,11 +11,11 @@ import {
 	Label,
 	StyledForm,
 	StyledInputBase,
-	SubmitButton,
 } from "./AuthFormComponents";
 import FieldError from "./FieldError";
 import FormError from "./FormError";
 import { LoginInputs, LoginSchema } from "../../schemas/LoginSchema";
+import SubmitButton from "../buttons/SubmitButton";
 
 const DEFAULT_VALUES: LoginInputs = {
 	email: "",
@@ -96,7 +96,7 @@ export default function LoginForm() {
 					)}
 				</FieldContainer>
 
-				<SubmitButton isLoading={isSubmitting}>
+				<SubmitButton fullWidth={true} isLoading={isSubmitting}>
 					{isSubmitting ? "Loading..." : "Login"}
 				</SubmitButton>
 			</StyledForm>
