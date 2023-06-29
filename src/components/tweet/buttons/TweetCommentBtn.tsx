@@ -10,7 +10,7 @@ type Props = {
 	userId: string | undefined;
 };
 
-export default function TweetCommentBtn({ comments, tweetId, userId }: Props) {
+export default function TweetCommentBtn({ comments,  userId }: Props) {
 	const isCommented = userId
 		? !!comments.find((cmt) => cmt.creator._id === userId)
 		: false;

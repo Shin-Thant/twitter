@@ -1,4 +1,4 @@
-import React, { ReactNode, Context, ElementType, useState } from "react";
+import { ReactNode, Context, ElementType, useState } from "react";
 import { ModalContext } from "./modalContextFactory";
 
 export default function wthModalContext(

@@ -1,5 +1,4 @@
 import { Box, Skeleton, Stack } from "@mui/material";
-import React from "react";
 
 export default function HeaderSkeleton() {
 	return (
