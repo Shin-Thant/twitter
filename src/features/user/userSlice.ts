@@ -30,7 +30,6 @@ const userSlice = createSlice({
 				checkUserEndpoint.matchRejected,
 				(state, { payload }) => {
 					if (isTokenErrorPayload(payload)) {
-						console.log(payload);
 						state.user = null;
 					}
 				}

@@ -20,7 +20,6 @@ export default function TweetShareBtn({ shares, userId, setModalOpen }: Props) {
 	const handleModal = () => {
 		if (!userId) {
 			setTweetInfoModal(true);
-			console.log("login first");
 			return;
 		}
 		setModalOpen(true);

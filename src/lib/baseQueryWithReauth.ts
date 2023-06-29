@@ -32,7 +32,6 @@ const baseQueryWithReauth: BaseQueryWithReauth = async (
 	}
 
 	// continue as the error's status is 403
-	console.log("sending refresh token");
 	// getting refresh token
 	const refreshResponse = await baseQuery("/auth/refresh", api, extraOptions);
 

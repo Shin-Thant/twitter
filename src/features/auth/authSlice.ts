@@ -38,7 +38,6 @@ const onCheckUserRejected: CaseReducer<
 	PayloadAction<FetchBaseQueryError | undefined>
 > = (state, { payload }) => {
 	if (isTokenErrorPayload(payload)) {
-		console.log(payload);
 		state.accessToken = null;
 		state.status = "logout";
 	}

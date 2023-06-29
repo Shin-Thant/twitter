@@ -41,7 +41,6 @@ export default function LoginForm() {
 
 		const response = await login({ email, password });
 		if ("error" in response) {
-			console.log(response.error);
 			return;
 		}
 

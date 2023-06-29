@@ -24,7 +24,6 @@ export default function TweetLikeBtn({ likes, tweetId, userId }: Props) {
 
 		if (!userId) {
 			setIsOpen(true);
-			console.log("login first");
 			return;
 		}
 
@@ -41,7 +40,7 @@ export default function TweetLikeBtn({ likes, tweetId, userId }: Props) {
 				isLiked = !isLiked;
 			});
 		} catch (err) {
-			console.log(err);
+			// console.log(err);
 		}
 	};
 

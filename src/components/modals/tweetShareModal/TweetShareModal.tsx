@@ -72,7 +72,6 @@ export default function TweetShareModal({
 		);
 
 		if (isDeleting && sharedTweetWithoutBody.length > 0) {
-			console.log(isDeleting ? "deleting" : "no tweet");
 			return;
 		}
 		await handleDelete({ tweetId: sharedTweetWithoutBody[0]._id });
@@ -80,7 +79,6 @@ export default function TweetShareModal({
 
 	const onShare = async (body?: string) => {
 		if (isLoading) {
-			console.log("loading");
 			return;
 		}
 		await handleShare({ tweetId, body: body ?? "" });
