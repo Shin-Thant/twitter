@@ -3,21 +3,23 @@ import CommentFilledIcon from "@mui/icons-material/TextsmsRounded";
 import { Comment } from "../../../features/comment/types";
 import CardButton from "../../buttons/CardButton";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
+import { useAppSelector } from "../../../app/hooks";
+import { userIdSelector } from "../../../features/user/userSlice";
 
 type Props = {
 	comments: Comment[];
 	tweetId: string;
-	userId: string | undefined;
 };
 
-export default function TweetCommentBtn({ comments,  userId }: Props) {
-	const isCommented = userId
-		? !!comments.find((cmt) => cmt.creator._id === userId)
+export default function TweetCommentBtn({ comments }: Props) {
+	const loginUserId = useAppSelector(userIdSelector);
+	const isCommented = loginUserId
+		? !!comments.find((cmt) => cmt.creator._id === loginUserId)
 		: false;
 	const { setIsOpen } = useTweetInfoModal();
 
 	const onComment = () => {
-		if (!userId) {
+		if (!loginUserId) {
 			setIsOpen(true);
 			return;
 		}

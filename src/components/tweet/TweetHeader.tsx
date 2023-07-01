@@ -1,17 +1,22 @@
-import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import { Avatar, Box, CardHeader, IconButton, Typography } from "@mui/material";
+import { Avatar, Box, CardHeader, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
 import { Owner } from "../../features/tweet/tweetTypes";
+import { userIdSelector } from "../../features/user/userSlice";
 import getRelativeTime from "../../helpers/getRelativeTime";
-import { grey } from "@mui/material/colors";
+import TweetMenu from "./menus/TweetMenu";
 
+const width = { xs: 30, ss: 35, sm: 40 };
+const height = { xs: 30, ss: 35, sm: 40 };
 type Props = {
+	tweetId: string;
 	owner: Owner;
 	createdAt: string;
 };
-const width = { xs: 30, ss: 35, sm: 40 };
-const height = { xs: 30, ss: 35, sm: 40 };
-export default function TweetHeader({ owner, createdAt }: Props) {
+export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
+	const loginUserId = useAppSelector(userIdSelector);
+	const isTweetOwner = owner._id === loginUserId;
+
 	return (
 		<CardHeader
 			avatar={
@@ -94,23 +99,10 @@ export default function TweetHeader({ owner, createdAt }: Props) {
 				>
 					<Link className="router_link auto_line" to="/">
 						@{owner.username}
-					</Link>{" "}
+					</Link>
 				</Typography>
 			}
-			action={
-				<IconButton
-					size="small"
-					sx={{
-						color: grey[600],
-						"&:hover": {
-							color: grey[200],
-						},
-						transition: "color 150ms ease",
-					}}
-				>
-					<MoreVertRoundedIcon />
-				</IconButton>
-			}
+			action={isTweetOwner ? <TweetMenu tweetId={tweetId} /> : false}
 			sx={{ paddingBottom: "8px" }}
 		/>
 	);

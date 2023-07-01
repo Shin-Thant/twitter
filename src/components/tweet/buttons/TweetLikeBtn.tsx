@@ -6,28 +6,30 @@ import getUpdatedStringList from "../../../helpers/getUpdatedStringList";
 import useCurrentPage from "../../../hooks/useCurrentPage";
 import CardButton from "../../buttons/CardButton";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
+import { useAppSelector } from "../../../app/hooks";
+import { userIdSelector } from "../../../features/user/userSlice";
 
 type Props = {
 	likes: string[];
 	tweetId: string;
-	userId: string | undefined;
 };
-export default function TweetLikeBtn({ likes, tweetId, userId }: Props) {
+export default function TweetLikeBtn({ likes, tweetId }: Props) {
+	const loginUserId = useAppSelector(userIdSelector);
 	const { currentPage } = useCurrentPage();
 	const [handleLike, { isLoading }] = useHandleLikesMutation();
 	const { setIsOpen } = useTweetInfoModal();
 
-	let isLiked = userId ? likes.includes(userId) : false;
+	let isLiked = loginUserId ? likes.includes(loginUserId) : false;
 
 	const onLike = async () => {
 		if (isLoading) return;
 
-		if (!userId) {
+		if (!loginUserId) {
 			setIsOpen(true);
 			return;
 		}
 
-		const updatedLikes = getUpdatedStringList(isLiked, likes, userId);
+		const updatedLikes = getUpdatedStringList(isLiked, likes, loginUserId);
 
 		try {
 			await handleLike({

@@ -4,21 +4,23 @@ import React from "react";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
 import CardButton from "../../buttons/CardButton";
 import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
+import { useAppSelector } from "../../../app/hooks";
+import { userIdSelector } from "../../../features/user/userSlice";
 
 type Props = {
 	shares: SharedTweetPreview[];
-	userId: string | undefined;
 	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export default function TweetShareBtn({ shares, userId, setModalOpen }: Props) {
+export default function TweetShareBtn({ shares, setModalOpen }: Props) {
+	const loginUserId = useAppSelector(userIdSelector);
 	const { setIsOpen: setTweetInfoModal } = useTweetInfoModal();
 
-	const isShared = userId
-		? !!shares.find((share) => share.owner === userId)
+	const isShared = loginUserId
+		? !!shares.find((share) => share.owner === loginUserId)
 		: false;
 
 	const handleModal = () => {
-		if (!userId) {
+		if (!loginUserId) {
 			setTweetInfoModal(true);
 			return;
 		}
