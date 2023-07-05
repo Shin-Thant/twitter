@@ -1,6 +1,9 @@
 import { User } from "../user/userTypes";
 
-export type Owner = Omit<User, "email" | "id">;
+export type Owner = Omit<
+	User,
+	"email" | "id" | "createdAt" | "updatedAt" | "followers"
+>;
 
 export type SharedTweetPreview = {
 	_id: string;
@@ -23,7 +26,7 @@ interface BasicTweet {
 interface PostTweet extends BasicTweet {
 	type: "post";
 }
-interface SharedTweet extends BasicTweet {
+export interface SharedTweet extends BasicTweet {
 	type: "share";
 	origin: {
 		type: "post" | "share";

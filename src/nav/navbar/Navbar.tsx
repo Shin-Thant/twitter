@@ -39,6 +39,7 @@ const Navigation = () => {
 					spacing={2}
 				>
 					<DrawerToggle />
+
 					<IconButton
 						onClick={iconClick}
 						aria-label="home"
@@ -49,8 +50,11 @@ const Navigation = () => {
 						}}
 						disableRipple
 					>
-						<TwitterIcon fontSize="large" />
+						<TwitterIcon
+							sx={{ fontSize: { xs: "1.8rem", sm: "2rem" } }}
+						/>
 					</IconButton>
+
 					<SearchInput />
 					{authStatus === "logout" && <AuthBtn />}
 				</Stack>

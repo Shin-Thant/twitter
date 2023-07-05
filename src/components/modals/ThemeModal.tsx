@@ -43,7 +43,7 @@ export default function ThemeModal() {
 					alignItems: "center",
 				}}
 			>
-				<Typography variant="h6">Let's connect first!</Typography>
+				<Typography variant="h6">Change theme</Typography>
 				<IconButton
 					onClick={onClose}
 					size="small"

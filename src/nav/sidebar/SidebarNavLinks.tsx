@@ -1,6 +1,7 @@
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import {
 	Avatar,
+	Button,
 	List,
 	ListItem,
 	ListItemAvatar,
@@ -65,20 +66,13 @@ export default function SidebarNavLinks() {
 				disableGutters
 				sx={{ display: { xs: "none", md: "block" } }}
 			>
-				<ListItemButton
-					sx={{
-						color: "white",
-						borderRadius: "8px",
-						bgcolor: "primary.main",
-						py: "0.7rem",
-						"&:hover": {
-							bgcolor: "primary.100",
-						},
-						justifyContent: "center",
-					}}
+				<Button
+					fullWidth
+					variant="contained"
+					sx={{ textTransform: "none" }}
 				>
 					Tweet
-				</ListItemButton>
+				</Button>
 			</ListItem>
 		</List>
 	);

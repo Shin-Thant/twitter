@@ -13,7 +13,7 @@ export default function Layout() {
 			<Sidebar />
 			<Box flex={1} sx={{ height: "100vh", overflow: "auto" }}>
 				<Navbar />
-				<Box sx={{ p: "1rem" }}>
+				<Box>
 					<Outlet />
 				</Box>
 			</Box>

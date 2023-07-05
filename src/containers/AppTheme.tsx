@@ -11,6 +11,7 @@ declare module "@mui/material/styles" {
 		};
 		tweet: {
 			bg: string;
+			borderColor: string;
 		};
 	}
 	interface PaletteOptions {
@@ -21,6 +22,7 @@ declare module "@mui/material/styles" {
 		};
 		tweet: {
 			bg: string;
+			borderColor: string;
 		};
 	}
 
@@ -63,20 +65,24 @@ const darkModeColors = {
 	},
 	tweet: {
 		bg: "#000",
+		borderColor: "hsl(0, 0%, 25%)",
+		moreOptionsBtn: "hsl(0, 0%, 30%)",
 	},
 };
 const lightModeColors = {
 	bg: {
-		main: "hsl(0, 0%, 95%)",
+		main: "hsl(0, 0%, 100%)",
 		navbar: "hsl(0, 0%, 100%)",
 		auth: "hsl(0, 0%, 100%)",
 	},
 	text: {
 		primary: "#000",
-		secondary: "hsl(207, 10%, 55%)",
+		secondary: "hsl(207, 10%, 45%)",
 	},
 	tweet: {
 		bg: "#fff",
+		borderColor: "hsl(0, 0%, 65%)",
+		moreOptionsBtn: "hsl(0, 0%, 70%)",
 	},
 };
 

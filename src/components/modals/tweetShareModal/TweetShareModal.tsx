@@ -152,7 +152,9 @@ export default function TweetShareModal({
 						<>
 							{isSharedWithoutBody ? (
 								<Button
-									startIcon={<HistoryRoundedIcon />}
+									startIcon={
+										<HistoryRoundedIcon fontSize="small" />
+									}
 									onClick={undoRetweet}
 									variant="outlined"
 									fullWidth
@@ -162,7 +164,7 @@ export default function TweetShareModal({
 								</Button>
 							) : (
 								<Button
-									startIcon={<ReplyIcon />}
+									startIcon={<ReplyIcon fontSize="small" />}
 									onClick={retweet}
 									variant="outlined"
 									fullWidth
@@ -179,7 +181,7 @@ export default function TweetShareModal({
 								onClick={() => {
 									setIsQuoteTweet((prev) => !prev);
 								}}
-								variant="contained"
+								variant="outlined"
 								fullWidth
 								sx={{ textTransform: "none" }}
 							>

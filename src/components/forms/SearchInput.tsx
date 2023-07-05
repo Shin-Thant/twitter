@@ -22,7 +22,9 @@ export default function SearchInput() {
 				onClick={iconClick}
 				sx={{ display: { xs: "inline-flex", md: "none" } }}
 			>
-				<PersonSearchRoundedIcon />
+				<PersonSearchRoundedIcon
+					sx={{ fontSize: { xs: "1.3rem", sm: "1.5rem" } }}
+				/>
 			</IconButton>
 		</>
 	);

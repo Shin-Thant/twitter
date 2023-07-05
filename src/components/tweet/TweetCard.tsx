@@ -20,12 +20,20 @@ const TweetCard = forwardRef(
 			<Card
 				ref={ref}
 				sx={{
-					border: "1px solid hsl(0, 0%, 15%)",
+					borderWidth: { xs: "0 0 1px 0", sm: "1px 1px 1px 1px" },
+					borderStyle: "solid",
+					borderColor: "tweet.borderColor",
+					borderRadius: { xs: "0", sm: "10px" },
 					"&.MuiPaper-root": {
 						backgroundImage: "none",
 						bgcolor: "tweet.bg",
 					},
-					mb: "1rem",
+					boxShadow: {
+						xs: "none",
+						sm: "0 3px 5px rgb(0, 0, 0, 0.2)",
+					},
+					pb: { xs: 1, sm: 0 },
+					mb: { xs: 0, sm: 3 },
 				}}
 			>
 				<TweetHeader
@@ -36,8 +44,7 @@ const TweetCard = forwardRef(
 
 				<Box
 					sx={{
-						ml: { xs: 0, ss: "3.3rem", sm: "3.5rem" },
-						p: "0.5rem",
+						ml: { xs: 0, ss: 7, sm: 7.5 },
 					}}
 				>
 					<TweetBody tweet={tweet} />

@@ -18,7 +18,9 @@ export default function DrawerToggle() {
 				},
 			}}
 		>
-			<MenuRoundedIcon />
+			<MenuRoundedIcon
+				sx={{ fontSize: { xs: "1.3rem", sm: "1.5rem" } }}
+			/>
 		</IconButton>
 	);
 }

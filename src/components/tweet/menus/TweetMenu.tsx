@@ -40,14 +40,10 @@ const TweetMenu = ({ tweetId }: Props) => {
 				onClick={openMenu}
 				size="small"
 				sx={{
-					color: grey[600],
-					"&:hover": {
-						color: grey[200],
-					},
-					transition: "color 150ms ease",
+					color: "tweet.moreOptionsBtn",
 				}}
 			>
-				<MoreVertRoundedIcon />
+				<MoreVertRoundedIcon sx={{ fontSize: "1.3rem" }} />
 			</IconButton>
 
 			<Menu

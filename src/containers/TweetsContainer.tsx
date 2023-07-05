@@ -4,6 +4,7 @@ import TweetCard from "../components/tweet/TweetCard";
 import { useGetTweetsQuery } from "../features/tweet/tweetApiSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import useCurrentPage from "../hooks/useCurrentPage";
+import TweetSkeleton from "../components/skeletons/TweetSkeleton";
 
 export default function TweetsContainer() {
 	const { currentPage, setCurrentPage } = useCurrentPage();
@@ -50,10 +51,15 @@ export default function TweetsContainer() {
 			<Container
 				sx={{
 					maxWidth: { xs: "xs", normal_sm: "sm", md: "88%" },
+					pt: 3,
 					px: { xs: 0, sm: 3 },
+					"&.MuiBox-root": {
+						px: 0,
+					},
 				}}
 			>
 				{tweetsList}
+				{isFetching && <TweetSkeleton />}
 			</Container>
 		</>
 	);

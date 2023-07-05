@@ -28,7 +28,7 @@ const AuthBtn = () => {
 				variant="contained"
 				sx={styles}
 			>
-				Login
+				Sign Up
 			</Button>
 		</>
 	);
