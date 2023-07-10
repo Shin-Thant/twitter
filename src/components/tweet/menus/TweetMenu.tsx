@@ -7,7 +7,6 @@ import {
 	Menu,
 	MenuItem,
 } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { useRef, useState } from "react";
 import { useHandleDeleteTweetMutation } from "../../../features/tweet/tweetApiSlice";
 

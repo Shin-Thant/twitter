@@ -48,19 +48,8 @@ export default function TweetsContainer() {
 
 	return (
 		<>
-			<Container
-				sx={{
-					maxWidth: { xs: "xs", normal_sm: "sm", md: "88%" },
-					pt: 3,
-					px: { xs: 0, sm: 3 },
-					"&.MuiBox-root": {
-						px: 0,
-					},
-				}}
-			>
-				{tweetsList}
-				{isFetching && <TweetSkeleton />}
-			</Container>
+			{tweetsList}
+			{isFetching && <TweetSkeleton />}
 		</>
 	);
 }
