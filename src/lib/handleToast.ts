@@ -5,6 +5,6 @@ type Param = {
 	variant: "success" | "error" | "info";
 	duration?: number;
 };
-export function showToast({ message, duration = 3000, variant }: Param) {
+export function showToast({ message, variant, duration = 3000 }: Param) {
 	enqueueSnackbar({ message, autoHideDuration: duration, variant });
 }

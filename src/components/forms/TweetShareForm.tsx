@@ -14,10 +14,10 @@ type Props = {
 
 const TweetShareForm = ({ share }: Props) => {
 	const {
-		register,
 		handleSubmit,
 		watch,
-		formState: { errors, isSubmitting },
+		formState: { errors, isSubmitting, defaultValues },
+		control,
 	} = useForm({
 		resolver: zodResolver(ShareTweetSchema),
 		defaultValues: {
@@ -37,11 +37,13 @@ const TweetShareForm = ({ share }: Props) => {
 			<TweetContentInput
 				multiline
 				maxRows={5}
-				type="text"
 				placeholder="What's happening?"
 				hasError={!!errors.content}
-				{...register("content")}
-				{...register("content")}
+				controller={{
+					name: "content",
+					control,
+					defaultValue: defaultValues?.content ?? "",
+				}}
 			/>
 			<Box
 				sx={{

@@ -8,17 +8,25 @@ import ContentLength from "../feedbacks/ContentLength";
 import { StyledForm } from "../forms/AuthFormComponents";
 import FieldError from "../forms/FieldError";
 import TweetContentInput from "../forms/TweetContentInput";
+import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
+import {
+	isFetchBaseQueryError,
+	isResponseError,
+} from "../../helpers/errorHelpers";
+import { showToast } from "../../lib/handleToast";
 
 type Props = {
 	user: User;
 };
 const TweetCreator = ({ user }: Props) => {
+	const [createTweet] = useCreateTweetMutation();
+
 	const {
 		watch,
 		handleSubmit,
-		register,
-		formState: { isSubmitting, errors },
-	} = useForm({
+		formState: { isSubmitting, errors, defaultValues },
+		control,
+	} = useForm<CreateTweetInput>({
 		resolver: zodResolver(CreateTweetSchema),
 		defaultValues: {
 			content: "",
@@ -27,8 +35,17 @@ const TweetCreator = ({ user }: Props) => {
 	});
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<CreateTweetInput> = (data) => {
-		console.log(data);
+	const onSubmit: SubmitHandler<CreateTweetInput> = async (data) => {
+		const response = await createTweet({ body: data.content });
+		console.log({ response });
+
+		if (
+			"error" in response &&
+			isFetchBaseQueryError(response.error) &&
+			isResponseError(response.error)
+		) {
+			showToast({ message: "Something went wrong", variant: "error" });
+		}
 	};
 
 	return (
@@ -60,10 +77,13 @@ const TweetCreator = ({ user }: Props) => {
 			<StyledForm sx={{ flex: 1 }} onSubmit={handleSubmit(onSubmit)}>
 				<Box>
 					<TweetContentInput
-						type="text"
-						placeholder="What's happening?"
 						hasError={!!errors.content}
-						{...register("content")}
+						placeholder="What's happening?"
+						controller={{
+							name: "content",
+							control,
+							defaultValue: defaultValues?.content ?? "",
+						}}
 					/>
 
 					<Box
@@ -98,7 +118,12 @@ const TweetCreator = ({ user }: Props) => {
 						alignItems: "center",
 					}}
 				>
-					<SubmitButton isLoading={isSubmitting}>
+					<SubmitButton
+						isLoading={isSubmitting}
+						sx={{
+							minWidth: 100,
+						}}
+					>
 						{isSubmitting ? "Loading..." : "Tweet"}
 					</SubmitButton>
 				</Box>

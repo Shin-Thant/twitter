@@ -8,7 +8,7 @@ import { setAuth } from "../features/auth/authSlice";
 import {
 	createFetchError,
 	isResponseDataContainToken,
-	isValidErrorData,
+	isValidResponseErrorData,
 } from "../helpers/errorHelpers";
 import { baseQuery } from "./baseQuery";
 
@@ -37,7 +37,7 @@ const baseQueryWithReauth: BaseQueryWithReauth = async (
 
 	if (refreshResponse.error) {
 		const err = refreshResponse.error;
-		if (err.status === 403 && isValidErrorData(err.data)) {
+		if (err.status === 403 && isValidResponseErrorData(err.data)) {
 			err.data.message = "Your login expired!";
 		}
 		return refreshResponse;
