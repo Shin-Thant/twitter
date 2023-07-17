@@ -3,7 +3,7 @@ import { AppBar, IconButton, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import DrawerToggle from "../../components/buttons/DrawerToggle";
 import SearchInput from "../../components/forms/SearchInput";
-import AuthBtn from "./AuthBtns";
+import AuthButton from "./AuthButton";
 import { useAppSelector } from "../../app/hooks";
 import { authStatusSelector } from "../../features/auth/authSlice";
 
@@ -15,7 +15,7 @@ const Navigation = () => {
 	const iconClick = () => {
 		if (location.pathname === "/") {
 			// TODO: make this works
-			window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+			window.scrollTo({ top: 0, behavior: "smooth" });
 			document.documentElement.scrollTop = 0;
 			return;
 		}
@@ -56,7 +56,7 @@ const Navigation = () => {
 					</IconButton>
 
 					<SearchInput />
-					{authStatus === "logout" && <AuthBtn />}
+					{authStatus === "logout" && <AuthButton />}
 				</Stack>
 			</Toolbar>
 		</AppBar>

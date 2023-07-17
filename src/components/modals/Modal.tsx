@@ -23,16 +23,16 @@ export default function Modal({ isOpen, isCustom, onClose, children }: Props) {
 
 const style = {
 	position: "absolute",
-	top: { xs: "100%", normal_sm: "50%" },
+	top: { xs: "100%", ss: "50%" },
 	left: "50%",
 	transform: {
 		xs: "translate(-50%, -100%)",
-		normal_sm: "translate(-50%, -50%)",
+		ss: "translate(-50%, -50%)",
 	},
-	width: { xs: "100%", normal_sm: 350, sm: 400 },
+	width: { xs: "100%", ss: 400 },
 	bgcolor: "bg.navbar",
 	boxShadow: 24,
-	p: { xs: 2, normal_sm: 4 },
+	p: { xs: 2, ss: 4 },
 	color: "text.primary",
-	borderRadius: { xs: "10px 10px 0 0", normal_sm: "10px" },
+	borderRadius: { xs: "10px 10px 0 0", ss: "10px" },
 };

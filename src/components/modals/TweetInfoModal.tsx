@@ -2,18 +2,19 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useCallback, startTransition } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
 import Modal from "./Modal";
 
 export default function TweetInfoModal() {
 	const { isOpen, setIsOpen } = useTweetInfoModal();
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const closeAndNavigate = (to: "/login" | "/signup") => {
+		setIsOpen(false);
 		startTransition(() => {
-			setIsOpen(false);
-			navigate(to);
+			navigate({ pathname: to }, { state: { from: location.pathname } });
 		});
 	};
 

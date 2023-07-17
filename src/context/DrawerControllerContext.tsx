@@ -1,24 +1,7 @@
-import { createContext, ReactElement, useState } from "react";
+import { createModalContext } from "./modalContextFactory";
+import withModalContext from "./WithModalContext";
 
-type ContextState = {
-	isOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-export const DrawerControllerContext = createContext<ContextState>({
-	isOpen: false,
-	setIsOpen: () => undefined,
-});
+export const DrawerControllerContext = createModalContext();
 
-export default function DrawerControllerProvider({
-	children,
-}: {
-	children: ReactElement;
-}) {
-	const [isOpen, setIsOpen] = useState(false);
-
-	return (
-		<DrawerControllerContext.Provider value={{ isOpen, setIsOpen }}>
-			{children}
-		</DrawerControllerContext.Provider>
-	);
-}
+const DrawerControllerProvider = withModalContext(DrawerControllerContext);
+export default DrawerControllerProvider;

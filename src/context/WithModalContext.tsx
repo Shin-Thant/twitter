@@ -1,17 +1,14 @@
-import { ReactNode, Context, ElementType, useState } from "react";
-import { ModalContext } from "./modalContextFactory";
+import { ReactNode, Context, useState } from "react";
+import { ModalContextState } from "./modalContextFactory";
 
-export default function wthModalContext(
-	Original: ElementType,
-	Context: Context<ModalContext>
-) {
-	function New({ children }: { children: ReactNode }) {
+export default function withModalContext(Context: Context<ModalContextState>) {
+	function ComponentWithModalContext({ children }: { children: ReactNode }) {
 		const [isOpen, setIsOpen] = useState(false);
 		return (
 			<Context.Provider value={{ isOpen, setIsOpen }}>
-				<Original>{children}</Original>
+				{children}
 			</Context.Provider>
 		);
 	}
-	return New;
+	return ComponentWithModalContext;
 }

@@ -1,6 +1,7 @@
 import apiSlice from "../../app/api/apiSlice";
 import { GetTweetsResponse, Tweet } from "./tweetTypes";
 
+type CreateTweetMutationArg = { body: string };
 type LikeMutationArg = { tweetId: string; likes: string[]; cacheKey: number };
 type ShareMutationArg = { tweetId: string; body?: string };
 type DeleteMutationArg = { tweetId: string };
@@ -14,10 +15,6 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			query: ({ itemsPerPage, currentPage }) => {
 				return `/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`;
 			},
-			// transformResponse(result) {
-			// 	console.log(result);
-			// 	return result;
-			// },
 			providesTags: (result) => {
 				if (!result) {
 					return [{ type: "Tweets", id: "LIST" }];
@@ -32,14 +29,20 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
+		createTweet: builder.mutation<Tweet, CreateTweetMutationArg>({
+			query: (arg) => ({
+				url: "tweets",
+				method: "POST",
+				body: arg,
+			}),
+			invalidatesTags: [{ type: "Tweets", id: "LIST" }],
+		}),
+
 		handleLikes: builder.mutation<Tweet, LikeMutationArg>({
 			query: ({ tweetId }) => ({
 				method: "PATCH",
 				url: `/tweets/${tweetId}/like`,
 			}),
-			// invalidatesTags: (_result, _error, arg) => [
-			// 	{ type: "Tweets", id: "LIST" },
-			// ],
 			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
 				const result = dispatch(optimisticLikeUpdate(arg));
 
@@ -100,6 +103,7 @@ const optimisticLikeUpdate = ({
 
 export const {
 	useGetTweetsQuery,
+	useCreateTweetMutation,
 	useHandleLikesMutation,
 	useHandleShareMutation,
 	useHandleDeleteTweetMutation,

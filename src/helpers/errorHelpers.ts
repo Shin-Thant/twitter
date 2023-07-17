@@ -27,7 +27,9 @@ type ResponseError = { status: number; data: unknown };
 export function isResponseError(
 	error: FetchBaseQueryError
 ): error is ResponseError {
-	return "status" in error && "data" in error;
+	return (
+		"status" in error && typeof error.status === "number" && "data" in error
+	);
 }
 
 type ErrorResponseData = {
@@ -35,7 +37,9 @@ type ErrorResponseData = {
 	name?: string;
 	message: string;
 };
-export function isValidErrorData(data: unknown): data is ErrorResponseData {
+export function isValidResponseErrorData(
+	data: unknown
+): data is ErrorResponseData {
 	return (
 		typeof data === "object" &&
 		!!data &&
@@ -45,7 +49,7 @@ export function isValidErrorData(data: unknown): data is ErrorResponseData {
 }
 
 type FetchError = { status: "FETCH_ERROR"; data?: undefined; error: string };
-export function isFetchError(error: unknown): error is FetchError {
+export function isBaseQueryFetchError(error: unknown): error is FetchError {
 	return (
 		isFetchBaseQueryError(error) &&
 		error.status === "FETCH_ERROR" &&
