@@ -1,24 +1,7 @@
-import { createContext, ReactNode, useState } from "react";
+import { createModalContext } from "./modalContextFactory";
+import withModalContext from "./WithModalContext";
 
-type ContextState = {
-	isOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-export const TweetInfoModalContext = createContext<ContextState>({
-	isOpen: false,
-	setIsOpen: () => undefined,
-});
+export const TweetInfoModalContext = createModalContext();
 
-export default function TweetInfoModalProvider({
-	children,
-}: {
-	children: ReactNode;
-}) {
-	const [isOpen, setIsOpen] = useState(false);
-
-	return (
-		<TweetInfoModalContext.Provider value={{ isOpen, setIsOpen }}>
-			{children}
-		</TweetInfoModalContext.Provider>
-	);
-}
+const TweetInfoModalProvider = withModalContext(TweetInfoModalContext);
+export default TweetInfoModalProvider;

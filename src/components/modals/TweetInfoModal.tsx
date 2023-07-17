@@ -11,8 +11,8 @@ export default function TweetInfoModal() {
 	const navigate = useNavigate();
 
 	const closeAndNavigate = (to: "/login" | "/signup") => {
+		setIsOpen(false);
 		startTransition(() => {
-			setIsOpen(false);
 			navigate(to);
 		});
 	};

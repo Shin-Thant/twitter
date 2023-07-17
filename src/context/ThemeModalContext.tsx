@@ -1,23 +1,7 @@
-import { ReactElement, createContext, useState } from "react";
+import { createModalContext } from "./modalContextFactory";
+import withModalContext from "./WithModalContext";
 
-type ContextState = {
-	isOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-export const ThemeModalContext = createContext<ContextState>({
-	isOpen: false,
-	setIsOpen: () => undefined,
-});
+export const ThemeModalContext = createModalContext();
 
-export default function ThemeModalProvider({
-	children,
-}: {
-	children: ReactElement;
-}) {
-	const [isOpen, setIsOpen] = useState(false);
-	return (
-		<ThemeModalContext.Provider value={{ isOpen, setIsOpen }}>
-			{children}
-		</ThemeModalContext.Provider>
-	);
-}
+const ThemeModalProvider = withModalContext(ThemeModalContext);
+export default ThemeModalProvider;

@@ -70,7 +70,8 @@ const TweetCreator = ({ user }: Props) => {
 					alt={`${user.name}-profile-image`}
 					sx={{
 						outline: "1px solid hsl(203, 100%, 47%)",
-						outlineOffset: "2px",
+						outlineOffset: "3px",
+						bgcolor: "primary.main",
 					}}
 				/>
 			</Box>

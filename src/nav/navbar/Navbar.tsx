@@ -3,7 +3,7 @@ import { AppBar, IconButton, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import DrawerToggle from "../../components/buttons/DrawerToggle";
 import SearchInput from "../../components/forms/SearchInput";
-import AuthBtn from "./AuthBtns";
+import AuthButton from "./AuthButton";
 import { useAppSelector } from "../../app/hooks";
 import { authStatusSelector } from "../../features/auth/authSlice";
 
@@ -56,7 +56,7 @@ const Navigation = () => {
 					</IconButton>
 
 					<SearchInput />
-					{authStatus === "logout" && <AuthBtn />}
+					{authStatus === "logout" && <AuthButton />}
 				</Stack>
 			</Toolbar>
 		</AppBar>

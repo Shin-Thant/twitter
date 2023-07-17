@@ -34,28 +34,16 @@ export default function SidebarNavLinks() {
 				<ListItem disableGutters>
 					<ListItemButton sx={{ borderRadius: "8px" }}>
 						<ListItemAvatar>
-							{!user.avatar ? (
-								<Avatar
-									sx={{
-										width: 25,
-										height: 25,
-										bgcolor: blue[500],
-										fontSize: "0.9rem",
-									}}
-								>
-									{user.name[0]}
-								</Avatar>
-							) : (
-								<Avatar
-									src={user.avatar}
-									alt="Profile img"
-									sx={{
-										width: "30px",
-										height: "30px",
-										objectFit: "cover",
-									}}
-								/>
-							)}
+							<Avatar
+								src={user.avatar}
+								alt={`${user.name}-profile-image`}
+								sx={{
+									width: 27,
+									height: 27,
+									bgcolor: blue[500],
+									fontSize: "0.9rem",
+								}}
+							/>
 						</ListItemAvatar>
 						<ListItemText primary="Profile" />
 					</ListItemButton>

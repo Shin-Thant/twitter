@@ -4,15 +4,5 @@ import { createModalContext } from "./modalContextFactory";
 
 export const TweetShareModalContext = createModalContext();
 
-type Props = {
-	children: ReactNode;
-};
-function TweetShareModal({ children }: Props) {
-	return <>{children}</>;
-}
-
-const TweetShareModalProvider = wthModalContext(
-	TweetShareModal,
-	TweetShareModalContext
-);
+const TweetShareModalProvider = wthModalContext(TweetShareModalContext);
 export default TweetShareModalProvider;

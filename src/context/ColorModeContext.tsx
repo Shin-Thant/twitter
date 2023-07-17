@@ -8,7 +8,10 @@ import {
 } from "react";
 import isValidColorMode from "../helpers/isValidColorMode";
 import useDeviceTheme from "../hooks/useDeviceTheme";
-import { getStoredMode, setStoredMode } from "../lib/handleModeLocalStorage";
+import {
+	getModeFromLocalStorage,
+	setModeToLocalStorage,
+} from "../lib/handleModeLocalStorage";
 
 type ColorMode = "light" | "dark";
 export type Mode = ColorMode | "system";
@@ -38,26 +41,22 @@ export default function ColorModeProvider({ children }: Props) {
 	useEffect(() => {
 		let isMounted = true;
 		if (isMounted) {
-			const storedMode = getStoredMode();
-			if (!storedMode || !isValidColorMode(storedMode)) {
-				setStoredMode("dark");
+			const storedMode = getModeFromLocalStorage();
+			if (!isValidColorMode(storedMode)) {
+				setModeToLocalStorage("dark");
 				return;
 			}
+
+			// set stored mode and system default theme states
 			startTransition(() => {
 				setMode(storedMode);
-
-				if (typeof window !== "undefined") {
-					const wMode = window.matchMedia(
-						"(prefers-color-scheme: dark)"
-					).matches;
-					setSystemMode(wMode ? "dark" : "light");
-				}
+				setSystemMode(deviceTheme);
 			});
 		}
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [deviceTheme]);
 
 	const changeMode = useCallback(
 		(newMode: Mode) => {
@@ -67,7 +66,7 @@ export default function ColorModeProvider({ children }: Props) {
 					setSystemMode(deviceTheme);
 				}
 			});
-			setStoredMode(newMode);
+			setModeToLocalStorage(newMode);
 		},
 		[deviceTheme]
 	);
