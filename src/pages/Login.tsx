@@ -1,21 +1,14 @@
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { Link } from "react-router-dom";
+import BackButton from "../components/buttons/BackButton";
 import LoginForm from "../components/forms/LoginForm";
 import TwitterBird from "../img/twitter-bird-logo.svg";
 
 export default function Login() {
 	return (
 		<Box p="1rem" bgcolor="bg.auth" height="100vh">
-			<Link to="/" style={{ textDecoration: "none" }}>
-				<Button
-					startIcon={<ArrowBackRoundedIcon />}
-					sx={{ textTransform: "none", fontSize: "0.95rem" }}
-				>
-					Back to Home
-				</Button>
-			</Link>
+			<BackButton />
 
 			<Stack
 				width={"100%"}

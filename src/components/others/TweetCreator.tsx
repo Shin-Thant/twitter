@@ -37,14 +37,17 @@ const TweetCreator = ({ user }: Props) => {
 
 	const onSubmit: SubmitHandler<CreateTweetInput> = async (data) => {
 		const response = await createTweet({ body: data.content });
-		console.log({ response });
 
 		if (
 			"error" in response &&
 			isFetchBaseQueryError(response.error) &&
 			isResponseError(response.error)
 		) {
-			showToast({ message: "Something went wrong", variant: "error" });
+			showToast({ message: "Something went wrong!", variant: "error" });
+		}
+
+		if('data' in response) {
+			showToast({message: 'Successfully added new tweet!', variant: 'success'})
 		}
 	};
 
@@ -69,6 +72,8 @@ const TweetCreator = ({ user }: Props) => {
 					src={user.avatar}
 					alt={`${user.name}-profile-image`}
 					sx={{
+						width: 35,
+						height: 35,
 						outline: "1px solid hsl(203, 100%, 47%)",
 						outlineOffset: "3px",
 						bgcolor: "primary.main",

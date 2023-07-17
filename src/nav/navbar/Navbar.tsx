@@ -15,7 +15,7 @@ const Navigation = () => {
 	const iconClick = () => {
 		if (location.pathname === "/") {
 			// TODO: make this works
-			window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+			window.scrollTo({ top: 0, behavior: "smooth" });
 			document.documentElement.scrollTop = 0;
 			return;
 		}

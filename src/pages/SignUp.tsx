@@ -1,9 +1,9 @@
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { Link } from "react-router-dom";
-import TwitterBird from "../img/twitter-bird-logo.svg";
+import BackButton from "../components/buttons/BackButton";
 import SignUpForm from "../components/forms/SignUpForm";
+import TwitterBird from "../img/twitter-bird-logo.svg";
 
 export default function SignUp() {
 	return (
@@ -13,17 +13,7 @@ export default function SignUp() {
 				top="1rem"
 				left="1rem"
 			>
-				<Link to="/" style={{ textDecoration: "none" }}>
-					<Button
-						startIcon={<ArrowBackRoundedIcon />}
-						sx={{
-							textTransform: "none",
-							fontSize: "0.95rem",
-						}}
-					>
-						Back to Home
-					</Button>
-				</Link>
+				<BackButton />
 			</Box>
 
 			<Stack
