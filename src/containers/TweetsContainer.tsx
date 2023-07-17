@@ -1,4 +1,3 @@
-import { Container } from "@mui/material";
 import { useCallback } from "react";
 import TweetCard from "../components/tweet/TweetCard";
 import { useGetTweetsQuery } from "../features/tweet/tweetApiSlice";

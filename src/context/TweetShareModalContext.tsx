@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import wthModalContext from "./WithModalContext";
 import { createModalContext } from "./modalContextFactory";
 

@@ -1,6 +1,5 @@
 import WestRoundedIcon from "@mui/icons-material/WestRounded";
 import { Button } from "@mui/material";
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const BackButton = () => {
