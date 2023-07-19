@@ -26,6 +26,7 @@ const TweetCreator = ({ user }: Props) => {
 		handleSubmit,
 		formState: { isSubmitting, errors, defaultValues },
 		control,
+		reset,
 	} = useForm<CreateTweetInput>({
 		resolver: zodResolver(CreateTweetSchema),
 		defaultValues: {
@@ -36,18 +37,28 @@ const TweetCreator = ({ user }: Props) => {
 	const content = watch("content");
 
 	const onSubmit: SubmitHandler<CreateTweetInput> = async (data) => {
-		const response = await createTweet({ body: data.content });
+		try {
+			const response = await createTweet({ body: data.content });
 
-		if (
-			"error" in response &&
-			isFetchBaseQueryError(response.error) &&
-			isResponseError(response.error)
-		) {
+			if (
+				"error" in response &&
+				isFetchBaseQueryError(response.error) &&
+				isResponseError(response.error)
+			) {
+				showToast({
+					message: "Something went wrong!",
+					variant: "error",
+				});
+				return;
+			}
+
+			reset({ content: "" });
+			showToast({
+				message: "Successfully added new tweet!",
+				variant: "success",
+			});
+		} catch (err) {
 			showToast({ message: "Something went wrong!", variant: "error" });
-		}
-
-		if('data' in response) {
-			showToast({message: 'Successfully added new tweet!', variant: 'success'})
 		}
 	};
 

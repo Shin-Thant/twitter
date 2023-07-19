@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { useHandleDeleteTweetMutation } from "../../../features/tweet/tweetApiSlice";
+import { showToast } from "../../../lib/handleToast";
 
 type Props = {
 	tweetId: string;
@@ -19,10 +20,18 @@ const TweetMenu = ({ tweetId }: Props) => {
 	const anchorEl = useRef<HTMLButtonElement>(null);
 
 	const handleDelete = async () => {
-		if (isLoading) {
-			return;
+		try {
+			if (isLoading) {
+				return;
+			}
+			await deleteTweet({ tweetId });
+			closeMenu();
+		} catch (err) {
+			showToast({
+				message: "Something went wrong!",
+				variant: "error",
+			});
 		}
-		await deleteTweet({ tweetId });
 	};
 
 	const openMenu = () => {

@@ -12,28 +12,42 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
+import { useAppSelector } from "../../../app/hooks";
 import {
 	useHandleDeleteTweetMutation,
 	useHandleShareMutation,
 } from "../../../features/tweet/tweetApiSlice";
+import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
+import { userIdSelector } from "../../../features/user/userSlice";
+import {
+	isFetchBaseQueryError,
+	isResponseError,
+} from "../../../helpers/errorHelpers";
+import { showToast } from "../../../lib/handleToast";
 import TweetShareForm from "../../forms/TweetShareForm";
 import Modal from "../Modal";
-import { useAppSelector } from "../../../app/hooks";
-import { userIdSelector } from "../../../features/user/userSlice";
-import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
-import { showToast } from "../../../lib/handleToast";
+
+function handleToast({ variant }: { variant: "success" | "error" }) {
+	showToast({
+		message:
+			variant === "success"
+				? "Successfully shared tweet!"
+				: "Something went wrong!",
+		variant,
+	});
+}
 
 type Props = {
 	tweetId: string;
 	shares: SharedTweetPreview[];
-	isOpen: boolean;
-	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	isModalOpen: boolean;
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function TweetShareModal({
 	tweetId,
 	shares,
-	isOpen,
-	setIsOpen,
+	isModalOpen,
+	setIsModalOpen,
 }: Props) {
 	const [handleShare, { isLoading }] = useHandleShareMutation();
 	const [handleDelete, { isLoading: isDeleting }] =
@@ -49,24 +63,67 @@ export default function TweetShareModal({
 		  ).length > 0
 		: false;
 
-	const retweet = () => {
-		onShare();
-		showSuccessToast();
-		closeAndReset();
+	const retweet = async () => {
+		try {
+			const response = await onShare();
+
+			if (
+				response &&
+				"error" in response &&
+				isFetchBaseQueryError(response.error) &&
+				isResponseError(response.error)
+			) {
+				handleToast({ variant: "error" });
+				closeAndReset();
+				return;
+			}
+
+			handleToast({ variant: "success" });
+			closeAndReset();
+		} catch (err) {
+			handleToast({ variant: "error" });
+			closeAndReset();
+		}
 	};
 
-	const quoteTweet = (body?: string) => {
-		onShare(body);
-		showSuccessToast();
-		closeAndReset();
+	const quoteTweet = async (body?: string) => {
+		try {
+			const response = await onShare(body);
+
+			if (
+				response &&
+				"error" in response &&
+				isFetchBaseQueryError(response.error) &&
+				isResponseError(response.error)
+			) {
+				showToast({
+					message: "Something went wrong!",
+					variant: "error",
+				});
+				closeAndReset();
+				return;
+			}
+
+			handleToast({ variant: "success" });
+			closeAndReset();
+		} catch (err) {
+			handleToast({ variant: "error" });
+			closeAndReset();
+		}
 	};
 
-	const undoRetweet = () => {
-		onDelete();
-		closeAndReset();
+	const undoRetweet = async () => {
+		try {
+			await onDelete();
+			setIsModalOpen(false);
+		} catch (err) {
+			handleToast({ variant: "error" });
+			setIsModalOpen(false);
+		}
 	};
 
 	const onDelete = async () => {
+		// TODO: review this
 		const sharedTweetWithoutBody = shares.filter(
 			(share) => !("body" in share)
 		);
@@ -74,37 +131,33 @@ export default function TweetShareModal({
 		if (isDeleting && sharedTweetWithoutBody.length > 0) {
 			return;
 		}
-		await handleDelete({ tweetId: sharedTweetWithoutBody[0]._id });
+		return await handleDelete({
+			tweetId: sharedTweetWithoutBody[0]._id,
+		});
 	};
 
 	const onShare = async (body?: string) => {
 		if (isLoading) {
 			return;
 		}
-		await handleShare({ tweetId, body: body ?? "" });
+		const res = await handleShare({ tweetId, body: body ?? "" });
+		return res;
 	};
 
 	const onClose = () => {
-		if (isLoading || isDeleting) {
-			return;
-		}
+		// if (isLoading || isDeleting) {
+		// 	return;
+		// }
 		closeAndReset();
 	};
 
-	const showSuccessToast = () => {
-		showToast({
-			message: "Shared tweet successfully!",
-			variant: "success",
-		});
-	};
-
 	const closeAndReset = () => {
-		setIsOpen(false);
+		setIsModalOpen(false);
 		setIsQuoteTweet(false);
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} isCustom={true}>
+		<Modal isOpen={isModalOpen} onClose={onClose} isCustom={true}>
 			<Box
 				sx={{
 					position: "absolute",

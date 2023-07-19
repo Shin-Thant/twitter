@@ -73,8 +73,8 @@ const TweetCard = forwardRef(
 					<TweetShareModal
 						tweetId={tweet._id}
 						shares={tweet.shares}
-						isOpen={isShareModalOpen}
-						setIsOpen={setIsShareModalOpen}
+						isModalOpen={isShareModalOpen}
+						setIsModalOpen={setIsShareModalOpen}
 					/>
 				</Box>
 			</Card>
