@@ -19,7 +19,6 @@ const TweetOptionsMenu = ({ tweetId }: Props) => {
 	const anchorEl = useRef<HTMLButtonElement>(null);
 
 	const handleClick = () => {
-		console.log({ tweetId });
 		setIsOpen(false);
 		openModal(tweetId);
 	};

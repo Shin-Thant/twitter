@@ -1,4 +1,3 @@
-import React from "react";
 import ConfirmModal from "./ConfirmModal";
 import { useTweetDeleteModal } from "../../hooks/useTweetDeleteModal";
 import { useHandleDeleteTweetMutation } from "../../features/tweet/tweetApiSlice";
