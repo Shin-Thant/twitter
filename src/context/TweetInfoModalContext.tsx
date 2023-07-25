@@ -1,4 +1,4 @@
-import { createModalContext } from "./modalContextFactory";
+import { createModalContext } from "./createModalContext";
 import withModalContext from "./WithModalContext";
 
 export const TweetInfoModalContext = createModalContext();

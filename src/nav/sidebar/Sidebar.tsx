@@ -7,6 +7,7 @@ export default function Sidebar() {
 
 	return (
 		<>
+			{/* for mobile screen */}
 			<Drawer
 				transitionDuration={200}
 				anchor="left"
@@ -18,7 +19,7 @@ export default function Sidebar() {
 					"& .MuiDrawer-paper": {
 						backgroundImage: "none",
 						bgcolor: "bg.navbar",
-						width: { xs: "85%", normal_sm: 300 },
+						width: { xs: "78%", normal_sm: 300 },
 						boxSizing: "border-box",
 					},
 				}}
@@ -26,6 +27,7 @@ export default function Sidebar() {
 				<SidebarContent />
 			</Drawer>
 
+			{/* for tablet, latop screens */}
 			<Drawer
 				anchor="left"
 				variant="permanent"

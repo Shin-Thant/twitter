@@ -1,4 +1,4 @@
-import { ButtonBase, Typography } from "@mui/material";
+import { Button, SxProps, Theme, Typography } from "@mui/material";
 import { blue, green, grey, red } from "@mui/material/colors";
 import { ReactNode } from "react";
 
@@ -19,13 +19,16 @@ const CardButton = ({
 	handleClick,
 }: Props) => {
 	return (
-		<ButtonBase
+		<Button
+			color="error"
 			disabled={isLoading}
 			onClick={handleClick}
+			disableFocusRipple
 			sx={{
 				...styles,
-				color: isCompleted ? colors[type].color : grey[600],
-				"&:hover": colors[type].hoverColors,
+				color: isCompleted ? colorStyles[type].color : grey[600],
+				"&:hover": colorStyles[type].actionStyle,
+				"&:focus": colorStyles[type].actionStyle,
 			}}
 			title={type}
 		>
@@ -37,11 +40,11 @@ const CardButton = ({
 			>
 				{label}
 			</Typography>
-		</ButtonBase>
+		</Button>
 	);
 };
 
-const styles = {
+const styles: SxProps<Theme> = {
 	display: "flex",
 	alignItems: "center",
 	gap: "0.3rem",
@@ -54,18 +57,18 @@ const styles = {
 	},
 };
 
-const colors = {
+const colorStyles = {
 	like: {
 		color: red[500],
-		hoverColors: { color: red[500], bgcolor: "hsl(0, 100%, 63%, 0.1)" },
+		actionStyle: { color: red[500], bgcolor: "hsl(0, 100%, 63%, 0.1)" },
 	},
 	comment: {
 		color: blue[500],
-		hoverColors: { color: blue[500], bgcolor: "hsl(230, 100%, 63%, 0.1)" },
+		actionStyle: { color: blue[500], bgcolor: "hsl(230, 100%, 63%, 0.1)" },
 	},
 	share: {
 		color: green[500],
-		hoverColors: {
+		actionStyle: {
 			color: green[500],
 			bgcolor: "hsl(130, 100%, 63%, 0.1)",
 		},

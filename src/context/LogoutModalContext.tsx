@@ -1,5 +1,5 @@
 import withModalContext from "./WithModalContext";
-import { createModalContext } from "./modalContextFactory";
+import { createModalContext } from "./createModalContext";
 
 export const LogoutModalContext = createModalContext();
 

@@ -1,9 +1,4 @@
-import {
-	Button,
-	Stack,
-	Typography,
-	styled
-} from "@mui/material";
+import { Button, Stack, Typography, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useForm } from "react-hook-form";
 import { StyledForm } from "../forms/AuthFormComponents";
@@ -37,7 +32,7 @@ const ConfirmModal = ({
 
 	return (
 		<Modal title={title} isOpen={isOpen} onClose={onClose}>
-			<Typography sx={{ mb: 3 }}>{description}</Typography>
+			<Typography sx={{ mb: 4 }}>{description}</Typography>
 
 			<Stack
 				direction="row"
@@ -58,18 +53,12 @@ const ConfirmModal = ({
 					Cancel
 				</ActionButton>
 
-				<StyledForm
-					onSubmit={handleSubmit(onSubmit)}
-					sx={{
-						display: "inline-flex",
-						width: "max-content",
-					}}
-				>
+				<StyledForm onSubmit={handleSubmit(onSubmit)}>
 					<ActionButton
-						variant="outlined"
-						color="error"
 						disabled={isSubmitting}
 						type="submit"
+						variant="outlined"
+						color="error"
 					>
 						{isSubmitting ? "Loading..." : actionLabel}
 					</ActionButton>
@@ -80,7 +69,8 @@ const ConfirmModal = ({
 };
 
 const ActionButton = styled(Button)(({ theme }) => ({
-	width: theme.spacing(11),
+	// width: "max-content",
+	minWidth: theme.spacing(11),
 	borderRadius: "50px",
 	textTransform: "none",
 }));

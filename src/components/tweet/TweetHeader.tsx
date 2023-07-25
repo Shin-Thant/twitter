@@ -5,7 +5,7 @@ import { userIdSelector } from "../../features/user/userSlice";
 import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
-import TweetMenu from "./menus/TweetMenu";
+import TweetOptionsMenu from "./menus/TweetOptionsMenu";
 
 const width = { xs: 30, ss: 35 };
 const height = { xs: 30, ss: 35 };
@@ -35,7 +35,9 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 			}
 			title={<TweetTitle owner={owner} createdAt={createdAt} />}
 			subheader={<TweetSubTitle username={owner.username} />}
-			action={isTweetOwner ? <TweetMenu tweetId={tweetId} /> : false}
+			action={
+				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : false
+			}
 			sx={{ pb: "0" }}
 		/>
 	);

@@ -15,13 +15,14 @@ const LogoutModal = () => {
 		if (isLoading) return;
 		try {
 			await logout();
-
 			dispatch(setAuth(null));
 			dispatch(setUser(null));
-			setIsOpen(false);
+
 			showToast({ message: "Successfully logout!", variant: "success" });
 		} catch (err) {
 			showToast({ message: "Something went wrong!", variant: "error" });
+		} finally {
+			setIsOpen(false);
 		}
 	};
 

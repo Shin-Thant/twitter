@@ -1,5 +1,5 @@
 import { ReactNode, Context, useState } from "react";
-import { ModalContextState } from "./modalContextFactory";
+import { ModalContextState } from "./createModalContext";
 
 export default function withModalContext(Context: Context<ModalContextState>) {
 	function ComponentWithModalContext({ children }: { children: ReactNode }) {

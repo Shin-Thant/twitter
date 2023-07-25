@@ -8,35 +8,26 @@ import {
 	MenuItem,
 } from "@mui/material";
 import { useRef, useState } from "react";
-import { useHandleDeleteTweetMutation } from "../../../features/tweet/tweetApiSlice";
-import { showToast } from "../../../lib/handleToast";
+import { useTweetDeleteModal } from "../../../hooks/useTweetDeleteModal";
 
 type Props = {
 	tweetId: string;
 };
-const TweetMenu = ({ tweetId }: Props) => {
-	const [deleteTweet, { isLoading }] = useHandleDeleteTweetMutation();
+const TweetOptionsMenu = ({ tweetId }: Props) => {
+	const { openModal } = useTweetDeleteModal();
 	const [isOpen, setIsOpen] = useState(false);
 	const anchorEl = useRef<HTMLButtonElement>(null);
 
-	const handleDelete = async () => {
-		try {
-			if (isLoading) {
-				return;
-			}
-			await deleteTweet({ tweetId });
-			closeMenu();
-		} catch (err) {
-			showToast({
-				message: "Something went wrong!",
-				variant: "error",
-			});
-		}
+	const handleClick = () => {
+		console.log({ tweetId });
+		setIsOpen(false);
+		openModal(tweetId);
 	};
 
 	const openMenu = () => {
 		setIsOpen(true);
 	};
+
 	const closeMenu = () => {
 		setIsOpen(false);
 	};
@@ -77,7 +68,7 @@ const TweetMenu = ({ tweetId }: Props) => {
 					},
 				}}
 			>
-				<MenuItem onClick={handleDelete}>
+				<MenuItem onClick={handleClick}>
 					<ListItemIcon>
 						<DeleteOutlineRoundedIcon fontSize="small" />
 					</ListItemIcon>
@@ -88,4 +79,4 @@ const TweetMenu = ({ tweetId }: Props) => {
 	);
 };
 
-export default TweetMenu;
+export default TweetOptionsMenu;
