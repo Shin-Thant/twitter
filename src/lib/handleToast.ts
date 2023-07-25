@@ -3,8 +3,12 @@ import { enqueueSnackbar } from "notistack";
 type Param = {
 	message: string;
 	variant: "success" | "error" | "info";
-	duration?: number;
+	durationInMillis?: number;
 };
-export function showToast({ message, variant, duration = 3000 }: Param) {
-	enqueueSnackbar({ message, autoHideDuration: duration, variant });
+export function showToast({
+	message,
+	variant,
+	durationInMillis = 3000,
+}: Param) {
+	enqueueSnackbar({ message, autoHideDuration: durationInMillis, variant });
 }

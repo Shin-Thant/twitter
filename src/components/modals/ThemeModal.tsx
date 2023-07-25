@@ -1,14 +1,9 @@
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {
-	Box,
 	FormControlLabel,
-	IconButton,
 	Radio,
 	RadioGroup,
-	Typography,
-	styled,
+	styled
 } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { ChangeEvent, useCallback } from "react";
 import isValidColorMode from "../../helpers/isValidColorMode";
 import useColorMode from "../../hooks/useColorMode";
@@ -34,31 +29,7 @@ export default function ThemeModal() {
 	}, [setIsOpen]);
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose}>
-			<Box
-				mb={3}
-				sx={{
-					display: "flex",
-					justifyContent: "space-between",
-					alignItems: "center",
-				}}
-			>
-				<Typography variant="h6">Change theme</Typography>
-				<IconButton
-					onClick={onClose}
-					size="small"
-					sx={{
-						color: grey[700],
-						transition: "color 200ms ease",
-						"&:hover": {
-							color: grey[300],
-						},
-					}}
-				>
-					<CloseRoundedIcon />
-				</IconButton>
-			</Box>
-
+		<Modal title={"Change Theme"} isOpen={isOpen} onClose={onClose}>
 			<RadioGroup onChange={onModeChange} value={mode}>
 				<Label value="light" label="Light" control={<Radio />} />
 				<Label value="dark" label="Dark" control={<Radio />} />

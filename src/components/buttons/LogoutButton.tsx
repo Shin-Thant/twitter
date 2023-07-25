@@ -1,26 +1,20 @@
-import { Button } from "@mui/material";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { useLogoutMutation } from "../../features/auth/authApiSlice";
-import { useAppDispatch } from "../../app/hooks";
-import { setAuth } from "../../features/auth/authSlice";
-import { setUser } from "../../features/user/userSlice";
+import { Button } from "@mui/material";
 import useDrawerController from "../../hooks/useDrawerController";
+import { useLogoutModal } from "../../hooks/useLogoutModal";
 
 export default function LogoutButton() {
-	const [logout] = useLogoutMutation();
-	const dispatch = useAppDispatch();
-	const { setIsOpen } = useDrawerController();
+	const { setIsOpen: setDrawerOpen } = useDrawerController();
+	const { setIsOpen: setModalOpen } = useLogoutModal();
 
-	const handleLogout = async () => {
-		await logout();
-		dispatch(setAuth(null));
-		dispatch(setUser(null));
-		setIsOpen(false);
+	const handleClick = () => {
+		setDrawerOpen(false);
+		setModalOpen(true);
 	};
 
 	return (
 		<Button
-			onClick={handleLogout}
+			onClick={handleClick}
 			color="error"
 			size="large"
 			endIcon={<LogoutRoundedIcon />}

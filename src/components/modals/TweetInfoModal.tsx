@@ -1,7 +1,5 @@
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
-import { useCallback, startTransition } from "react";
+import { Button, Divider } from "@mui/material";
+import { startTransition, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
 import Modal from "./Modal";
@@ -23,31 +21,7 @@ export default function TweetInfoModal() {
 	}, [setIsOpen]);
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose}>
-			<Box
-				mb={3}
-				sx={{
-					display: "flex",
-					justifyContent: "space-between",
-					alignItems: "center",
-				}}
-			>
-				<Typography variant="h6">Let's connect first!</Typography>
-				<IconButton
-					onClick={onClose}
-					size="small"
-					sx={{
-						color: grey[700],
-						transition: "color 200ms ease",
-						"&:hover": {
-							color: grey[300],
-						},
-					}}
-				>
-					<CloseRoundedIcon />
-				</IconButton>
-			</Box>
-
+		<Modal title={"Let's connect first!"} isOpen={isOpen} onClose={onClose}>
 			<Button
 				onClick={() => closeAndNavigate("/login")}
 				variant="outlined"

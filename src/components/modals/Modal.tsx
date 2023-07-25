@@ -1,14 +1,21 @@
 import { Box } from "@mui/material";
 import MuiModal from "@mui/material/Modal/Modal";
 import { ReactNode, ReactElement } from "react";
+import ModalHeader from "./ModalHeader";
 
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
-	isCustom?: boolean;
 	children: ReactNode | ReactElement;
-};
-export default function Modal({ isOpen, isCustom, onClose, children }: Props) {
+} & ({ isCustom: true; title?: string } | { isCustom?: false; title: string });
+
+export default function Modal({
+	title,
+	isOpen,
+	isCustom,
+	onClose,
+	children,
+}: Props) {
 	return (
 		<MuiModal
 			open={isOpen}
@@ -16,7 +23,16 @@ export default function Modal({ isOpen, isCustom, onClose, children }: Props) {
 			disableAutoFocus
 			disableEnforceFocus
 		>
-			<>{isCustom ? children : <Box sx={style}>{children}</Box>}</>
+			<>
+				{isCustom ? (
+					children
+				) : (
+					<Box sx={style}>
+						<ModalHeader title={title} closeModal={onClose} />{" "}
+						{children}
+					</Box>
+				)}
+			</>
 		</MuiModal>
 	);
 }

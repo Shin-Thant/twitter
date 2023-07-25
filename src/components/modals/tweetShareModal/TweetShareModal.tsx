@@ -1,16 +1,7 @@
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import ReplyIcon from "@mui/icons-material/Reply";
-import {
-	Box,
-	Button,
-	Collapse,
-	Divider,
-	IconButton,
-	Typography,
-} from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { Box, Button, Collapse, Divider } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import {
@@ -26,6 +17,7 @@ import {
 import { showToast } from "../../../lib/handleToast";
 import TweetShareForm from "../../forms/TweetShareForm";
 import Modal from "../Modal";
+import ModalHeader from "../ModalHeader";
 
 function handleToast({ variant }: { variant: "success" | "error" }) {
 	showToast({
@@ -176,29 +168,7 @@ export default function TweetShareModal({
 					borderRadius: { xs: "10px 10px 0 0", ss: "10px" },
 				}}
 			>
-				<Box
-					mb={3}
-					sx={{
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-					}}
-				>
-					<Typography variant="h6">Retweet</Typography>
-					<IconButton
-						onClick={onClose}
-						size="small"
-						sx={{
-							color: grey[700],
-							transition: "color 200ms ease",
-							"&:hover": {
-								color: grey[300],
-							},
-						}}
-					>
-						<CloseRoundedIcon />
-					</IconButton>
-				</Box>
+				<ModalHeader title="Retweet" closeModal={onClose} />
 
 				<>
 					{!isQuoteTweet && (
