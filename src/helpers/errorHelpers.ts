@@ -1,25 +1,28 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 
-export function createFetchError() {
+export function createFetchError(message?: string): {
+	error: FetchBaseQueryError;
+} {
 	return {
 		error: {
 			status: "FETCH_ERROR",
-			error: "Something went wrong!",
-		} as FetchBaseQueryError,
+			error: message ?? "Something went wrong!",
+		} as const,
 	};
 }
 
 type DataWithToken = {
 	accessToken: string;
 };
-export function isResponseDataContainToken(
+export function checkResponseDataContainToken(
 	data: unknown
 ): data is DataWithToken {
 	return (
 		typeof data === "object" &&
 		!!data &&
 		"accessToken" in data &&
-		typeof data.accessToken === "string"
+		typeof data.accessToken === "string" &&
+		!!data.accessToken.length
 	);
 }
 

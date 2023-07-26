@@ -7,7 +7,7 @@ import {
 import { setAuth } from "../features/auth/authSlice";
 import {
 	createFetchError,
-	isResponseDataContainToken,
+	checkResponseDataContainToken,
 	isValidResponseErrorData,
 } from "../helpers/errorHelpers";
 import { baseQuery } from "./baseQuery";
@@ -43,7 +43,7 @@ const baseQueryWithReauth: BaseQueryWithReauth = async (
 		return refreshResponse;
 	}
 
-	if (!isResponseDataContainToken(refreshResponse.data)) {
+	if (!checkResponseDataContainToken(refreshResponse.data)) {
 		return createFetchError();
 	}
 
