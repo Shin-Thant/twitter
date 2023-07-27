@@ -1,18 +1,16 @@
-import {
-	FormControlLabel,
-	Radio,
-	RadioGroup,
-	styled
-} from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, styled } from "@mui/material";
 import { ChangeEvent, useCallback } from "react";
 import isValidColorMode from "../../helpers/isValidColorMode";
 import useColorMode from "../../hooks/useColorMode";
 import useThemeModal from "../../hooks/useThemeModal";
 import Modal from "./Modal";
 
+const LIGHT_BG_COLOR = "#e5e5e5" as const;
+const DARK_BG_COLOR = "#262626" as const;
+
 export default function ThemeModal() {
 	const { isOpen, setIsOpen } = useThemeModal();
-	const { mode, changeMode } = useColorMode();
+	const { mode, changeMode, systemMode } = useColorMode();
 
 	const onModeChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selectedMode = e.target.value;
@@ -30,10 +28,42 @@ export default function ThemeModal() {
 
 	return (
 		<Modal title={"Change Theme"} isOpen={isOpen} onClose={onClose}>
-			<RadioGroup onChange={onModeChange} value={mode}>
-				<Label value="light" label="Light" control={<Radio />} />
-				<Label value="dark" label="Dark" control={<Radio />} />
-				<Label value="system" label="System" control={<Radio />} />
+			<RadioGroup
+				onChange={onModeChange}
+				value={mode}
+				sx={{ gap: "0.3rem" }}
+			>
+				<Label
+					value="light"
+					label="Light"
+					control={<Radio />}
+					sx={{
+						bgcolor:
+							mode === "light" ? LIGHT_BG_COLOR : "transparent",
+					}}
+				/>
+				<Label
+					value="dark"
+					label="Dark"
+					control={<Radio />}
+					sx={{
+						bgcolor:
+							mode === "dark" ? DARK_BG_COLOR : "transparent",
+					}}
+				/>
+				<Label
+					value="system"
+					label="System"
+					control={<Radio />}
+					sx={{
+						bgcolor:
+							mode === "system"
+								? systemMode === "light"
+									? LIGHT_BG_COLOR
+									: DARK_BG_COLOR
+								: "transparent",
+					}}
+				/>
 			</RadioGroup>
 		</Modal>
 	);

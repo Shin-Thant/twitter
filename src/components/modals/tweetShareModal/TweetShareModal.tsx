@@ -1,7 +1,7 @@
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import ReplyIcon from "@mui/icons-material/Reply";
-import { Box, Button, Collapse, Divider } from "@mui/material";
+import { Button, Collapse, Divider } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import {
@@ -17,7 +17,6 @@ import {
 import { showToast } from "../../../lib/handleToast";
 import TweetShareForm from "../../forms/TweetShareForm";
 import Modal from "../Modal";
-import ModalHeader from "../ModalHeader";
 
 function handleToast({ variant }: { variant: "success" | "error" }) {
 	showToast({
@@ -149,75 +148,50 @@ export default function TweetShareModal({
 	};
 
 	return (
-		<Modal isOpen={isModalOpen} onClose={onClose} isCustom={true}>
-			<Box
-				sx={{
-					position: "absolute",
-					top: { xs: "100%", ss: "50%" },
-					left: "50%",
-					width: { xs: "100%", ss: 450, sm: 500 },
-					minHeight: 230,
-					transform: {
-						xs: "translate(-50%, -100%)",
-						ss: "translate(-50%, -50%)",
-					},
-					bgcolor: "bg.navbar",
-					boxShadow: 24,
-					p: { xs: 2, ss: 4 },
-					color: "text.primary",
-					borderRadius: { xs: "10px 10px 0 0", ss: "10px" },
-				}}
-			>
-				<ModalHeader title="Retweet" closeModal={onClose} />
-
+		<Modal title={"Retweet"} isOpen={isModalOpen} onClose={onClose}>
+			{!isQuoteTweet && (
 				<>
-					{!isQuoteTweet && (
-						<>
-							{isSharedWithoutBody ? (
-								<Button
-									startIcon={
-										<HistoryRoundedIcon fontSize="small" />
-									}
-									onClick={undoRetweet}
-									variant="outlined"
-									fullWidth
-									sx={{ textTransform: "none" }}
-								>
-									Undo retweet
-								</Button>
-							) : (
-								<Button
-									startIcon={<ReplyIcon fontSize="small" />}
-									onClick={retweet}
-									variant="outlined"
-									fullWidth
-									sx={{ textTransform: "none" }}
-								>
-									Retweet
-								</Button>
-							)}
-
-							<Divider sx={{ my: "1rem" }}>or</Divider>
-
-							<Button
-								startIcon={<BorderColorIcon />}
-								onClick={() => {
-									setIsQuoteTweet((prev) => !prev);
-								}}
-								variant="outlined"
-								fullWidth
-								sx={{ textTransform: "none" }}
-							>
-								Quote tweet
-							</Button>
-						</>
+					{isSharedWithoutBody ? (
+						<Button
+							startIcon={<HistoryRoundedIcon fontSize="small" />}
+							onClick={undoRetweet}
+							variant="outlined"
+							fullWidth
+							sx={{ textTransform: "none" }}
+						>
+							Undo retweet
+						</Button>
+					) : (
+						<Button
+							startIcon={<ReplyIcon fontSize="small" />}
+							onClick={retweet}
+							variant="outlined"
+							fullWidth
+							sx={{ textTransform: "none" }}
+						>
+							Retweet
+						</Button>
 					)}
 
-					<Collapse in={isQuoteTweet} timeout={500}>
-						<TweetShareForm share={quoteTweet} />
-					</Collapse>
+					<Divider sx={{ my: "1rem" }}>or</Divider>
+
+					<Button
+						startIcon={<BorderColorIcon />}
+						onClick={() => {
+							setIsQuoteTweet((prev) => !prev);
+						}}
+						variant="outlined"
+						fullWidth
+						sx={{ textTransform: "none" }}
+					>
+						Quote tweet
+					</Button>
 				</>
-			</Box>
+			)}
+
+			<Collapse in={isQuoteTweet} timeout={500}>
+				<TweetShareForm share={quoteTweet} />
+			</Collapse>
 		</Modal>
 	);
 }

@@ -7,36 +7,43 @@ import TweetShareModalProvider from "../context/TweetShareModalContext";
 import { useAppSelector } from "../app/hooks";
 import { userSelector } from "../features/user/userSlice";
 import TweetCreator from "../components/others/TweetCreator";
+import { Helmet } from "react-helmet-async";
 
 export default function Home() {
 	const user = useAppSelector(userSelector);
 
 	return (
-		<Container
-			sx={{
-				maxWidth: { xs: "xs", normal_sm: "sm", md: "88%" },
-				pt: 3,
-				px: { xs: 0, sm: 3 },
-				"&.MuiBox-root": {
-					px: 0,
-				},
-			}}
-		>
-			{user && (
-				<>
-					<TweetCreator user={user} />
-					<Divider sx={{ my: 3 }} />
-				</>
-			)}
+		<>
+			<Helmet>
+				<title>Twitter | Home</title>
+			</Helmet>
 
-			<CurrentPageProvider>
-				<TweetInfoModalProvider>
-					<TweetShareModalProvider>
-						<TweetInfoModal />
-						<TweetsContainer />
-					</TweetShareModalProvider>
-				</TweetInfoModalProvider>
-			</CurrentPageProvider>
-		</Container>
+			<Container
+				sx={{
+					maxWidth: { xs: "xs", normal_sm: "sm", md: "88%" },
+					pt: 3,
+					px: { xs: 0, sm: 3 },
+					"&.MuiBox-root": {
+						px: 0,
+					},
+				}}
+			>
+				{user && (
+					<>
+						<TweetCreator user={user} />
+						<Divider sx={{ my: 3 }} />
+					</>
+				)}
+
+				<CurrentPageProvider>
+					<TweetInfoModalProvider>
+						<TweetShareModalProvider>
+							<TweetInfoModal />
+							<TweetsContainer />
+						</TweetShareModalProvider>
+					</TweetInfoModalProvider>
+				</CurrentPageProvider>
+			</Container>
+		</>
 	);
 }

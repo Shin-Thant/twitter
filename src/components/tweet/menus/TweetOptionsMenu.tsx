@@ -1,3 +1,4 @@
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import {
@@ -67,11 +68,34 @@ const TweetOptionsMenu = ({ tweetId }: Props) => {
 					},
 				}}
 			>
+				<MenuItem>
+					<ListItemIcon>
+						<EditRoundedIcon fontSize="small" />
+					</ListItemIcon>
+					<ListItemText
+						sx={{
+							"& .MuiTypography-root": {
+								fontSize: { xs: "0.9rem", sm: "0.95rem" },
+							},
+						}}
+					>
+						Edit
+					</ListItemText>
+				</MenuItem>
+
 				<MenuItem onClick={handleClick}>
 					<ListItemIcon>
 						<DeleteOutlineRoundedIcon fontSize="small" />
 					</ListItemIcon>
-					<ListItemText>Delete</ListItemText>
+					<ListItemText
+						sx={{
+							"& .MuiTypography-root": {
+								fontSize: { xs: "0.9rem", sm: "0.95rem" },
+							},
+						}}
+					>
+						Delete
+					</ListItemText>
 				</MenuItem>
 			</Menu>
 		</>
