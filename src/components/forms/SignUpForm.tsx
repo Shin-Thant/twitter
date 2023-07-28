@@ -52,7 +52,7 @@ export default function SignUpForm() {
 						htmlFor="username--signup"
 						sx={{ display: "block", mb: "0.3rem" }}
 					>
-						User Name
+						Username
 					</Label>
 					<StyledInputBase
 						id="username--signup"
@@ -60,7 +60,7 @@ export default function SignUpForm() {
 						placeholder="john-doe2508"
 						required={true}
 						autoComplete="off"
-						sx={getInputStyle(isError)}
+						sx={getInputStyle(isError || !!errors.username)}
 						{...register("username")}
 					/>
 					{errors.username?.message && (
@@ -81,7 +81,7 @@ export default function SignUpForm() {
 						placeholder="John Doe"
 						required={true}
 						autoComplete="off"
-						sx={getInputStyle(isError)}
+						sx={getInputStyle(isError || !!errors.name)}
 						{...register("name")}
 					/>
 					{errors.name?.message && (
@@ -102,7 +102,7 @@ export default function SignUpForm() {
 						placeholder="john@test.com"
 						required={true}
 						autoComplete="off"
-						sx={getInputStyle(isError)}
+						sx={getInputStyle(isError || !!errors.email)}
 						{...register("email")}
 					/>
 					{errors.email?.message && (
@@ -123,7 +123,7 @@ export default function SignUpForm() {
 						placeholder="your-password"
 						required={true}
 						autoComplete="off"
-						sx={getInputStyle(isError)}
+						sx={getInputStyle(isError || !!errors.password)}
 						{...register("password")}
 					/>
 					{errors.password?.message && (

@@ -1,19 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, Box, Paper } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { User } from "../../features/user/userTypes";
-import { CreateTweetInput, CreateTweetSchema } from "../../schemas/TweetSchema";
-import SubmitButton from "../buttons/SubmitButton";
-import ContentLength from "../feedbacks/ContentLength";
-import { StyledForm } from "../forms/AuthFormComponents";
-import FieldError from "../forms/FieldError";
-import TweetContentInput from "../forms/TweetContentInput";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
+import { User } from "../../features/user/userTypes";
 import {
 	isFetchBaseQueryError,
 	isResponseError,
 } from "../../helpers/errorHelpers";
 import { showToast } from "../../lib/handleToast";
+import { CreateTweetInput, CreateTweetSchema } from "../../schemas/TweetSchema";
+import SubmitButton from "../buttons/SubmitButton";
+import { StyledForm } from "../forms/AuthFormComponents";
+import ContentInputHandler from "../forms/ContentInputHandler";
 
 type Props = {
 	user: User;
@@ -24,7 +22,7 @@ const TweetCreator = ({ user }: Props) => {
 	const {
 		watch,
 		handleSubmit,
-		formState: { isSubmitting, errors, defaultValues },
+		formState: { isSubmitting },
 		control,
 		reset,
 	} = useForm<CreateTweetInput>({
@@ -32,11 +30,13 @@ const TweetCreator = ({ user }: Props) => {
 		defaultValues: {
 			content: "",
 		},
-		mode: "onChange",
+		// mode: "onChange",
 	});
 	const content = watch("content");
 
 	const onSubmit: SubmitHandler<CreateTweetInput> = async (data) => {
+		if (!data.content) return;
+
 		try {
 			const response = await createTweet({ body: data.content });
 
@@ -52,7 +52,7 @@ const TweetCreator = ({ user }: Props) => {
 				return;
 			}
 
-			reset({ content: "" });
+			reset();
 			showToast({
 				message: "Successfully added new tweet!",
 				variant: "success",
@@ -93,38 +93,19 @@ const TweetCreator = ({ user }: Props) => {
 			</Box>
 			<StyledForm sx={{ flex: 1 }} onSubmit={handleSubmit(onSubmit)}>
 				<Box>
-					<TweetContentInput
-						hasError={!!errors.content}
-						placeholder="What's happening?"
-						controller={{
-							name: "content",
-							control,
-							defaultValue: defaultValues?.content ?? "",
-						}}
-					/>
-
-					<Box
-						sx={{
-							mt: 1,
-							display: "flex",
-							gap: 1.5,
-							justifyContent: errors.content?.message
-								? "space-between"
-								: "flex-end",
-						}}
-					>
-						{errors.content?.message && (
-							<FieldError
-								sx={{ mt: 0 }}
-								message={errors.content.message}
+					<Controller
+						render={({ field, formState: { errors } }) => (
+							<ContentInputHandler
+								field={field}
+								errorMessage={errors.content?.message}
+								contentLength={content.length}
+								placeholder="What's happening?"
 							/>
 						)}
-						<ContentLength
-							errorMessage={errors.content?.message}
-							currentLength={content.length}
-							limit={120}
-						/>
-					</Box>
+						name="content"
+						control={control}
+						defaultValue={""}
+					/>
 				</Box>
 
 				<Box
@@ -137,6 +118,7 @@ const TweetCreator = ({ user }: Props) => {
 				>
 					<SubmitButton
 						isLoading={isSubmitting}
+						isDisabled={!content.length}
 						sx={{
 							minWidth: 100,
 						}}

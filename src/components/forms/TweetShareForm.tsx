@@ -1,12 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ShareTweetInput, ShareTweetSchema } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
-import ContentLength from "../feedbacks/ContentLength";
 import { StyledForm } from "./AuthFormComponents";
-import FieldError from "./FieldError";
-import TweetContentInput from "./TweetContentInput";
+import ContentInputHandler from "./ContentInputHandler";
 
 type Props = {
 	share: (body?: string) => void | Promise<void>;
@@ -16,7 +14,7 @@ const TweetShareForm = ({ share }: Props) => {
 	const {
 		handleSubmit,
 		watch,
-		formState: { errors, isSubmitting, defaultValues },
+		formState: { isSubmitting },
 		control,
 	} = useForm({
 		resolver: zodResolver(ShareTweetSchema),
@@ -34,39 +32,18 @@ const TweetShareForm = ({ share }: Props) => {
 
 	return (
 		<StyledForm onSubmit={handleSubmit(onSubmit)}>
-			<TweetContentInput
-				multiline
-				maxRows={5}
-				placeholder="What's happening?"
-				hasError={!!errors.content}
-				controller={{
-					name: "content",
-					control,
-					defaultValue: defaultValues?.content ?? "",
-				}}
-			/>
-			<Box
-				sx={{
-					mt: 1,
-					gap: 1.5,
-					display: "flex",
-					justifyContent: errors.content?.message
-						? "space-between"
-						: "flex-end",
-				}}
-			>
-				{errors.content?.message && (
-					<FieldError
-						sx={{ mt: 0 }}
-						message={errors.content.message}
+			<Controller
+				render={({ field, formState: { errors } }) => (
+					<ContentInputHandler
+						field={field}
+						errorMessage={errors.content?.message}
+						contentLength={content.length}
 					/>
 				)}
-				<ContentLength
-					errorMessage={errors.content?.message}
-					currentLength={content.length}
-					limit={120}
-				/>
-			</Box>
+				name="content"
+				control={control}
+				defaultValue={""}
+			/>
 
 			<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 				<SubmitButton

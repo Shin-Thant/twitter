@@ -4,9 +4,9 @@ import checkInputSpaces from "../helpers/checkInputSpaces";
 export const LoginSchema = z.object({
 	email: z
 		.string({
-			required_error: "Email required!",
 			invalid_type_error: "Email must be string!",
 		})
+		.nonempty("Email is required!")
 		.email("Invalid email!")
 		.trim(),
 	password: z
@@ -14,8 +14,9 @@ export const LoginSchema = z.object({
 			required_error: "Password required!",
 			invalid_type_error: "Password must be string!",
 		})
-		.trim()
+		.nonempty("Password is required!")
 		.min(6, "Password must have at least 6 letters!")
+		.trim()
 		.refine(checkInputSpaces, "Password can't contain spaces!"),
 });
 

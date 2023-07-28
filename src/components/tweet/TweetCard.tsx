@@ -1,7 +1,7 @@
 import { Box, Card } from "@mui/material";
 import { ForwardedRef, forwardRef, memo, useState } from "react";
 import { Tweet } from "../../features/tweet/tweetTypes";
-import TweetShareModal from "../modals/tweetShareModal/TweetShareModal";
+import TweetShareModal from "../modals/TweetShareModal";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
 import TweetHeader from "./TweetHeader";

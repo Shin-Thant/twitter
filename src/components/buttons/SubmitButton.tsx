@@ -4,11 +4,13 @@ import { ReactNode } from "react";
 
 interface Props extends ButtonProps {
 	isLoading: boolean;
+	isDisabled?: boolean;
 	children: ReactNode;
 }
 
 export default function SubmitButton({
 	isLoading,
+	isDisabled,
 	children,
 	variant,
 	fullWidth,
@@ -18,7 +20,7 @@ export default function SubmitButton({
 		<Button
 			fullWidth={fullWidth ?? false}
 			type="submit"
-			disabled={isLoading}
+			disabled={isLoading || isDisabled}
 			sx={{
 				borderRadius: "5px",
 				textTransform: "none",

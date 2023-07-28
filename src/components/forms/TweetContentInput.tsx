@@ -1,22 +1,14 @@
 import { InputBase, InputBaseProps } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
 import { SxProps, Theme } from "@mui/material/styles";
-import { UseControllerProps, useController } from "react-hook-form";
+import { ControllerRenderProps } from "react-hook-form";
 
-type Controller = Required<
-	Pick<
-		UseControllerProps<{ content: string }, "content">,
-		"name" | "control" | "defaultValue"
-	>
->;
 interface Props extends InputBaseProps {
+	field: ControllerRenderProps<{ content: string }>;
 	hasError: boolean;
-	controller: Controller;
 	sx?: SxProps<Theme>;
 }
-function TweetContentInput({ hasError, sx, controller, ...props }: Props) {
-	const { field } = useController(controller);
-
+function TweetContentInput({ field, hasError, sx, ...props }: Props) {
 	return (
 		<InputBase
 			type="text"

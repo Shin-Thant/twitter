@@ -8,26 +8,36 @@ import { LogoutModalProvider } from "../context/LogoutModalContext";
 import LogoutModal from "../components/modals/LogoutModal";
 import { TweetDeleteModalProvider } from "../context/TweetDeleteModalContext";
 import TweetDeleteModal from "../components/modals/TweetDeleteModal";
+import TweetEditModal from "../components/modals/TweetEditModal";
+import { TweetEditModalProvider } from "../context/TweetEditModalContext";
 
 export default function Layout() {
 	return (
-		<TweetDeleteModalProvider>
-			<LogoutModalProvider>
-				<TweetDeleteModal />
-				<LogoutModal />
+		<LogoutModalProvider>
+			<LogoutModal />
 
-				<Box bgcolor="bg.main" sx={{ display: "flex" }}>
-					<Toast />
-					<ThemeModal />
-					<Sidebar />
-					<Box flex={1} sx={{ height: "100vh", overflow: "auto" }}>
-						<Navbar />
-						<Box>
-							<Outlet />
+			<Box bgcolor="bg.main" sx={{ display: "flex" }}>
+				<Toast />
+				<ThemeModal />
+				<Sidebar />
+
+				<TweetEditModalProvider>
+					<TweetDeleteModalProvider>
+						<TweetDeleteModal />
+						<TweetEditModal />
+
+						<Box
+							flex={1}
+							sx={{ height: "100vh", overflow: "auto" }}
+						>
+							<Navbar />
+							<Box>
+								<Outlet />
+							</Box>
 						</Box>
-					</Box>
-				</Box>
-			</LogoutModalProvider>
-		</TweetDeleteModalProvider>
+					</TweetDeleteModalProvider>
+				</TweetEditModalProvider>
+			</Box>
+		</LogoutModalProvider>
 	);
 }

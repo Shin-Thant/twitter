@@ -10,18 +10,25 @@ import {
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { useTweetDeleteModal } from "../../../hooks/useTweetDeleteModal";
+import { useTweetEditModal } from "../../../hooks/useTweetEditModal";
 
 type Props = {
 	tweetId: string;
 };
 const TweetOptionsMenu = ({ tweetId }: Props) => {
-	const { openModal } = useTweetDeleteModal();
+	const { openModal: openEditModal } = useTweetEditModal();
+	const { openModal: openDeleteModal } = useTweetDeleteModal();
 	const [isOpen, setIsOpen] = useState(false);
 	const anchorEl = useRef<HTMLButtonElement>(null);
 
-	const handleClick = () => {
+	const handleEditModal = () => {
 		setIsOpen(false);
-		openModal(tweetId);
+		openEditModal(tweetId);
+	};
+
+	const handleDeleteModal = () => {
+		setIsOpen(false);
+		openDeleteModal(tweetId);
 	};
 
 	const openMenu = () => {
@@ -68,7 +75,7 @@ const TweetOptionsMenu = ({ tweetId }: Props) => {
 					},
 				}}
 			>
-				<MenuItem>
+				<MenuItem onClick={handleEditModal}>
 					<ListItemIcon>
 						<EditRoundedIcon fontSize="small" />
 					</ListItemIcon>
@@ -83,7 +90,7 @@ const TweetOptionsMenu = ({ tweetId }: Props) => {
 					</ListItemText>
 				</MenuItem>
 
-				<MenuItem onClick={handleClick}>
+				<MenuItem onClick={handleDeleteModal}>
 					<ListItemIcon>
 						<DeleteOutlineRoundedIcon fontSize="small" />
 					</ListItemIcon>

@@ -49,7 +49,7 @@ export default function LoginForm() {
 		const result = response.data;
 		dispatch(setAuth(result.accessToken));
 		dispatch(setUser(result.user));
-		
+
 		navigate(from ? from : "/");
 	};
 
@@ -69,8 +69,9 @@ export default function LoginForm() {
 						id="email--login"
 						type="email"
 						placeholder="john@test.com"
+						required={true}
 						autoComplete="off"
-						sx={getInputStyle(isError)}
+						sx={getInputStyle(isError || !!errors.email)}
 						{...register("email")}
 					/>
 					{errors.email?.message && (
@@ -89,8 +90,9 @@ export default function LoginForm() {
 						id="pwd--login"
 						type="password"
 						placeholder="your-password"
+						required={true}
 						autoComplete="off"
-						sx={getInputStyle(isError)}
+						sx={getInputStyle(isError || !!errors.password)}
 						{...register("password")}
 					/>
 					{errors.password?.message && (

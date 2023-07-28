@@ -3,20 +3,20 @@ import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { Button, Collapse, Divider } from "@mui/material";
 import { useState } from "react";
-import { useAppSelector } from "../../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import {
 	useHandleDeleteTweetMutation,
 	useHandleShareMutation,
-} from "../../../features/tweet/tweetApiSlice";
-import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
-import { userIdSelector } from "../../../features/user/userSlice";
+} from "../../features/tweet/tweetApiSlice";
+import { SharedTweetPreview } from "../../features/tweet/tweetTypes";
+import { userIdSelector } from "../../features/user/userSlice";
 import {
 	isFetchBaseQueryError,
 	isResponseError,
-} from "../../../helpers/errorHelpers";
-import { showToast } from "../../../lib/handleToast";
-import TweetShareForm from "../../forms/TweetShareForm";
-import Modal from "../Modal";
+} from "../../helpers/errorHelpers";
+import { showToast } from "../../lib/handleToast";
+import TweetShareForm from "../forms/TweetShareForm";
+import Modal from "./Modal";
 
 function handleToast({ variant }: { variant: "success" | "error" }) {
 	showToast({
@@ -147,6 +147,7 @@ export default function TweetShareModal({
 		setIsQuoteTweet(false);
 	};
 
+	// TODO: fix the height bug
 	return (
 		<Modal title={"Retweet"} isOpen={isModalOpen} onClose={onClose}>
 			{!isQuoteTweet && (
@@ -189,7 +190,7 @@ export default function TweetShareModal({
 				</>
 			)}
 
-			<Collapse in={isQuoteTweet} timeout={500}>
+			<Collapse in={isQuoteTweet} timeout={600}>
 				<TweetShareForm share={quoteTweet} />
 			</Collapse>
 		</Modal>
