@@ -3,7 +3,7 @@ import { Box, Skeleton } from "@mui/material";
 const TweetSkeleton = () => {
 	return (
 		<>
-			{[1, 2, 3, 4, 5].map((item) => (
+			{[1, 2, 3].map((item) => (
 				<Box
 					key={item}
 					p={3}

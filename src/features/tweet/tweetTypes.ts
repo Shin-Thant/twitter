@@ -1,3 +1,4 @@
+import { EntityState } from "@reduxjs/toolkit";
 import { User } from "../user/userTypes";
 
 export type Owner = Omit<
@@ -49,12 +50,20 @@ export interface SharedTweet extends BasicTweet {
 }
 export type Tweet = PostTweet | SharedTweet;
 
-export type GetTweetsResponse = {
+export interface Pagination {
 	totalPages: number;
 	totalDocs: number;
 	hasNextPage: boolean;
 	hasPrevPage: boolean;
 	currentPage: number;
 	limit: number;
+}
+export interface GetTweetsResponse extends Pagination {
 	data: Tweet[];
-};
+}
+
+export interface GetTweetsData {
+	pagination: Pagination;
+	data: Tweet[];
+	entityState: EntityState<Tweet>;
+}
