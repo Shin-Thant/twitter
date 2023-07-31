@@ -1,4 +1,3 @@
-import { EntityState } from "@reduxjs/toolkit";
 import { User } from "../user/userTypes";
 
 export type Owner = Omit<
@@ -65,5 +64,4 @@ export interface GetTweetsResponse extends Pagination {
 export interface GetTweetsData {
 	pagination: Pagination;
 	data: Tweet[];
-	entityState: EntityState<Tweet>;
 }

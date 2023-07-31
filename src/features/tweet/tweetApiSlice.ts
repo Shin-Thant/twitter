@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 import apiSlice from "../../app/api/apiSlice";
 import { RootState } from "../../app/store";
 import { GetTweetsData, GetTweetsResponse, Tweet } from "./tweetTypes";
@@ -9,10 +9,6 @@ type LikeMutationArg = { tweetId: string; likes: string[]; cacheKey: number };
 type ShareMutationArg = { tweetId: string; body?: string };
 type DeleteMutationArg = { tweetId: string };
 
-const tweetAdapter = createEntityAdapter<Tweet>({
-	selectId: (tweet) => tweet._id,
-});
-const initialState = tweetAdapter.getInitialState();
 
 const tweetApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -21,18 +17,11 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				return `/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`;
 			},
 			transformResponse: (result: GetTweetsResponse) => {
-				console.log("transforming...");
-
 				const { data, ...pagination } = result;
-
-				// set normalized data
-				// const entityState = tweetAdapter.setMany(initialState, data);
-				
 
 				return {
 					pagination,
 					data,
-					entityState: {ids: [], entities: {}},
 				};
 			},
 			providesTags: (result) => {
@@ -110,11 +99,9 @@ const optimisticLikeUpdate = ({
 		"getTweets",
 		{ currentPage: cacheKey, itemsPerPage: 10 },
 		(draft) => {
-			// const foundEntityTweet = draft.entityState.entities[tweetId];
 			const foundTweet = draft.data.find(tweet => tweet._id === tweetId);
 
 			if (foundTweet) {
-				// foundEntityTweet.likes = likes;
 				foundTweet.likes = likes;
 			}
 		}
@@ -147,21 +134,6 @@ const tweetResultSelector = createSelector(
 	}
 );
 
-const tweetDataSelector = createSelector(
-	(state: RootState) => {
-		return tweetResultSelector(state)(state);
-	},
-	(result) => result.data
-);
-
-export const {
-	selectAll: selectAllTweets,
-	selectById: selectTweetById,
-	selectIds: selectTweetIds,
-} = tweetAdapter.getSelectors((state: RootState) => {
-	const result = tweetDataSelector(state);
-	return result ? result.entityState : initialState;
-});
 
 export const {
 	useGetTweetsQuery,
