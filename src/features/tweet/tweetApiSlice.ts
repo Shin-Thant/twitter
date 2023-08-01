@@ -9,7 +9,6 @@ type LikeMutationArg = { tweetId: string; likes: string[]; cacheKey: number };
 type ShareMutationArg = { tweetId: string; body?: string };
 type DeleteMutationArg = { tweetId: string };
 
-
 const tweetApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getTweets: builder.query<GetTweetsData, GetTweetsQueryArg>({
@@ -99,7 +98,9 @@ const optimisticLikeUpdate = ({
 		"getTweets",
 		{ currentPage: cacheKey, itemsPerPage: 10 },
 		(draft) => {
-			const foundTweet = draft.data.find(tweet => tweet._id === tweetId);
+			const foundTweet = draft.data.find(
+				(tweet) => tweet._id === tweetId
+			);
 
 			if (foundTweet) {
 				foundTweet.likes = likes;
@@ -108,19 +109,34 @@ const optimisticLikeUpdate = ({
 	);
 };
 
-const resultSelector = createSelector((state: RootState) => ({currentPage: state.currentPage.tweet.currentPage, state}), ({currentPage, state}: {currentPage: number, state: RootState}) => {
-	return tweetApiSlice.endpoints.getTweets.select({itemsPerPage: 10, currentPage})(state);
-})
+const resultSelector = createSelector(
+	(state: RootState) => ({
+		currentPage: state.currentPage.tweet.currentPage,
+		state,
+	}),
+	({ currentPage, state }: { currentPage: number; state: RootState }) => {
+		return tweetApiSlice.endpoints.getTweets.select({
+			itemsPerPage: 10,
+			currentPage,
+		})(state);
+	}
+);
 
-const dataSelector = createSelector((state: RootState) => resultSelector(state), (fun) => {
-	return fun.data
-})
+const dataSelector = createSelector(
+	(state: RootState) => resultSelector(state),
+	(fun) => {
+		return fun.data;
+	}
+);
 
-export const selectById = createSelector([dataSelector, (_: RootState, id: string) => id], (data, id) => {
-	console.log('getting data');
-	
-	return data?.data.find(tweet => tweet._id === id);
-})
+export const selectById = createSelector(
+	[dataSelector, (_: RootState, id: string) => id],
+	(data, id) => {
+		console.log("getting data");
+
+		return data?.data.find((tweet) => tweet._id === id);
+	}
+);
 
 const tweetResultSelector = createSelector(
 	(state: RootState) => {
@@ -133,7 +149,6 @@ const tweetResultSelector = createSelector(
 		});
 	}
 );
-
 
 export const {
 	useGetTweetsQuery,

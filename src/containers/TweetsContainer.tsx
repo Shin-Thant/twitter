@@ -1,17 +1,17 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import TweetSkeleton from "../components/skeletons/TweetSkeleton";
 import TweetCard from "../components/tweet/TweetCard";
-import { setTweetCurrentPage } from "../features/currentPageSlice";
 import {
-	useGetTweetsQuery
-} from "../features/tweet/tweetApiSlice";
+	currentPageSelector,
+	setTweetCurrentPage,
+} from "../features/currentPageSlice";
+import { useGetTweetsQuery } from "../features/tweet/tweetApiSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 export default function TweetsContainer() {
 	const dispatch = useAppDispatch();
-	const currentPage = useAppSelector(
-		(state) => state.currentPage.tweet.currentPage
+	const currentPage = useAppSelector((state) =>
+		currentPageSelector(state, "tweet")
 	);
 
 	const { isLoading, isFetching, data } = useGetTweetsQuery(
@@ -23,19 +23,7 @@ export default function TweetsContainer() {
 		}
 	);
 
-	useEffect(() => {
-		let isMounted = true;
-
-		if(isMounted)console.log({isFetching, isLoading});
-
-		return () => {
-			isMounted = false;
-		}
-		
-	}, [isFetching, isLoading])
-
 	const incrementPage = useCallback(() => {
-		// setCurrentPage((prev) => prev + 1);
 		dispatch(setTweetCurrentPage());
 	}, [dispatch]);
 
@@ -66,7 +54,7 @@ export default function TweetsContainer() {
 	return (
 		<>
 			{tweetsList}
-			{isFetching && 'Loading...'}
+			{isFetching && "Loading..."}
 		</>
 	);
 }

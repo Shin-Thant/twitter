@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../app/store";
 
 type State = {
 	tweet: { currentPage: number };
@@ -20,6 +21,13 @@ const currentPageSlice = createSlice({
 		},
 	},
 });
+
+export const currentPageSelector = (
+	state: RootState,
+	category: keyof State
+) => {
+	return state.currentPage[category].currentPage;
+};
 
 export const { setTweetCurrentPage } = currentPageSlice.actions;
 export default currentPageSlice.reducer;
