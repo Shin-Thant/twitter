@@ -6,7 +6,7 @@ import TweetInfoModalProvider from "../context/TweetInfoModalContext";
 import TweetShareModalProvider from "../context/TweetShareModalContext";
 import { useAppSelector } from "../app/hooks";
 import { userSelector } from "../features/user/userSlice";
-import TweetCreator from "../components/others/TweetCreator";
+import TweetCreator from "../components/tweet/TweetCreator";
 import { Helmet } from "react-helmet-async";
 
 export default function Home() {
