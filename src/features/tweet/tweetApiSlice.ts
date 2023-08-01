@@ -5,6 +5,7 @@ import { GetTweetsData, GetTweetsResponse, Tweet } from "./tweetTypes";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
 type CreateTweetMutationArg = { body: string };
+type EditTweetMutationArg = { tweetId: string; body: string };
 type LikeMutationArg = { tweetId: string; likes: string[]; cacheKey: number };
 type ShareMutationArg = { tweetId: string; body?: string };
 type DeleteMutationArg = { tweetId: string };
@@ -44,6 +45,20 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				body: arg,
 			}),
 			invalidatesTags: [{ type: "Tweets", id: "LIST" }],
+		}),
+
+		editTweet: builder.mutation<Tweet, EditTweetMutationArg>({
+			query: ({ body, tweetId }) => ({
+				method: "PUT",
+				url: `/tweets/${tweetId}`,
+				body: {
+					body,
+				},
+			}),
+			// TODO: make this optimistic
+			invalidatesTags: (_res, _err, arg) => {
+				return [{ type: "Tweets", id: arg.tweetId }];
+			},
 		}),
 
 		handleLikes: builder.mutation<Tweet, LikeMutationArg>({
@@ -129,30 +144,17 @@ const dataSelector = createSelector(
 	}
 );
 
-export const selectById = createSelector(
+export const selectTweetById = createSelector(
 	[dataSelector, (_: RootState, id: string) => id],
 	(data, id) => {
-		console.log("getting data");
-
 		return data?.data.find((tweet) => tweet._id === id);
-	}
-);
-
-const tweetResultSelector = createSelector(
-	(state: RootState) => {
-		return state.currentPage.tweet.currentPage;
-	},
-	(cacheKey) => {
-		return tweetApiSlice.endpoints.getTweets.select({
-			itemsPerPage: 10,
-			currentPage: cacheKey,
-		});
 	}
 );
 
 export const {
 	useGetTweetsQuery,
 	useCreateTweetMutation,
+	useEditTweetMutation,
 	useHandleLikesMutation,
 	useHandleShareMutation,
 	useHandleDeleteTweetMutation,

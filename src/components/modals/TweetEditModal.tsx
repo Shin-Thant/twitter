@@ -5,18 +5,28 @@ import { useTweetEditModal } from "../../hooks/useTweetEditModal";
 import { EditTweetInput, EditTweetSchema } from "../../schemas/TweetSchema";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
+import { useAppSelector } from "../../app/hooks";
+import {
+	selectTweetById,
+	useEditTweetMutation,
+} from "../../features/tweet/tweetApiSlice";
+import { useEffect } from "react";
 
 // TODO: get the original tweet content
 
 const TweetEditModal = () => {
 	const { isOpen, closeModal } = useTweetEditModal();
+	const tweetId = useTweetEditModal().tweetId;
+	const tweet = useAppSelector((state) => selectTweetById(state, tweetId));
+	const [editTweet, { isLoading }] = useEditTweetMutation();
 
 	const {
 		handleSubmit,
-		formState: { isSubmitting },
+		formState: { isSubmitting, isValid },
 		control,
 		watch,
 		reset,
+		setValue,
 	} = useForm({
 		resolver: zodResolver(EditTweetSchema),
 		defaultValues: {
@@ -27,8 +37,28 @@ const TweetEditModal = () => {
 
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<EditTweetInput> = (data) => {
-		console.log(data);
+	useEffect(() => {
+		let isMounted = true;
+		console.log("setting...");
+
+		if (isMounted && !!tweet) {
+			setValue("content", tweet.body);
+		}
+
+		return () => {
+			isMounted = false;
+		};
+	}, [setValue, tweet]);
+
+	const onSubmit: SubmitHandler<EditTweetInput> = async (data) => {
+		if (isLoading) return;
+		if (data.content === tweet?.body) {
+			closeModal();
+			return;
+		}
+
+		await editTweet({ tweetId, body: data.content });
+		closeModal();
 	};
 
 	const onClose = () => {
@@ -45,6 +75,7 @@ const TweetEditModal = () => {
 							field={field}
 							errorMessage={errors.content?.message}
 							contentLength={content.length}
+							required={false}
 						/>
 					)}
 					name="content"
@@ -75,7 +106,7 @@ const TweetEditModal = () => {
 					</Button>
 					<Button
 						type="submit"
-						disabled={isSubmitting}
+						disabled={isSubmitting || !isValid}
 						variant="outlined"
 						sx={{
 							width: "max-content",
@@ -84,7 +115,7 @@ const TweetEditModal = () => {
 							textTransform: "none",
 						}}
 					>
-						{isSubmitting ? "Loading..." : "Edit"}
+						{isSubmitting ? "Loading..." : "Save"}
 					</Button>
 				</Stack>
 			</form>

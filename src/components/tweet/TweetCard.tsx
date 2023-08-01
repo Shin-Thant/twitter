@@ -12,6 +12,7 @@ import TweetShareBtn from "./buttons/TweetShareBtn";
 type Props = {
 	tweet: Tweet;
 };
+
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
 		const [isShareModalOpen, setIsShareModalOpen] = useState(false);

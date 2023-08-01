@@ -11,17 +11,22 @@ import {
 import { useRef, useState } from "react";
 import { useTweetDeleteModal } from "../../../hooks/useTweetDeleteModal";
 import { useTweetEditModal } from "../../../hooks/useTweetEditModal";
+import { useAppSelector } from "../../../app/hooks";
+import { selectTweetById } from "../../../features/tweet/tweetApiSlice";
 
 type Props = {
 	tweetId: string;
 };
+
 const TweetOptionsMenu = ({ tweetId }: Props) => {
 	const { openModal: openEditModal } = useTweetEditModal();
 	const { openModal: openDeleteModal } = useTweetDeleteModal();
 	const [isOpen, setIsOpen] = useState(false);
 	const anchorEl = useRef<HTMLButtonElement>(null);
+	const tweet = useAppSelector((state) => selectTweetById(state, tweetId));
 
 	const handleEditModal = () => {
+		if (!tweet) return;
 		setIsOpen(false);
 		openEditModal(tweetId);
 	};
@@ -46,7 +51,11 @@ const TweetOptionsMenu = ({ tweetId }: Props) => {
 				onClick={openMenu}
 				size="small"
 				sx={{
-					color: "tweet.moreOptionsBtn",
+					color: "option_icon.normal",
+					"&:hover": {
+						color: "option_icon.hover",
+					},
+					transition: "color 200ms ease",
 				}}
 			>
 				<MoreVertRoundedIcon sx={{ fontSize: "1.3rem" }} />

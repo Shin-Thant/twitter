@@ -1,14 +1,14 @@
 import { ReactNode, createContext, useCallback, useState } from "react";
 
 interface ContextState {
-	tweetId: string | null;
+	tweetId: string;
 	isOpen: boolean;
 	openModal(tweetId: string): void;
 	closeModal(): void;
 }
 
 export const TweetEditModalContext = createContext<ContextState>({
-	tweetId: null,
+	tweetId: "",
 	isOpen: false,
 	openModal: () => undefined,
 	closeModal: () => undefined,
@@ -18,7 +18,7 @@ type Props = {
 	children: ReactNode;
 };
 export const TweetEditModalProvider = ({ children }: Props) => {
-	const [tweetId, setTweetId] = useState<string | null>(null);
+	const [tweetId, setTweetId] = useState<string>("");
 	const [isOpen, setIsOpen] = useState(false);
 
 	const openModal = useCallback((tweetId: string) => {
@@ -28,7 +28,7 @@ export const TweetEditModalProvider = ({ children }: Props) => {
 
 	const closeModal = useCallback(() => {
 		setIsOpen(false);
-		setTweetId(null);
+		setTweetId("");
 	}, []);
 
 	return (

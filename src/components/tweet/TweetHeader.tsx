@@ -9,11 +9,13 @@ import TweetOptionsMenu from "./menus/TweetOptionsMenu";
 
 const width = { xs: 30, ss: 35 };
 const height = { xs: 30, ss: 35 };
+
 type Props = {
 	tweetId: string;
 	owner: Owner;
 	createdAt: string;
 };
+
 export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isTweetOwner = owner._id === loginUserId;

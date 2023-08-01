@@ -8,6 +8,8 @@ import { authStatusSelector } from "../../features/auth/authSlice";
 import { userSelector } from "../../features/user/userSlice";
 import HeaderSkeleton from "./HeaderSkeleton";
 
+// TODO: change avatar text to icon
+
 export default function SidebarHeader() {
 	const authStatus = useAppSelector(authStatusSelector);
 	const user = useAppSelector(userSelector);

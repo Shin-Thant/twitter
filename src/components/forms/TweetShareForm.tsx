@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { ShareTweetInput, ShareTweetSchema } from "../../schemas/TweetSchema";
+import { ShareTweetInput, QuoteRetweetSchema } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
 import { StyledForm } from "./AuthFormComponents";
 import ContentInputHandler from "./ContentInputHandler";
+
+// TODO: add cancel button
 
 type Props = {
 	share: (body?: string) => void | Promise<void>;
@@ -14,10 +16,10 @@ const TweetShareForm = ({ share }: Props) => {
 	const {
 		handleSubmit,
 		watch,
-		formState: { isSubmitting },
+		formState: { isSubmitting, isValid },
 		control,
 	} = useForm({
-		resolver: zodResolver(ShareTweetSchema),
+		resolver: zodResolver(QuoteRetweetSchema),
 		defaultValues: {
 			content: "",
 		},
@@ -47,7 +49,7 @@ const TweetShareForm = ({ share }: Props) => {
 
 			<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 				<SubmitButton
-					isLoading={isSubmitting}
+					isLoading={isSubmitting || !isValid}
 					sx={{
 						minWidth: 150,
 						mt: 3,

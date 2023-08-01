@@ -1,23 +1,35 @@
 import z from "zod";
 
+const INVALID_TYPE_ERROR = "Tweet content must be string!";
+const NON_EMPTY_ERROR = "Tweet content is required";
+const MAX_LIMIT = 120;
+const MAX_LIMIT_ERROR = "Caption cannot contain more thant 120 characters!";
+
 export const CreateTweetSchema = z.object({
 	content: z
 		.string({
-			invalid_type_error: "Tweet content must be string!",
+			invalid_type_error: INVALID_TYPE_ERROR,
 		})
 		.trim()
-		.max(120, "Caption cannot contain more thant 120 characters!"),
+		.nonempty(NON_EMPTY_ERROR)
+		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
 });
 export type CreateTweetInput = z.infer<typeof CreateTweetSchema>;
 
-export const ShareTweetSchema = z.object({
+export const QuoteRetweetSchema = z.object({
 	content: z
-		.string({ invalid_type_error: "Tweet content must be string!" })
+		.string({ invalid_type_error: INVALID_TYPE_ERROR })
 		.trim()
-		.nonempty("Tweet content is required!")
-		.max(120, "Caption cannot contain more thant 120 characters!"),
+		.nonempty(NON_EMPTY_ERROR)
+		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
 });
-export type ShareTweetInput = z.infer<typeof ShareTweetSchema>;
+export type ShareTweetInput = z.infer<typeof QuoteRetweetSchema>;
 
-export const EditTweetSchema = ShareTweetSchema.extend({});
+export const EditTweetSchema = z.object({
+	content: z
+		.string({ invalid_type_error: INVALID_TYPE_ERROR })
+		.trim()
+		.nonempty(NON_EMPTY_ERROR)
+		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
+});
 export type EditTweetInput = z.infer<typeof EditTweetSchema>;

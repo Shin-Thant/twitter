@@ -1,7 +1,7 @@
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import HistoryRoundedIcon from "@mui/icons-material/HistoryRounded";
 import ReplyIcon from "@mui/icons-material/Reply";
-import { Button, Collapse, Divider } from "@mui/material";
+import { Button, Collapse, Divider, SxProps, Theme } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import {
@@ -49,7 +49,7 @@ export default function TweetShareModal({
 
 	const isSharedWithoutBody = userId
 		? shares.filter(
-				(share) => !("body" in share)
+				(share) => !share.body
 				// eslint-disable-next-line no-mixed-spaces-and-tabs
 		  ).length > 0
 		: false;
@@ -158,7 +158,7 @@ export default function TweetShareModal({
 							onClick={undoRetweet}
 							variant="outlined"
 							fullWidth
-							sx={{ textTransform: "none" }}
+							sx={btnStyles}
 						>
 							Undo retweet
 						</Button>
@@ -168,7 +168,7 @@ export default function TweetShareModal({
 							onClick={retweet}
 							variant="outlined"
 							fullWidth
-							sx={{ textTransform: "none" }}
+							sx={btnStyles}
 						>
 							Retweet
 						</Button>
@@ -183,7 +183,7 @@ export default function TweetShareModal({
 						}}
 						variant="outlined"
 						fullWidth
-						sx={{ textTransform: "none" }}
+						sx={btnStyles}
 					>
 						Quote tweet
 					</Button>
@@ -195,4 +195,9 @@ export default function TweetShareModal({
 			</Collapse>
 		</Modal>
 	);
+}
+
+const btnStyles: SxProps<Theme> = {
+	textTransform: 'none',
+	py: 1
 }

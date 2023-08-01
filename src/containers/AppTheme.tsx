@@ -13,6 +13,10 @@ declare module "@mui/material/styles" {
 			bg: string;
 			borderColor: string;
 		};
+		option_icon: {
+			normal: string;
+			hover: string;
+		};
 	}
 	interface PaletteOptions {
 		bg: {
@@ -23,6 +27,10 @@ declare module "@mui/material/styles" {
 		tweet: {
 			bg: string;
 			borderColor: string;
+		};
+		option_icon: {
+			normal: string;
+			hover: string;
 		};
 	}
 
@@ -66,8 +74,8 @@ const darkModeColors = {
 	tweet: {
 		bg: "#000",
 		borderColor: "hsl(0, 0%, 25%)",
-		moreOptionsBtn: "hsl(0, 0%, 30%)",
 	},
+	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
 };
 const lightModeColors = {
 	bg: {
@@ -82,8 +90,8 @@ const lightModeColors = {
 	tweet: {
 		bg: "#fff",
 		borderColor: "hsl(0, 0%, 65%)",
-		moreOptionsBtn: "hsl(0, 0%, 70%)",
 	},
+	option_icon: { normal: "hsl(0, 0%, 70%)", hover: "hsl(0, 0%, 30%" },
 };
 
 type Props = { children: ReactNode };
