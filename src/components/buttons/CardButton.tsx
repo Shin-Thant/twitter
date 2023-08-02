@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 type Props = {
 	type: "like" | "comment" | "share";
 	label: string | number;
-	isCompleted: boolean;
+	isDoneByLoginUser: boolean;
 	handleClick: () => void;
 	isLoading?: boolean;
 	children: ReactNode;
@@ -14,7 +14,7 @@ const CardButton = ({
 	type,
 	label,
 	isLoading,
-	isCompleted,
+	isDoneByLoginUser,
 	children,
 	handleClick,
 }: Props) => {
@@ -26,7 +26,7 @@ const CardButton = ({
 			disableFocusRipple
 			sx={{
 				...styles,
-				color: isCompleted ? colorStyles[type].color : grey[600],
+				color: isDoneByLoginUser ? colorStyles[type].color : grey[600],
 				"&:hover": colorStyles[type].actionStyle,
 				"&:focus": colorStyles[type].actionStyle,
 			}}

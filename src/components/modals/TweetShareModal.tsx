@@ -116,10 +116,10 @@ export default function TweetShareModal({
 	const onDelete = async () => {
 		// TODO: review this
 		const sharedTweetWithoutBody = shares.filter(
-			(share) => !("body" in share)
+			(share) => !share.body.length
 		);
 
-		if (isDeleting && sharedTweetWithoutBody.length > 0) {
+		if (isDeleting || sharedTweetWithoutBody.length < 1) {
 			return;
 		}
 		return await handleDelete({
@@ -198,6 +198,6 @@ export default function TweetShareModal({
 }
 
 const btnStyles: SxProps<Theme> = {
-	textTransform: 'none',
-	py: 1
-}
+	textTransform: "none",
+	py: 1,
+};

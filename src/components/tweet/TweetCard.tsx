@@ -16,7 +16,6 @@ type Props = {
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
 		const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-		// const t = useAppSelector(state => selectTweetById(state, tweet._id))
 
 		return (
 			<Card

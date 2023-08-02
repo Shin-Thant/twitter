@@ -8,7 +8,7 @@ export type Owner = Omit<
 export type SharedTweetPreview = {
 	_id: string;
 	origin: string;
-	body?: string;
+	body: string;
 	owner: string;
 	type: "post" | "share";
 };
@@ -28,25 +28,14 @@ interface PostTweet extends BasicTweet {
 }
 export interface SharedTweet extends BasicTweet {
 	type: "share";
-	origin: {
-		type: "post" | "share";
-		_id: string;
-		body: string;
-		owner: {
-			_id: string;
-			username: string;
-			name: string;
-			following: string[];
-			avatar: string;
-			counts: {
-				following: number;
-				followers: number;
-			};
-		};
-		createdAt: string;
-		updatedAt: string;
-	};
+	origin: OriginTweet;
 }
+interface OriginTweet extends BasicTweet {
+	type: "post" | "share";
+	origin: string;
+	owner: Omit<User, "followers">;
+}
+
 export type Tweet = PostTweet | SharedTweet;
 
 export interface Pagination {

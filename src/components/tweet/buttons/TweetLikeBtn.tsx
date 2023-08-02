@@ -21,7 +21,7 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 	const [handleLike, { isLoading }] = useHandleLikesMutation();
 	const { setIsOpen } = useTweetInfoModal();
 
-	let isLiked = loginUserId ? likes.includes(loginUserId) : false;
+	let isLikedByLoginUser = loginUserId ? likes.includes(loginUserId) : false;
 
 	const onLike = async () => {
 		if (isLoading) return;
@@ -31,7 +31,11 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 			return;
 		}
 
-		const updatedLikes = getUpdatedStringList(isLiked, likes, loginUserId);
+		const updatedLikes = getUpdatedStringList(
+			isLikedByLoginUser,
+			likes,
+			loginUserId
+		);
 
 		try {
 			await handleLike({
@@ -41,7 +45,7 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 			});
 
 			startTransition(() => {
-				isLiked = !isLiked;
+				isLikedByLoginUser = !isLikedByLoginUser;
 			});
 		} catch (err) {
 			// console.log(err);
@@ -52,11 +56,11 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 		<CardButton
 			isLoading={isLoading}
 			label={likes.length}
-			isCompleted={isLiked}
+			isDoneByLoginUser={isLikedByLoginUser}
 			type="like"
 			handleClick={onLike}
 		>
-			{isLiked ? (
+			{isLikedByLoginUser ? (
 				<HeartFilledIcon fontSize="small" />
 			) : (
 				<HeartOutlinedIcon fontSize="small" />

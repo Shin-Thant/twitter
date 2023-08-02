@@ -1,4 +1,4 @@
-import { CardHeader } from "@mui/material";
+import { CardHeader, SxProps, Theme } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { Owner } from "../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../features/user/userSlice";
@@ -14,9 +14,10 @@ type Props = {
 	tweetId: string;
 	owner: Owner;
 	createdAt: string;
+	sx?: SxProps<Theme>
 };
 
-export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
+export default function TweetHeader({ tweetId, owner, createdAt, sx }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isTweetOwner = owner._id === loginUserId;
 
@@ -40,7 +41,7 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 			action={
 				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : false
 			}
-			sx={{ pb: "0" }}
+			sx={{ pb: "0", ...sx }}
 		/>
 	);
 }

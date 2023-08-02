@@ -11,11 +11,13 @@ type Props = {
 	shares: SharedTweetPreview[];
 	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+// TODO: should I use `useEffect` for `isSharedByLoginUser`
 export default function TweetShareBtn({ shares, setModalOpen }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const { setIsOpen: setTweetInfoModal } = useTweetInfoModal();
 
-	const isShared = loginUserId
+	const isSharedByLoginUser = loginUserId
 		? !!shares.find((share) => share.owner === loginUserId)
 		: false;
 
@@ -30,11 +32,11 @@ export default function TweetShareBtn({ shares, setModalOpen }: Props) {
 	return (
 		<CardButton
 			label={shares.length}
-			isCompleted={isShared}
+			isDoneByLoginUser={isSharedByLoginUser}
 			type="share"
 			handleClick={handleModal}
 		>
-			{isShared ? (
+			{isSharedByLoginUser ? (
 				<ShareRoundedIcon fontSize="small" />
 			) : (
 				<SharedOutlinedIcon fontSize="small" />

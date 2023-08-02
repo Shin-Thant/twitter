@@ -13,7 +13,7 @@ type Props = {
 
 export default function TweetCommentBtn({ comments }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
-	const isCommented = loginUserId
+	const isCommentedByLoginUser = loginUserId
 		? !!comments.find((cmt) => cmt.creator._id === loginUserId)
 		: false;
 	const { setIsOpen } = useTweetInfoModal();
@@ -31,11 +31,11 @@ export default function TweetCommentBtn({ comments }: Props) {
 		<CardButton
 			isLoading={false}
 			label={comments.length}
-			isCompleted={isCommented}
+			isDoneByLoginUser={isCommentedByLoginUser}
 			type="comment"
 			handleClick={onComment}
 		>
-			{isCommented ? (
+			{isCommentedByLoginUser ? (
 				<CommentFilledIcon fontSize="small" />
 			) : (
 				<CommentOutlinedIcon fontSize="small" />

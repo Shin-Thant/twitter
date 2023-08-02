@@ -5,9 +5,12 @@ import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
 
+// TODO: use the created tweet header component instead of card header
+
 type Props = {
 	origin: SharedTweet["origin"];
 };
+
 const NestedTweet = ({ origin }: Props) => {
 	return (
 		<Card
