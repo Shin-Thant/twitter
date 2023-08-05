@@ -1,5 +1,4 @@
 import { Button, Stack, Typography, styled } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { useForm } from "react-hook-form";
 import { StyledForm } from "../forms/AuthFormComponents";
 import Modal from "./Modal";
@@ -40,14 +39,20 @@ const ConfirmModal = ({
 				alignItems={"center"}
 				spacing={1}
 			>
+				{/* change color in light mode (a little more dark) */}
 				<ActionButton
 					variant="outlined"
 					color="inherit"
 					onClick={onClose}
 					disabled={isSubmitting}
 					sx={{
-						borderColor: grey[400],
-						color: grey[400],
+						borderColor: "btn.grey.normal",
+						color: "btn.grey.normal",
+						// color: grey[400],
+						"&:hover": {
+							borderColor: "btn.grey.hover",
+							color: "btn.grey.hover",
+						},
 					}}
 				>
 					Cancel
@@ -69,7 +74,6 @@ const ConfirmModal = ({
 };
 
 const ActionButton = styled(Button)(({ theme }) => ({
-	// width: "max-content",
 	minWidth: theme.spacing(11),
 	borderRadius: "50px",
 	textTransform: "none",

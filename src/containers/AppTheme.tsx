@@ -1,6 +1,7 @@
 import { ThemeProvider, createTheme } from "@mui/material";
 import { ReactNode, useMemo } from "react";
 import useColorMode from "../hooks/useColorMode";
+import { grey } from "@mui/material/colors";
 
 declare module "@mui/material/styles" {
 	interface Palette {
@@ -17,6 +18,9 @@ declare module "@mui/material/styles" {
 			normal: string;
 			hover: string;
 		};
+		btn: {
+			grey: { normal: string; hover: string };
+		};
 	}
 	interface PaletteOptions {
 		bg: {
@@ -31,6 +35,9 @@ declare module "@mui/material/styles" {
 		option_icon: {
 			normal: string;
 			hover: string;
+		};
+		btn: {
+			grey: { normal: string; hover: string };
 		};
 	}
 
@@ -76,6 +83,9 @@ const darkModeColors = {
 		borderColor: "hsl(0, 0%, 25%)",
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
+	btn: {
+		grey: { normal: grey[700], hover: grey[400] },
+	},
 };
 const lightModeColors = {
 	bg: {
@@ -92,6 +102,9 @@ const lightModeColors = {
 		borderColor: "hsl(0, 0%, 65%)",
 	},
 	option_icon: { normal: "hsl(0, 0%, 70%)", hover: "hsl(0, 0%, 30%" },
+	btn: {
+		grey: { normal: grey[600], hover: grey[800] },
+	},
 };
 
 type Props = { children: ReactNode };
