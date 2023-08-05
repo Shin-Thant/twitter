@@ -1,16 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useTweetEditModal } from "../../hooks/useTweetEditModal";
-import { EditTweetInput, EditTweetSchema } from "../../schemas/TweetSchema";
-import ContentInputHandler from "../forms/ContentInputHandler";
-import Modal from "./Modal";
 import { useAppSelector } from "../../app/hooks";
 import {
 	selectTweetById,
 	useEditTweetMutation,
 } from "../../features/tweet/tweetApiSlice";
-import { useEffect } from "react";
+import { useTweetEditModal } from "../../hooks/useTweetEditModal";
+import { EditTweetInput, EditTweetSchema } from "../../schemas/TweetSchema";
+import ModalActionButton from "../buttons/ModalActionButton";
+import ContentInputHandler from "../forms/ContentInputHandler";
+import Modal from "./Modal";
 
 const TweetEditModal = () => {
 	const { isOpen, closeModal } = useTweetEditModal();
@@ -76,6 +77,7 @@ const TweetEditModal = () => {
 							errorMessage={errors.content?.message}
 							contentLength={content.length}
 							required={false}
+							autoFocus={true}
 						/>
 					)}
 					name="content"
@@ -90,33 +92,21 @@ const TweetEditModal = () => {
 					spacing={2}
 					mt={3}
 				>
-					<Button
+					<ModalActionButton
 						type="button"
-						disabled={isSubmitting}
-						variant="outlined"
+						isLoading={isSubmitting}
 						onClick={onClose}
-						sx={{
-							width: "max-content",
-							minWidth: 85,
-							borderRadius: "50px",
-							textTransform: "none",
-						}}
+						setGreyStyles={true}
 					>
 						Cancel
-					</Button>
-					<Button
+					</ModalActionButton>
+
+					<ModalActionButton
 						type="submit"
-						disabled={isSubmitting || !isValid}
-						variant="outlined"
-						sx={{
-							width: "max-content",
-							minWidth: 85,
-							borderRadius: "50px",
-							textTransform: "none",
-						}}
+						isLoading={isSubmitting || !isValid}
 					>
 						{isSubmitting ? "Loading..." : "Save"}
-					</Button>
+					</ModalActionButton>
 				</Stack>
 			</form>
 		</Modal>

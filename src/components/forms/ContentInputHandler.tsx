@@ -5,6 +5,7 @@ import FieldError from "./FieldError";
 import TweetContentInput from "./TweetContentInput";
 
 interface InputProps {
+	autoFocus?: boolean;
 	placeholder?: string;
 	required?: boolean;
 }
@@ -18,6 +19,7 @@ const ContentInputHandler = ({
 	field,
 	errorMessage,
 	contentLength,
+	autoFocus,
 	placeholder,
 	required,
 }: Props) => {
@@ -27,6 +29,7 @@ const ContentInputHandler = ({
 				field={field}
 				hasError={!!errorMessage}
 				placeholder={placeholder}
+				autoFocus={autoFocus}
 				required={required ?? true}
 			/>
 

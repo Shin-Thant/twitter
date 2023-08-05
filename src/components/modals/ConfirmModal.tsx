@@ -1,5 +1,6 @@
-import { Button, Stack, Typography, styled } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
+import ModalActionButton from "../buttons/ModalActionButton";
 import { StyledForm } from "../forms/AuthFormComponents";
 import Modal from "./Modal";
 
@@ -33,50 +34,34 @@ const ConfirmModal = ({
 		<Modal title={title} isOpen={isOpen} onClose={onClose}>
 			<Typography sx={{ mb: 4 }}>{description}</Typography>
 
-			<Stack
-				direction="row"
-				justifyContent={"flex-end"}
-				alignItems={"center"}
-				spacing={1}
-			>
-				{/* change color in light mode (a little more dark) */}
-				<ActionButton
-					variant="outlined"
-					color="inherit"
-					onClick={onClose}
-					disabled={isSubmitting}
-					sx={{
-						borderColor: "btn.grey.normal",
-						color: "btn.grey.normal",
-						// color: grey[400],
-						"&:hover": {
-							borderColor: "btn.grey.hover",
-							color: "btn.grey.hover",
-						},
-					}}
+			<StyledForm onSubmit={handleSubmit(onSubmit)}>
+				<Stack
+					direction="row"
+					justifyContent={"flex-end"}
+					alignItems={"center"}
+					spacing={1}
 				>
-					Cancel
-				</ActionButton>
+					<ModalActionButton
+						type="button"
+						isLoading={isSubmitting}
+						color="inherit"
+						onClick={onClose}
+						setGreyStyles={true}
+					>
+						Cancel
+					</ModalActionButton>
 
-				<StyledForm onSubmit={handleSubmit(onSubmit)}>
-					<ActionButton
-						disabled={isSubmitting}
+					<ModalActionButton
 						type="submit"
-						variant="outlined"
+						isLoading={isSubmitting}
 						color="error"
 					>
 						{isSubmitting ? "Loading..." : actionLabel}
-					</ActionButton>
-				</StyledForm>
-			</Stack>
+					</ModalActionButton>
+				</Stack>
+			</StyledForm>
 		</Modal>
 	);
 };
-
-const ActionButton = styled(Button)(({ theme }) => ({
-	minWidth: theme.spacing(11),
-	borderRadius: "50px",
-	textTransform: "none",
-}));
 
 export default ConfirmModal;
