@@ -56,8 +56,28 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 			// TODO: make this optimistic
-			invalidatesTags: (_res, _err, arg) => {
-				return [{ type: "Tweets", id: arg.tweetId }];
+			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+				const result = dispatch(
+					tweetApiSlice.util.updateQueryData(
+						"getTweets",
+						{ currentPage: 1, itemsPerPage: 10 },
+						(draft) => {
+							const foundTweet = draft.data.find(
+								(tweet) => tweet._id === arg.tweetId
+							);
+
+							if (foundTweet) {
+								foundTweet.body = arg.body;
+							}
+						}
+					)
+				);
+
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					result.undo();
+				}
 			},
 		}),
 

@@ -1,5 +1,5 @@
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import {
 	IconButton,
@@ -11,8 +11,6 @@ import {
 import { useRef, useState } from "react";
 import { useTweetDeleteModal } from "../../../hooks/useTweetDeleteModal";
 import { useTweetEditModal } from "../../../hooks/useTweetEditModal";
-import { useAppSelector } from "../../../app/hooks";
-import { selectTweetById } from "../../../features/tweet/tweetApiSlice";
 
 type Props = {
 	tweetId: string;
@@ -23,10 +21,8 @@ const TweetOptionsMenu = ({ tweetId }: Props) => {
 	const { openModal: openDeleteModal } = useTweetDeleteModal();
 	const [isOpen, setIsOpen] = useState(false);
 	const anchorEl = useRef<HTMLButtonElement>(null);
-	const tweet = useAppSelector((state) => selectTweetById(state, tweetId));
 
 	const handleEditModal = () => {
-		if (!tweet) return;
 		setIsOpen(false);
 		openEditModal(tweetId);
 	};

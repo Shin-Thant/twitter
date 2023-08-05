@@ -12,8 +12,6 @@ import {
 } from "../../features/tweet/tweetApiSlice";
 import { useEffect } from "react";
 
-// TODO: get the original tweet content
-
 const TweetEditModal = () => {
 	const { isOpen, closeModal } = useTweetEditModal();
 	const tweetId = useTweetEditModal().tweetId;
@@ -25,7 +23,6 @@ const TweetEditModal = () => {
 		formState: { isSubmitting, isValid },
 		control,
 		watch,
-		reset,
 		setValue,
 	} = useForm({
 		resolver: zodResolver(EditTweetSchema),
@@ -41,14 +38,18 @@ const TweetEditModal = () => {
 		let isMounted = true;
 		console.log("setting...");
 
-		if (isMounted && !!tweet) {
-			setValue("content", tweet.body);
+		if (isMounted) {
+			if (tweet) {
+				setValue("content", tweet.body);
+			} else {
+				closeModal();
+			}
 		}
 
 		return () => {
 			isMounted = false;
 		};
-	}, [setValue, tweet]);
+	}, [setValue, tweet, closeModal]);
 
 	const onSubmit: SubmitHandler<EditTweetInput> = async (data) => {
 		if (isLoading) return;
@@ -62,7 +63,6 @@ const TweetEditModal = () => {
 	};
 
 	const onClose = () => {
-		reset();
 		closeModal();
 	};
 
