@@ -1,13 +1,9 @@
 import { Container, Divider } from "@mui/material";
-import TweetInfoModal from "../components/modals/TweetInfoModal";
-import TweetsContainer from "../containers/TweetsContainer";
-import CurrentPageProvider from "../context/CurrentPageContext";
-import TweetInfoModalProvider from "../context/TweetInfoModalContext";
-import TweetShareModalProvider from "../context/TweetShareModalContext";
-import { useAppSelector } from "../app/hooks";
-import { userSelector } from "../features/user/userSlice";
-import TweetCreator from "../components/tweet/TweetCreator";
 import { Helmet } from "react-helmet-async";
+import { useAppSelector } from "../app/hooks";
+import TweetCreator from "../components/tweet/TweetCreator";
+import { userSelector } from "../features/user/userSlice";
+import TweetsContainer from "../containers/TweetsContainer";
 
 export default function Home() {
 	const user = useAppSelector(userSelector);
@@ -35,14 +31,7 @@ export default function Home() {
 					</>
 				)}
 
-				<CurrentPageProvider>
-					<TweetInfoModalProvider>
-						<TweetShareModalProvider>
-							<TweetInfoModal />
-							<TweetsContainer />
-						</TweetShareModalProvider>
-					</TweetInfoModalProvider>
-				</CurrentPageProvider>
+				<TweetsContainer />
 			</Container>
 		</>
 	);

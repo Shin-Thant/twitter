@@ -10,7 +10,12 @@ import { TweetDeleteModalProvider } from "../context/TweetDeleteModalContext";
 import TweetDeleteModal from "../components/modals/TweetDeleteModal";
 import TweetEditModal from "../components/modals/TweetEditModal";
 import { TweetEditModalProvider } from "../context/TweetEditModalContext";
+import TweetInfoModalProvider from "../context/TweetInfoModalContext";
+import TweetShareModalProvider from "../context/TweetShareModalContext";
+import TweetInfoModal from "../components/modals/TweetInfoModal";
+import TweetShareModal from "../components/modals/TweetShareModal";
 
+// TODO: restructure this
 export default function Layout() {
 	return (
 		<LogoutModalProvider>
@@ -21,22 +26,28 @@ export default function Layout() {
 				<ThemeModal />
 				<Sidebar />
 
-				<TweetEditModalProvider>
-					<TweetDeleteModalProvider>
-						<TweetDeleteModal />
-						<TweetEditModal />
+				<TweetInfoModalProvider>
+					<TweetShareModalProvider>
+						<TweetEditModalProvider>
+							<TweetDeleteModalProvider>
+								<TweetShareModal />
+								<TweetInfoModal />
+								<TweetDeleteModal />
+								<TweetEditModal />
 
-						<Box
-							flex={1}
-							sx={{ height: "100vh", overflow: "auto" }}
-						>
-							<Navbar />
-							<Box>
-								<Outlet />
-							</Box>
-						</Box>
-					</TweetDeleteModalProvider>
-				</TweetEditModalProvider>
+								<Box
+									flex={1}
+									sx={{ height: "100vh", overflow: "auto" }}
+								>
+									<Navbar />
+									<Box>
+										<Outlet />
+									</Box>
+								</Box>
+							</TweetDeleteModalProvider>
+						</TweetEditModalProvider>
+					</TweetShareModalProvider>
+				</TweetInfoModalProvider>
 			</Box>
 		</LogoutModalProvider>
 	);

@@ -1,9 +1,10 @@
 import WestRoundedIcon from "@mui/icons-material/WestRounded";
 import { Button } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useLocationState } from "../../hooks/useLocationState";
 
 const BackButton = () => {
-	const from = useLocation().state?.from;
+	const from = useLocationState();
 
 	return (
 		<Link to={from ? from : "/"} className="no_underline">

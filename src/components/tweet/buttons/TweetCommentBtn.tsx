@@ -13,10 +13,10 @@ type Props = {
 
 export default function TweetCommentBtn({ comments }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
-	const isCommentedByLoginUser = loginUserId
+	const { setIsOpen } = useTweetInfoModal();
+	const isCommentedByLoginUser: boolean = loginUserId
 		? !!comments.find((cmt) => cmt.creator._id === loginUserId)
 		: false;
-	const { setIsOpen } = useTweetInfoModal();
 
 	const onComment = () => {
 		if (!loginUserId) {

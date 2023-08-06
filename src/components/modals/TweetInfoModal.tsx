@@ -12,7 +12,7 @@ export default function TweetInfoModal() {
 	const closeAndNavigate = (to: "/login" | "/signup") => {
 		setIsOpen(false);
 		startTransition(() => {
-			navigate({ pathname: to }, { state: { from: location.pathname } });
+			navigate(to, { state: { from: location.pathname } });
 		});
 	};
 
@@ -44,3 +44,5 @@ export default function TweetInfoModal() {
 		</Modal>
 	);
 }
+
+// change button styles

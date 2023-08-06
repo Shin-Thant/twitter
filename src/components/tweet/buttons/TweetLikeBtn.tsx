@@ -21,7 +21,9 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 	const [handleLike, { isLoading }] = useHandleLikesMutation();
 	const { setIsOpen } = useTweetInfoModal();
 
-	let isLikedByLoginUser = loginUserId ? likes.includes(loginUserId) : false;
+	let isLikedByLoginUser: boolean = loginUserId
+		? likes.includes(loginUserId)
+		: false;
 
 	const onLike = async () => {
 		if (isLoading) return;

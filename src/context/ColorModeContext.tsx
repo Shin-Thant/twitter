@@ -19,7 +19,6 @@ type ContextState = {
 	mode: Mode;
 	systemMode: ColorMode;
 	setMode: React.Dispatch<React.SetStateAction<Mode>>;
-	setSystemMode: React.Dispatch<React.SetStateAction<ColorMode>>;
 	changeMode: (newMode: Mode) => void;
 };
 
@@ -27,53 +26,52 @@ const initValues: ContextState = {
 	mode: "system",
 	systemMode: "dark",
 	setMode: () => undefined,
-	setSystemMode: () => undefined,
 	changeMode: () => undefined,
 };
 export const ColorModeContext = createContext<ContextState>(initValues);
 
 type Props = { children: ReactElement };
+
 export default function ColorModeProvider({ children }: Props) {
 	const [mode, setMode] = useState<Mode>("system");
-	const [systemMode, setSystemMode] = useState<ColorMode>("dark");
 	const deviceTheme = useDeviceTheme();
+	// const [systemMode, setSystemMode] = useState<ColorMode>('dark')
+	const systemMode: ColorMode = deviceTheme;
 
 	useEffect(() => {
 		let isMounted = true;
+
 		if (isMounted) {
 			const storedMode = getModeFromLocalStorage();
+
 			if (!isValidColorMode(storedMode)) {
 				setModeToLocalStorage("dark");
 				return;
 			}
 
-			// set stored mode and system default theme states
-			startTransition(() => {
-				setMode(storedMode);
-				setSystemMode(deviceTheme);
-			});
+			// set stored mode
+			setMode(storedMode);
 		}
+
 		return () => {
 			isMounted = false;
 		};
 	}, [deviceTheme]);
 
-	const changeMode = useCallback(
-		(newMode: Mode) => {
-			startTransition(() => {
-				setMode(newMode);
-				if (newMode === "system") {
-					setSystemMode(deviceTheme);
-				}
-			});
-			setModeToLocalStorage(newMode);
-		},
-		[deviceTheme]
-	);
+	useEffect(() => {
+		console.log("render");
+	});
+
+	const changeMode = useCallback((newMode: Mode) => {
+		startTransition(() => {
+			setMode(newMode);
+		});
+		setModeToLocalStorage(newMode);
+	}, []);
 
 	return (
 		<ColorModeContext.Provider
-			value={{ systemMode, setSystemMode, mode, setMode, changeMode }}
+			value={{ systemMode, mode, setMode, changeMode }}
 		>
 			{children}
 		</ColorModeContext.Provider>

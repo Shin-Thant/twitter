@@ -1,23 +1,24 @@
 import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
-import React from "react";
-import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
-import CardButton from "../../buttons/CardButton";
-import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
 import { useAppSelector } from "../../../app/hooks";
+import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
+import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
+import { useTweetShareModal } from "../../../hooks/useTweetShareModal";
+import CardButton from "../../buttons/CardButton";
 
 type Props = {
+	tweetId: string;
 	shares: SharedTweetPreview[];
-	setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 // TODO: should I use `useEffect` for `isSharedByLoginUser`
-export default function TweetShareBtn({ shares, setModalOpen }: Props) {
+export default function TweetShareBtn({ tweetId, shares }: Props) {
+	const { openModal } = useTweetShareModal();
 	const loginUserId = useAppSelector(userIdSelector);
 	const { setIsOpen: setTweetInfoModal } = useTweetInfoModal();
 
-	const isSharedByLoginUser = loginUserId
+	const isSharedByLoginUser: boolean = loginUserId
 		? !!shares.find((share) => share.owner === loginUserId)
 		: false;
 
@@ -26,7 +27,7 @@ export default function TweetShareBtn({ shares, setModalOpen }: Props) {
 			setTweetInfoModal(true);
 			return;
 		}
-		setModalOpen(true);
+		openModal(tweetId);
 	};
 
 	return (

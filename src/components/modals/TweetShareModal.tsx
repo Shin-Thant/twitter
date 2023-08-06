@@ -5,15 +5,16 @@ import { Button, Collapse, Divider, SxProps, Theme } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import {
+	selectTweetById,
 	useHandleDeleteTweetMutation,
 	useHandleShareMutation,
 } from "../../features/tweet/tweetApiSlice";
 import { SharedTweetPreview } from "../../features/tweet/tweetTypes";
-import { userIdSelector } from "../../features/user/userSlice";
 import {
 	isFetchBaseQueryError,
 	isResponseError,
 } from "../../helpers/errorHelpers";
+import { useTweetShareModal } from "../../hooks/useTweetShareModal";
 import { showToast } from "../../lib/handleToast";
 import TweetShareForm from "../forms/TweetShareForm";
 import Modal from "./Modal";
@@ -28,31 +29,20 @@ function handleToast({ variant }: { variant: "success" | "error" }) {
 	});
 }
 
-type Props = {
-	tweetId: string;
-	shares: SharedTweetPreview[];
-	isModalOpen: boolean;
-	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-export default function TweetShareModal({
-	tweetId,
-	shares,
-	isModalOpen,
-	setIsModalOpen,
-}: Props) {
+export default function TweetShareModal() {
+	const { tweetId, isOpen: isModalOpen, closeModal } = useTweetShareModal();
+	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
+
+	const foundTweet = useAppSelector((state) =>
+		selectTweetById(state, tweetId)
+	);
+	const isSharedWithoutBody: boolean = foundTweet
+		? !!foundTweet?.shares.find((share) => !share.body)
+		: false;
+
 	const [handleShare, { isLoading }] = useHandleShareMutation();
 	const [handleDelete, { isLoading: isDeleting }] =
 		useHandleDeleteTweetMutation();
-
-	const userId = useAppSelector(userIdSelector);
-	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
-
-	const isSharedWithoutBody = userId
-		? shares.filter(
-				(share) => !share.body
-				// eslint-disable-next-line no-mixed-spaces-and-tabs
-		  ).length > 0
-		: false;
 
 	const retweet = async () => {
 		try {
@@ -70,10 +60,10 @@ export default function TweetShareModal({
 			}
 
 			handleToast({ variant: "success" });
-			closeAndReset();
 		} catch (err) {
 			handleToast({ variant: "error" });
-			closeAndReset();
+		} finally {
+			closeAndReset({ reset: false });
 		}
 	};
 
@@ -96,9 +86,9 @@ export default function TweetShareModal({
 			}
 
 			handleToast({ variant: "success" });
-			closeAndReset();
 		} catch (err) {
 			handleToast({ variant: "error" });
+		} finally {
 			closeAndReset();
 		}
 	};
@@ -106,24 +96,24 @@ export default function TweetShareModal({
 	const undoRetweet = async () => {
 		try {
 			await onDelete();
-			setIsModalOpen(false);
 		} catch (err) {
 			handleToast({ variant: "error" });
-			setIsModalOpen(false);
+		} finally {
+			closeAndReset({ reset: false });
 		}
 	};
 
 	const onDelete = async () => {
-		// TODO: review this
-		const sharedTweetWithoutBody = shares.filter(
-			(share) => !share.body.length
-		);
+		const sharedTweetWithoutBody: SharedTweetPreview | undefined =
+			foundTweet
+				? foundTweet?.shares.find((share) => !share.body)
+				: undefined;
 
-		if (isDeleting || sharedTweetWithoutBody.length < 1) {
+		if (isDeleting || !sharedTweetWithoutBody) {
 			return;
 		}
 		return await handleDelete({
-			tweetId: sharedTweetWithoutBody[0]._id,
+			tweetId: sharedTweetWithoutBody._id,
 		});
 	};
 
@@ -142,9 +132,11 @@ export default function TweetShareModal({
 		closeAndReset();
 	};
 
-	const closeAndReset = () => {
-		setIsModalOpen(false);
-		setIsQuoteTweet(false);
+	const closeAndReset = (option?: { reset: boolean }) => {
+		closeModal();
+		if (option?.reset) {
+			setIsQuoteTweet(false);
+		}
 	};
 
 	// TODO: fix the height bug

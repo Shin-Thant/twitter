@@ -1,11 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { blue, grey, red } from "@mui/material/colors";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { useLoginMutation } from "../../features/auth/authApiSlice";
 import { setAuth } from "../../features/auth/authSlice";
 import { setUser } from "../../features/user/userSlice";
+import { useLocationState } from "../../hooks/useLocationState";
+import { LoginInputs, LoginSchema } from "../../schemas/LoginSchema";
+import SubmitButton from "../buttons/SubmitButton";
 import {
 	FieldContainer,
 	Label,
@@ -14,8 +17,6 @@ import {
 } from "./AuthFormComponents";
 import FieldError from "./FieldError";
 import FormError from "./FormError";
-import { LoginInputs, LoginSchema } from "../../schemas/LoginSchema";
-import SubmitButton from "../buttons/SubmitButton";
 
 const DEFAULT_VALUES: LoginInputs = {
 	email: "",
@@ -25,7 +26,8 @@ const DEFAULT_VALUES: LoginInputs = {
 export default function LoginForm() {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	const from = useLocation().state?.from;
+
+	const from = useLocationState();
 
 	const {
 		register,

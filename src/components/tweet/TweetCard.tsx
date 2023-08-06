@@ -1,7 +1,6 @@
 import { Box, Card } from "@mui/material";
-import { ForwardedRef, forwardRef, memo, useState } from "react";
+import { ForwardedRef, forwardRef, memo } from "react";
 import { Tweet } from "../../features/tweet/tweetTypes";
-import TweetShareModal from "../modals/TweetShareModal";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
 import TweetHeader from "./TweetHeader";
@@ -15,8 +14,6 @@ type Props = {
 
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
-		const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
 		return (
 			<Card
 				ref={ref}
@@ -65,17 +62,10 @@ const TweetCard = forwardRef(
 						}
 						shareBtn={
 							<TweetShareBtn
-								setModalOpen={setIsShareModalOpen}
 								shares={tweet.shares}
+								tweetId={tweet._id}
 							/>
 						}
-					/>
-
-					<TweetShareModal
-						tweetId={tweet._id}
-						shares={tweet.shares}
-						isModalOpen={isShareModalOpen}
-						setIsModalOpen={setIsShareModalOpen}
 					/>
 				</Box>
 			</Card>
