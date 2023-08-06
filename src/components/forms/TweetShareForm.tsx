@@ -74,7 +74,6 @@ const TweetShareForm = ({ share }: Props) => {
 					isLoading={isSubmitting || !isValid}
 					sx={{
 						minWidth: 100,
-						// mt: 3,
 					}}
 				>
 					{isSubmitting ? "Loading..." : "Retweet"}

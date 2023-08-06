@@ -200,4 +200,5 @@ export default function TweetShareModal({
 const btnStyles: SxProps<Theme> = {
 	textTransform: "none",
 	py: 1,
+	borderRadius: { xs: "50px", ss: "8px" },
 };
