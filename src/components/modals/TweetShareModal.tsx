@@ -129,7 +129,7 @@ export default function TweetShareModal() {
 		// if (isLoading || isDeleting) {
 		// 	return;
 		// }
-		closeAndReset();
+		closeAndReset({ reset: true });
 	};
 
 	const closeAndReset = (option?: { reset: boolean }) => {
@@ -183,7 +183,7 @@ export default function TweetShareModal() {
 			)}
 
 			<Collapse in={isQuoteTweet} timeout={600}>
-				<TweetShareForm share={quoteTweet} />
+				<TweetShareForm handleShare={quoteTweet} closeModal={onClose} />
 			</Collapse>
 		</Modal>
 	);

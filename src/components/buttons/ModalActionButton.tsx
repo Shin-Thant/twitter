@@ -15,11 +15,13 @@ const ModalActionButton = ({
 	sx,
 	children,
 	setGreyStyles,
+	color,
 	...props
 }: Props) => {
 	return (
 		<Button
 			type={type}
+			color={setGreyStyles ? "inherit" : color}
 			disabled={disabled || isLoading}
 			variant="outlined"
 			sx={{

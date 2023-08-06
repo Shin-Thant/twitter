@@ -44,7 +44,6 @@ const ConfirmModal = ({
 					<ModalActionButton
 						type="button"
 						isLoading={isSubmitting}
-						color="inherit"
 						onClick={onClose}
 						setGreyStyles={true}
 					>

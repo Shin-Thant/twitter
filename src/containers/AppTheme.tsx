@@ -84,7 +84,7 @@ const darkModeColors = {
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
 	btn: {
-		grey: { normal: grey[700], hover: grey[400] },
+		grey: { normal: grey[600], hover: grey[400] },
 	},
 };
 const lightModeColors = {
@@ -106,6 +106,8 @@ const lightModeColors = {
 		grey: { normal: grey[600], hover: grey[800] },
 	},
 };
+
+// TODO: adjust `btn` color
 
 type Props = { children: ReactNode };
 export default function AppTheme({ children }: Props) {

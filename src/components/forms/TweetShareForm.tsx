@@ -6,13 +6,12 @@ import { StyledForm } from "./AuthFormComponents";
 import ContentInputHandler from "./ContentInputHandler";
 import ModalActionButton from "../buttons/ModalActionButton";
 
-// TODO: add cancel button
-
 type Props = {
-	share: (body?: string) => void | Promise<void>;
+	handleShare: (body?: string) => void | Promise<void>;
+	closeModal: () => void;
 };
 
-const TweetShareForm = ({ share }: Props) => {
+const TweetShareForm = ({ handleShare, closeModal }: Props) => {
 	const {
 		handleSubmit,
 		watch,
@@ -29,12 +28,11 @@ const TweetShareForm = ({ share }: Props) => {
 	const content = watch("content");
 
 	const onSubmit: SubmitHandler<ShareTweetInput> = async (data) => {
-		await share(data.content ?? "");
+		await handleShare(data.content ?? "");
 	};
 
-	// TODO: add close modal function
 	const onClose = () => {
-		// close modal
+		closeModal();
 	};
 
 	return (
@@ -65,6 +63,7 @@ const TweetShareForm = ({ share }: Props) => {
 					type="button"
 					isLoading={isSubmitting}
 					onClick={onClose}
+					setGreyStyles={true}
 				>
 					Cancel
 				</ModalActionButton>
