@@ -2,7 +2,6 @@ import HeartOutlinedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HeartFilledIcon from "@mui/icons-material/FavoriteRounded";
 import { startTransition } from "react";
 import { useAppSelector } from "../../../app/hooks";
-import { currentPageSelector } from "../../../features/currentPageSlice";
 import { useHandleLikesMutation } from "../../../features/tweet/tweetApiSlice";
 import { userIdSelector } from "../../../features/user/userSlice";
 import getUpdatedStringList from "../../../helpers/getUpdatedStringList";
@@ -14,9 +13,6 @@ type Props = {
 	tweetId: string;
 };
 export default function TweetLikeBtn({ likes, tweetId }: Props) {
-	const currentPage = useAppSelector((state) =>
-		currentPageSelector(state, "tweet")
-	);
 	const loginUserId = useAppSelector(userIdSelector);
 	const [handleLike, { isLoading }] = useHandleLikesMutation();
 	const { setIsOpen } = useTweetInfoModal();
@@ -43,7 +39,6 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 			await handleLike({
 				tweetId,
 				likes: updatedLikes,
-				cacheKey: currentPage,
 			});
 
 			startTransition(() => {

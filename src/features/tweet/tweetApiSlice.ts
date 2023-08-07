@@ -2,11 +2,12 @@ import { createSelector } from "@reduxjs/toolkit";
 import apiSlice from "../../app/api/apiSlice";
 import { RootState } from "../../app/store";
 import { GetTweetsData, GetTweetsResponse, Tweet } from "./tweetTypes";
+import { currentPageSelector } from "../currentPageSlice";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
 type CreateTweetMutationArg = { body: string };
 type EditTweetMutationArg = { tweetId: string; body: string };
-type LikeMutationArg = { tweetId: string; likes: string[]; cacheKey: number };
+type LikeMutationArg = { tweetId: string; likes: string[] };
 type ShareMutationArg = { tweetId: string; body?: string };
 type DeleteMutationArg = { tweetId: string };
 
@@ -55,22 +56,12 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			// TODO: make this optimistic
-			async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-				const result = dispatch(
-					tweetApiSlice.util.updateQueryData(
-						"getTweets",
-						{ currentPage: 1, itemsPerPage: 10 },
-						(draft) => {
-							const foundTweet = draft.data.find(
-								(tweet) => tweet._id === arg.tweetId
-							);
+			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+				const rootState = getState() as RootState;
+				const cacheKey = currentPageSelector(rootState, "tweet");
 
-							if (foundTweet) {
-								foundTweet.body = arg.body;
-							}
-						}
-					)
+				const result = dispatch(
+					optimisticEditUpdate({ ...arg, cacheKey })
 				);
 
 				try {
@@ -86,8 +77,13 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				method: "PATCH",
 				url: `/tweets/${tweetId}/like`,
 			}),
-			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-				const result = dispatch(optimisticLikeUpdate(arg));
+			async onQueryStarted(arg, { dispatch, queryFulfilled, getState }) {
+				const rootState = getState() as RootState;
+				const cacheKey = currentPageSelector(rootState, "tweet");
+
+				const result = dispatch(
+					optimisticLikeUpdate({ ...arg, cacheKey })
+				);
 
 				try {
 					await queryFulfilled;
@@ -125,10 +121,10 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 });
 
 const optimisticLikeUpdate = ({
-	cacheKey,
 	tweetId,
 	likes,
-}: LikeMutationArg) => {
+	cacheKey,
+}: LikeMutationArg & { cacheKey: number }) => {
 	return tweetApiSlice.util.updateQueryData(
 		"getTweets",
 		{ currentPage: cacheKey, itemsPerPage: 10 },
@@ -139,6 +135,26 @@ const optimisticLikeUpdate = ({
 
 			if (foundTweet) {
 				foundTweet.likes = likes;
+			}
+		}
+	);
+};
+
+const optimisticEditUpdate = ({
+	body,
+	tweetId,
+	cacheKey,
+}: EditTweetMutationArg & { cacheKey: number }) => {
+	return tweetApiSlice.util.updateQueryData(
+		"getTweets",
+		{ currentPage: cacheKey, itemsPerPage: 10 },
+		(draft) => {
+			const foundTweet = draft.data.find(
+				(tweet) => tweet._id === tweetId
+			);
+
+			if (foundTweet) {
+				foundTweet.body = body;
 			}
 		}
 	);
