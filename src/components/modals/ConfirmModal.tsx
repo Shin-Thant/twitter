@@ -1,7 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import ModalActionButton from "../buttons/ModalActionButton";
-import { StyledForm } from "../forms/AuthFormComponents";
 import Modal from "./Modal";
 
 type Props = {
@@ -34,7 +33,7 @@ const ConfirmModal = ({
 		<Modal title={title} isOpen={isOpen} onClose={onClose}>
 			<Typography sx={{ mb: 4 }}>{description}</Typography>
 
-			<StyledForm onSubmit={handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<Stack
 					direction="row"
 					justifyContent={"flex-end"}
@@ -58,7 +57,7 @@ const ConfirmModal = ({
 						{isSubmitting ? "Loading..." : actionLabel}
 					</ModalActionButton>
 				</Stack>
-			</StyledForm>
+			</form>
 		</Modal>
 	);
 };

@@ -56,7 +56,7 @@ const TweetShareForm = ({ handleShare, closeModal }: Props) => {
 					display: "flex",
 					justifyContent: "flex-end",
 					gap: 2,
-					mt: 1,
+					mt: 2,
 				}}
 			>
 				<ModalActionButton

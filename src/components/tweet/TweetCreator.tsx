@@ -30,7 +30,6 @@ const TweetCreator = ({ user }: Props) => {
 		defaultValues: {
 			content: "",
 		},
-		// mode: "onChange",
 	});
 	const content = watch("content");
 

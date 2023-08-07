@@ -10,11 +10,13 @@ import TweetShareModal from "../components/modals/TweetShareModal";
 import Navbar from "../nav/navbar/Navbar";
 import Sidebar from "../nav/sidebar/Sidebar";
 import ProviderContainer from "./ProviderContainer";
+import TweetCreatorModal from "../components/modals/TweetCreatorModal";
 
 export default function Layout() {
 	return (
 		<ProviderContainer>
 			<LogoutModal />
+			<TweetCreatorModal />
 			<TweetShareModal />
 			<TweetInfoModal />
 			<TweetDeleteModal />

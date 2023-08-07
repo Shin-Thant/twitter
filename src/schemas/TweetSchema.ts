@@ -7,29 +7,15 @@ const MAX_LIMIT_ERROR = "Caption cannot contain more thant 120 characters!";
 
 export const CreateTweetSchema = z.object({
 	content: z
-		.string({
-			invalid_type_error: INVALID_TYPE_ERROR,
-		})
+		.string({ invalid_type_error: INVALID_TYPE_ERROR })
 		.trim()
 		.nonempty(NON_EMPTY_ERROR)
 		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
 });
 export type CreateTweetInput = z.infer<typeof CreateTweetSchema>;
 
-export const QuoteRetweetSchema = z.object({
-	content: z
-		.string({ invalid_type_error: INVALID_TYPE_ERROR })
-		.trim()
-		.nonempty(NON_EMPTY_ERROR)
-		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
-});
+export const QuoteRetweetSchema = CreateTweetSchema.extend({});
 export type ShareTweetInput = z.infer<typeof QuoteRetweetSchema>;
 
-export const EditTweetSchema = z.object({
-	content: z
-		.string({ invalid_type_error: INVALID_TYPE_ERROR })
-		.trim()
-		.nonempty(NON_EMPTY_ERROR)
-		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
-});
+export const EditTweetSchema = CreateTweetSchema.extend({});
 export type EditTweetInput = z.infer<typeof EditTweetSchema>;

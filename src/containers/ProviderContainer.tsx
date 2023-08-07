@@ -4,6 +4,7 @@ import TweetInfoModalProvider from "../context/TweetInfoModalContext";
 import TweetShareModalProvider from "../context/TweetShareModalContext";
 import { TweetEditModalProvider } from "../context/TweetEditModalContext";
 import { TweetDeleteModalProvider } from "../context/TweetDeleteModalContext";
+import { TweetCreatorModalProvider } from "../context/TweetCreatorModalContext";
 
 type Props = {
 	children: ReactNode;
@@ -12,15 +13,17 @@ type Props = {
 const ProviderContainer = ({ children }: Props) => {
 	return (
 		<LogoutModalProvider>
-			<TweetInfoModalProvider>
-				<TweetShareModalProvider>
-					<TweetEditModalProvider>
-						<TweetDeleteModalProvider>
-							{children}
-						</TweetDeleteModalProvider>
-					</TweetEditModalProvider>
-				</TweetShareModalProvider>
-			</TweetInfoModalProvider>
+			<TweetCreatorModalProvider>
+				<TweetInfoModalProvider>
+					<TweetShareModalProvider>
+						<TweetEditModalProvider>
+							<TweetDeleteModalProvider>
+								{children}
+							</TweetDeleteModalProvider>
+						</TweetEditModalProvider>
+					</TweetShareModalProvider>
+				</TweetInfoModalProvider>
+			</TweetCreatorModalProvider>
 		</LogoutModalProvider>
 	);
 };

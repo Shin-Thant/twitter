@@ -12,10 +12,16 @@ import {
 import { useAppSelector } from "../../app/hooks";
 import { userSelector } from "../../features/user/userSlice";
 import { blue } from "@mui/material/colors";
+import { useTweetCreatorModal } from "../../hooks/useTweetCreatorModal";
 
 // TODO: update profile nav link
 export default function SidebarNavLinks() {
 	const user = useAppSelector(userSelector);
+	const { setIsOpen: setIsModalOpen } = useTweetCreatorModal();
+
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
 
 	return (
 		<List disablePadding>
@@ -28,9 +34,7 @@ export default function SidebarNavLinks() {
 				</ListItemButton>
 			</ListItem>
 
-			{!user ? (
-				""
-			) : (
+			{!!user && (
 				<ListItem disableGutters>
 					<ListItemButton sx={{ borderRadius: "8px" }}>
 						<ListItemAvatar>
@@ -57,6 +61,7 @@ export default function SidebarNavLinks() {
 				<Button
 					fullWidth
 					variant="contained"
+					onClick={openModal}
 					sx={{ textTransform: "none" }}
 				>
 					Tweet

@@ -90,7 +90,7 @@ const TweetEditModal = () => {
 					justifyContent={"flex-end"}
 					alignItems={"center"}
 					spacing={2}
-					mt={3}
+					mt={2}
 				>
 					<ModalActionButton
 						type="button"
