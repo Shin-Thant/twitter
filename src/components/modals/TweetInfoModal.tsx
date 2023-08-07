@@ -1,4 +1,4 @@
-import { Button, Divider } from "@mui/material";
+import { Button, Divider, SxProps, Theme } from "@mui/material";
 import { startTransition, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
@@ -26,7 +26,7 @@ export default function TweetInfoModal() {
 				onClick={() => closeAndNavigate("/login")}
 				variant="outlined"
 				fullWidth
-				sx={{ textTransform: "none" }}
+				sx={btnStyles}
 			>
 				Login
 			</Button>
@@ -37,7 +37,7 @@ export default function TweetInfoModal() {
 				onClick={() => closeAndNavigate("/signup")}
 				variant="contained"
 				fullWidth
-				sx={{ textTransform: "none" }}
+				sx={btnStyles}
 			>
 				Sign Up
 			</Button>
@@ -45,4 +45,8 @@ export default function TweetInfoModal() {
 	);
 }
 
-// change button styles
+const btnStyles: SxProps<Theme> = {
+	textTransform: "none",
+	py: 1,
+	borderRadius: { xs: "50px", ss: "8px" },
+};

@@ -12,7 +12,6 @@ type Props = {
 	shares: SharedTweetPreview[];
 };
 
-// TODO: should I use `useEffect` for `isSharedByLoginUser`
 export default function TweetShareBtn({ tweetId, shares }: Props) {
 	const { openModal } = useTweetShareModal();
 	const loginUserId = useAppSelector(userIdSelector);

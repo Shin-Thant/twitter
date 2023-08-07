@@ -139,7 +139,6 @@ export default function TweetShareModal() {
 		}
 	};
 
-	// TODO: fix the height bug
 	return (
 		<Modal title={"Retweet"} isOpen={isModalOpen} onClose={onClose}>
 			{!isQuoteTweet && (
