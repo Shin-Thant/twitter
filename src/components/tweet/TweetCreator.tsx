@@ -10,6 +10,8 @@ import SubmitButton from "../buttons/SubmitButton";
 import { StyledForm } from "../forms/AuthFormComponents";
 import ContentInputHandler from "../forms/ContentInputHandler";
 
+const AVATAR_SIZE = { xs: 30, ss: 35 };
+
 type Props = {
 	user: User;
 };
@@ -78,8 +80,8 @@ const TweetCreator = ({ user }: Props) => {
 					src={user.avatar}
 					alt={`${user.name}-profile-image`}
 					sx={{
-						width: 35,
-						height: 35,
+						width: AVATAR_SIZE,
+						height: AVATAR_SIZE,
 						outline: "1px solid hsl(203, 100%, 47%)",
 						outlineOffset: "3px",
 						bgcolor: "primary.main",

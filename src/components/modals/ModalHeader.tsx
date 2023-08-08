@@ -33,7 +33,9 @@ const ModalHeader = ({ title, closeModal }: Props) => {
 				alignItems: "center",
 			}}
 		>
-			<Typography variant="h6">{title}</Typography>
+			<Typography sx={{ fontSize: { xs: "1.2rem", ss: "1.1rem" } }}>
+				{title}
+			</Typography>
 			<IconButton
 				onClick={closeModal}
 				size="small"

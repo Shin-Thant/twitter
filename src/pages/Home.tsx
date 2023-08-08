@@ -4,6 +4,7 @@ import { useAppSelector } from "../app/hooks";
 import TweetCreator from "../components/tweet/TweetCreator";
 import { userSelector } from "../features/user/userSlice";
 import TweetsContainer from "../containers/TweetsContainer";
+import FloatButton from "../components/buttons/FloatButton";
 
 export default function Home() {
 	const user = useAppSelector(userSelector);
@@ -13,6 +14,8 @@ export default function Home() {
 			<Helmet>
 				<title>Twitter | Home</title>
 			</Helmet>
+
+			<FloatButton />
 
 			<Container
 				sx={{
