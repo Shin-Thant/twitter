@@ -26,12 +26,15 @@ export function checkResponseDataContainToken(
 	);
 }
 
-type ResponseError = { status: number; data: unknown };
-export function isResponseError(
-	error: FetchBaseQueryError
-): error is ResponseError {
+export type BaseQueryResponseError = { status: number; data: unknown };
+export function isBaseQueryResponseError(
+	error: unknown
+): error is BaseQueryResponseError {
 	return (
-		"status" in error && typeof error.status === "number" && "data" in error
+		isFetchBaseQueryError(error) &&
+		"status" in error &&
+		typeof error.status === "number" &&
+		"data" in error
 	);
 }
 

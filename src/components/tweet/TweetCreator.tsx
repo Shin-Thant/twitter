@@ -3,10 +3,7 @@ import { Avatar, Box, Paper } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
-import {
-	isFetchBaseQueryError,
-	isResponseError,
-} from "../../helpers/errorHelpers";
+import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
 import { showToast } from "../../lib/handleToast";
 import { CreateTweetInput, CreateTweetSchema } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
@@ -41,8 +38,7 @@ const TweetCreator = ({ user }: Props) => {
 
 			if (
 				"error" in response &&
-				isFetchBaseQueryError(response.error) &&
-				isResponseError(response.error)
+				isBaseQueryResponseError(response.error)
 			) {
 				showToast({
 					message: "Something went wrong!",

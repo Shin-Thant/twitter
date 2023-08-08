@@ -2,10 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
-import {
-	isFetchBaseQueryError,
-	isResponseError,
-} from "../../helpers/errorHelpers";
+import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
 import { useTweetCreatorModal } from "../../hooks/useTweetCreatorModal";
 import { showToast } from "../../lib/handleToast";
 import { CreateTweetInput, CreateTweetSchema } from "../../schemas/TweetSchema";
@@ -39,11 +36,9 @@ const TweetCreatorModal = () => {
 		try {
 			const response = await createTweet({ body: data.content });
 
-			// TODO: refactor this condition
 			if (
 				"error" in response &&
-				isFetchBaseQueryError(response.error) &&
-				isResponseError(response.error)
+				isBaseQueryResponseError(response.error)
 			) {
 				showToast({
 					message: "Something went wrong!",

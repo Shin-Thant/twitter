@@ -11,13 +11,23 @@ import {
 } from "../../features/tweet/tweetApiSlice";
 import { SharedTweetPreview } from "../../features/tweet/tweetTypes";
 import {
-	isFetchBaseQueryError,
-	isResponseError,
+	BaseQueryResponseError,
+	isBaseQueryResponseError,
 } from "../../helpers/errorHelpers";
 import { useTweetShareModal } from "../../hooks/useTweetShareModal";
 import { showToast } from "../../lib/handleToast";
 import TweetShareForm from "../forms/TweetShareForm";
 import Modal from "./Modal";
+
+function checkResponseError(
+	response: object | undefined
+): response is BaseQueryResponseError {
+	return (
+		!!response &&
+		"error" in response &&
+		isBaseQueryResponseError(response.error)
+	);
+}
 
 function handleToast({ variant }: { variant: "success" | "error" }) {
 	showToast({
@@ -48,12 +58,7 @@ export default function TweetShareModal() {
 		try {
 			const response = await onShare();
 
-			if (
-				response &&
-				"error" in response &&
-				isFetchBaseQueryError(response.error) &&
-				isResponseError(response.error)
-			) {
+			if (checkResponseError(response)) {
 				handleToast({ variant: "error" });
 				closeAndReset();
 				return;
@@ -71,12 +76,7 @@ export default function TweetShareModal() {
 		try {
 			const response = await onShare(body);
 
-			if (
-				response &&
-				"error" in response &&
-				isFetchBaseQueryError(response.error) &&
-				isResponseError(response.error)
-			) {
+			if (checkResponseError(response)) {
 				showToast({
 					message: "Something went wrong!",
 					variant: "error",

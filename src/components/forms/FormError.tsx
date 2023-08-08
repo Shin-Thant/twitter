@@ -3,9 +3,8 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { ReactNode } from "react";
 import {
-	isFetchBaseQueryError,
 	isBaseQueryFetchError,
-	isResponseError,
+	isBaseQueryResponseError,
 	isValidResponseErrorData,
 } from "../../helpers/errorHelpers";
 
@@ -21,8 +20,7 @@ const ErrorAlert = ({ children }: { children: ReactNode }) => {
 
 const FormError = ({ error }: Props) => {
 	if (
-		isFetchBaseQueryError(error) &&
-		isResponseError(error) &&
+		isBaseQueryResponseError(error) &&
 		isValidResponseErrorData(error.data)
 	) {
 		return <ErrorAlert>{error.data.message}</ErrorAlert>;
