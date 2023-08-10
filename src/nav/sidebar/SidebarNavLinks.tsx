@@ -1,27 +1,21 @@
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import {
 	Avatar,
-	Button,
 	List,
 	ListItem,
 	ListItemAvatar,
 	ListItemButton,
 	ListItemIcon,
-	ListItemText,
+	ListItemText
 } from "@mui/material";
-import { useAppSelector } from "../../app/hooks";
-import { userSelector } from "../../features/user/userSlice";
 import { blue } from "@mui/material/colors";
-import { useTweetCreatorModal } from "../../hooks/useTweetCreatorModal";
+import { useAppSelector } from "../../app/hooks";
+import TweetButton from "../../components/buttons/TweetButton";
+import { userSelector } from "../../features/user/userSlice";
 
 // TODO: update profile nav link
 export default function SidebarNavLinks() {
 	const user = useAppSelector(userSelector);
-	const { setIsOpen: setIsModalOpen } = useTweetCreatorModal();
-
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
 
 	return (
 		<List disablePadding>
@@ -58,14 +52,7 @@ export default function SidebarNavLinks() {
 				disableGutters
 				sx={{ display: { xs: "none", md: "block" } }}
 			>
-				<Button
-					fullWidth
-					variant="contained"
-					onClick={openModal}
-					sx={{ textTransform: "none" }}
-				>
-					Tweet
-				</Button>
+				<TweetButton />
 			</ListItem>
 		</List>
 	);
