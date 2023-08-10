@@ -12,20 +12,21 @@ type Props = {
 	tweetId: string;
 };
 
-export default function TweetCommentBtn({ comments }: Props) {
+export default function TweetCommentBtn({ tweetId, comments }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isCommentedByLoginUser: boolean = loginUserId
 		? !!comments.find((cmt) => cmt.creator._id === loginUserId)
 		: false;
+
 	const { setIsOpen: setIsInfoModalOpen } = useTweetInfoModal();
-	const { setIsOpen: setIsCommentModalOpen } = useCommentCreateModal();
+	const { openModal: openCommentModal } = useCommentCreateModal();
 
 	const onComment = () => {
 		if (!loginUserId) {
 			setIsInfoModalOpen(true);
 			return;
 		}
-		setIsCommentModalOpen(true);
+		openCommentModal(tweetId);
 	};
 
 	return (

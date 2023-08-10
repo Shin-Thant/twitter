@@ -40,7 +40,7 @@ function handleToast({ variant }: { variant: "success" | "error" }) {
 }
 
 export default function TweetShareModal() {
-	const { tweetId, isOpen: isModalOpen, closeModal } = useTweetShareModal();
+	const { id: tweetId, isOpen: isModalOpen, closeModal } = useTweetShareModal();
 	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
 
 	const foundTweet = useAppSelector((state) =>

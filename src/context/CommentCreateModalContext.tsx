@@ -1,9 +1,8 @@
-import withModalContext from "./WithModalContext";
-import { createModalContext } from "./createModalContext";
+import { createModalWithIdContext } from "./createModalWithIdContext";
+import withModalAndIdContext from "./withModalAndIdContext";
 
-// TODO: update context to get the tweet to comment on
-export const CommentCreateModalContext = createModalContext();
+export const CommentCreateModalContext = createModalWithIdContext();
 
-export const CommentCreateModalProvider = withModalContext(
+export const CommentCreateModalProvider = withModalAndIdContext(
 	CommentCreateModalContext
 );
