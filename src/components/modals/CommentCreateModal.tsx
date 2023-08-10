@@ -9,7 +9,6 @@ import {
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
-import { useAppSelector } from "../../app/hooks";
 
 const CommentCreateModal = () => {
 	// TODO: get tweet
@@ -20,7 +19,6 @@ const CommentCreateModal = () => {
 		formState: { isSubmitting, isValid },
 		control,
 		watch,
-		reset,
 	} = useForm<CommentCreateInput>({
 		resolver: zodResolver(CommentCreateSchema),
 		defaultValues: {
