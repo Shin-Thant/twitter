@@ -4,7 +4,7 @@ import { ReactNode, ReactElement } from "react";
 import ModalHeader from "./ModalHeader";
 
 type Props = {
-	title: string;
+	title: string | ReactNode;
 	isOpen: boolean;
 	onClose: () => void;
 	children: ReactNode | ReactElement;

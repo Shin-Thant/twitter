@@ -5,6 +5,7 @@ import TweetShareModalProvider from "../context/TweetShareModalContext";
 import { TweetEditModalProvider } from "../context/TweetEditModalContext";
 import { TweetDeleteModalProvider } from "../context/TweetDeleteModalContext";
 import { TweetCreatorModalProvider } from "../context/TweetCreatorModalContext";
+import { CommentCreateModalProvider } from "../context/CommentCreateModalContext";
 
 type Props = {
 	children: ReactNode;
@@ -18,7 +19,9 @@ const ProviderContainer = ({ children }: Props) => {
 					<TweetShareModalProvider>
 						<TweetEditModalProvider>
 							<TweetDeleteModalProvider>
-								{children}
+								<CommentCreateModalProvider>
+									{children}
+								</CommentCreateModalProvider>
 							</TweetDeleteModalProvider>
 						</TweetEditModalProvider>
 					</TweetShareModalProvider>

@@ -11,6 +11,7 @@ import Navbar from "../nav/navbar/Navbar";
 import Sidebar from "../nav/sidebar/Sidebar";
 import ProviderContainer from "./ProviderContainer";
 import TweetCreatorModal from "../components/modals/TweetCreatorModal";
+import CommentCreateModal from "../components/modals/CommentCreateModal";
 
 export default function Layout() {
 	return (
@@ -21,6 +22,7 @@ export default function Layout() {
 			<TweetInfoModal />
 			<TweetDeleteModal />
 			<TweetEditModal />
+			<CommentCreateModal />
 
 			<Box bgcolor="bg.main" sx={{ display: "flex" }}>
 				<Toast />

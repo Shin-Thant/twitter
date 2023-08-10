@@ -13,12 +13,14 @@ interface Props extends InputProps {
 	field: ControllerRenderProps<{ content: string }>;
 	errorMessage: string | undefined;
 	contentLength: number;
+	totalLength?: number;
 }
 
 const ContentInputHandler = ({
 	field,
 	errorMessage,
 	contentLength,
+	totalLength,
 	autoFocus,
 	placeholder,
 	required,
@@ -47,7 +49,7 @@ const ContentInputHandler = ({
 				<ContentLength
 					errorMessage={errorMessage}
 					currentLength={contentLength}
-					limit={120}
+					limit={totalLength ?? 120}
 				/>
 			</Box>
 		</>

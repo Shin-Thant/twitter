@@ -8,7 +8,7 @@ import {
 	useEditTweetMutation,
 } from "../../features/tweet/tweetApiSlice";
 import { useTweetEditModal } from "../../hooks/useTweetEditModal";
-import { EditTweetInput, EditTweetSchema } from "../../schemas/TweetSchema";
+import { TweetEditInput, TweetEditSchema } from "../../schemas/TweetSchema";
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
@@ -26,7 +26,7 @@ const TweetEditModal = () => {
 		watch,
 		setValue,
 	} = useForm({
-		resolver: zodResolver(EditTweetSchema),
+		resolver: zodResolver(TweetEditSchema),
 		defaultValues: {
 			content: "",
 		},
@@ -52,7 +52,7 @@ const TweetEditModal = () => {
 		};
 	}, [setValue, tweet, closeModal]);
 
-	const onSubmit: SubmitHandler<EditTweetInput> = async (data) => {
+	const onSubmit: SubmitHandler<TweetEditInput> = async (data) => {
 		if (isLoading) return;
 		if (data.content === tweet?.body) {
 			closeModal();
@@ -103,7 +103,8 @@ const TweetEditModal = () => {
 
 					<ModalActionButton
 						type="submit"
-						isLoading={isSubmitting || !isValid}
+						isLoading={isSubmitting}
+						disabled={!isValid}
 					>
 						{isSubmitting ? "Loading..." : "Save"}
 					</ModalActionButton>

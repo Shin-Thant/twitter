@@ -5,6 +5,7 @@ import CardButton from "../../buttons/CardButton";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
 import { useAppSelector } from "../../../app/hooks";
 import { userIdSelector } from "../../../features/user/userSlice";
+import { useCommentCreateModal } from "../../../hooks/useCommentCreateModal";
 
 type Props = {
 	comments: Comment[];
@@ -13,18 +14,18 @@ type Props = {
 
 export default function TweetCommentBtn({ comments }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
-	const { setIsOpen } = useTweetInfoModal();
 	const isCommentedByLoginUser: boolean = loginUserId
 		? !!comments.find((cmt) => cmt.creator._id === loginUserId)
 		: false;
+	const { setIsOpen: setIsInfoModalOpen } = useTweetInfoModal();
+	const { setIsOpen: setIsCommentModalOpen } = useCommentCreateModal();
 
 	const onComment = () => {
 		if (!loginUserId) {
-			setIsOpen(true);
+			setIsInfoModalOpen(true);
 			return;
 		}
-
-		return undefined;
+		setIsCommentModalOpen(true);
 	};
 
 	return (

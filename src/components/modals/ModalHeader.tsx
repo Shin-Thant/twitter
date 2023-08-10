@@ -2,9 +2,10 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box, IconButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useThemeMode } from "../../hooks/useThemeMode";
+import { ReactNode } from "react";
 
 type Props = {
-	title: string;
+	title: string | ReactNode;
 	closeModal: () => void;
 };
 
@@ -33,7 +34,10 @@ const ModalHeader = ({ title, closeModal }: Props) => {
 				alignItems: "center",
 			}}
 		>
-			<Typography sx={{ fontSize: { xs: "1.2rem", ss: "1.1rem" } }}>
+			<Typography
+				component={"h1"}
+				sx={{ fontSize: { xs: "1.2rem", ss: "1.1rem" } }}
+			>
 				{title}
 			</Typography>
 			<IconButton

@@ -5,7 +5,7 @@ import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
 import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
 import { showToast } from "../../lib/handleToast";
-import { CreateTweetInput, CreateTweetSchema } from "../../schemas/TweetSchema";
+import { TweetCreateInput, TweetCreateSchema } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
 import { StyledForm } from "../forms/AuthFormComponents";
 import ContentInputHandler from "../forms/ContentInputHandler";
@@ -24,15 +24,15 @@ const TweetCreator = ({ user }: Props) => {
 		formState: { isSubmitting },
 		control,
 		reset,
-	} = useForm<CreateTweetInput>({
-		resolver: zodResolver(CreateTweetSchema),
+	} = useForm<TweetCreateInput>({
+		resolver: zodResolver(TweetCreateSchema),
 		defaultValues: {
 			content: "",
 		},
 	});
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<CreateTweetInput> = async (data) => {
+	const onSubmit: SubmitHandler<TweetCreateInput> = async (data) => {
 		if (!data.content) return;
 
 		try {

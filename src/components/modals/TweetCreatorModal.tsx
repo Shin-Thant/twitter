@@ -5,7 +5,7 @@ import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
 import { useTweetCreatorModal } from "../../hooks/useTweetCreatorModal";
 import { showToast } from "../../lib/handleToast";
-import { CreateTweetInput, CreateTweetSchema } from "../../schemas/TweetSchema";
+import { TweetCreateInput, TweetCreateSchema } from "../../schemas/TweetSchema";
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
@@ -20,8 +20,8 @@ const TweetCreatorModal = () => {
 		watch,
 		formState: { isSubmitting, isValid },
 		reset,
-	} = useForm<CreateTweetInput>({
-		resolver: zodResolver(CreateTweetSchema),
+	} = useForm<TweetCreateInput>({
+		resolver: zodResolver(TweetCreateSchema),
 		defaultValues: {
 			content: "",
 		},
@@ -30,7 +30,7 @@ const TweetCreatorModal = () => {
 
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<CreateTweetInput> = async (data) => {
+	const onSubmit: SubmitHandler<TweetCreateInput> = async (data) => {
 		if (isLoading) return;
 
 		try {

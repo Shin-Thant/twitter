@@ -70,7 +70,8 @@ const TweetShareForm = ({ handleShare, closeModal }: Props) => {
 
 				<ModalActionButton
 					type="submit"
-					isLoading={isSubmitting || !isValid}
+					isLoading={isSubmitting}
+					disabled={!isValid}
 					sx={{
 						minWidth: 100,
 					}}
