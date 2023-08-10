@@ -6,6 +6,8 @@ import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
 import { useAppSelector } from "../../../app/hooks";
 import { userIdSelector } from "../../../features/user/userSlice";
 import { useCommentCreateModal } from "../../../hooks/useCommentCreateModal";
+import { selectTweetById } from "../../../features/tweet/tweetApiSlice";
+import { showToast } from "../../../lib/handleToast";
 
 type Props = {
 	comments: Comment[];
@@ -13,6 +15,10 @@ type Props = {
 };
 
 export default function TweetCommentBtn({ tweetId, comments }: Props) {
+	const foundTweet = useAppSelector((state) =>
+		selectTweetById(state, tweetId)
+	);
+
 	const loginUserId = useAppSelector(userIdSelector);
 	const isCommentedByLoginUser: boolean = loginUserId
 		? !!comments.find((cmt) => cmt.creator._id === loginUserId)
@@ -24,6 +30,10 @@ export default function TweetCommentBtn({ tweetId, comments }: Props) {
 	const onComment = () => {
 		if (!loginUserId) {
 			setIsInfoModalOpen(true);
+			return;
+		}
+		if (!foundTweet) {
+			showToast({ message: "Something went wrong!", variant: "error" });
 			return;
 		}
 		openCommentModal(tweetId);
