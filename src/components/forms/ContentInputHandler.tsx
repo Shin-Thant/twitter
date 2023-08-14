@@ -28,6 +28,7 @@ const ContentInputHandler = ({
 	return (
 		<>
 			<TweetContentInput
+				multiline={true}
 				field={field}
 				hasError={!!errorMessage}
 				placeholder={placeholder}

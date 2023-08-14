@@ -113,18 +113,6 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				url: `/tweets/${tweetId}`,
 				method: "DELETE",
 			}),
-			// TODO: make this optimistic
-			// onQueryStarted(arg, api) {
-			// 	api.dispatch(
-			// 		tweetApiSlice.util.updateQueryData(
-			// 			"getTweets",
-			// 			{ currentPage: 1, itemsPerPage: 10 },
-			// 			(draft) => {
-			// 				// update
-			// 			}
-			// 		)
-			// 	);
-			// },
 			invalidatesTags(_res, _err, arg) {
 				return [{ type: "Tweets", id: arg.tweetId }];
 			},

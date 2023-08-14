@@ -13,6 +13,7 @@ const TweetBody = ({ tweet }: Props) => {
 					sx={{
 						fontSize: { xs: 15.5, sm: 16 },
 						mb: tweet.type === "share" ? 1 : 0,
+						whiteSpace: "pre-line",
 					}}
 				>
 					{tweet.body}
