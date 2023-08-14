@@ -28,6 +28,7 @@ const ContentInputHandler = ({
 	return (
 		<>
 			<TweetContentInput
+				maxRows={5}
 				multiline={true}
 				field={field}
 				hasError={!!errorMessage}
