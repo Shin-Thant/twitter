@@ -14,8 +14,7 @@ import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
 
 const TweetEditModal = () => {
-	const { isOpen, closeModal } = useTweetEditModal();
-	const tweetId = useTweetEditModal().tweetId;
+	const { id: tweetId, isOpen, closeModal } = useTweetEditModal();
 	const tweet = useAppSelector((state) => selectTweetById(state, tweetId));
 	const [editTweet, { isLoading }] = useEditTweetMutation();
 

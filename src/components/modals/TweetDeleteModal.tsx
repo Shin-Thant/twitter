@@ -4,7 +4,7 @@ import { useHandleDeleteTweetMutation } from "../../features/tweet/tweetApiSlice
 import { showToast } from "../../lib/handleToast";
 
 const TweetDeleteModal = () => {
-	const { isOpen, tweetId, closeModal } = useTweetDeleteModal();
+	const { isOpen, id: tweetId, closeModal } = useTweetDeleteModal();
 	const [deleteTweet, { isLoading }] = useHandleDeleteTweetMutation();
 
 	const handleDelete = async () => {

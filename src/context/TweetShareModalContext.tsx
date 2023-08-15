@@ -1,44 +1,7 @@
-import { ReactNode, createContext, useCallback, useState } from "react";
+import { createModalWithIdContext } from "./createModalWithIdContext";
+import withModalAndIdContext from "./withModalAndIdContext";
 
-interface ContextState {
-	isOpen: boolean;
-	tweetId: string;
-	openModal: (tweetId: string) => void;
-	closeModal: () => void;
-}
+export const TweetShareModalContext = createModalWithIdContext();
 
-const initialState: ContextState = {
-	isOpen: false,
-	tweetId: "",
-	openModal: () => undefined,
-	closeModal: () => undefined,
-};
-
-export const TweetShareModalContext = createContext<ContextState>(initialState);
-
-type Props = {
-	children: ReactNode;
-};
-
-const TweetShareModalProvider = ({ children }: Props) => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [tweetId, setTweetId] = useState<string>("64ce08bd49d4dab82f0e7124");
-
-	const openModal = useCallback((tweetId: string) => {
-		setTweetId(tweetId);
-		setIsOpen(true);
-	}, []);
-
-	const closeModal = useCallback(() => {
-		setIsOpen(false);
-	}, []);
-
-	return (
-		<TweetShareModalContext.Provider
-			value={{ isOpen, tweetId, openModal, closeModal }}
-		>
-			{children}
-		</TweetShareModalContext.Provider>
-	);
-};
+const TweetShareModalProvider = withModalAndIdContext(TweetShareModalContext);
 export default TweetShareModalProvider;

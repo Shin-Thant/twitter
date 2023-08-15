@@ -9,16 +9,22 @@ import {
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
+import { selectTweetById } from "../../features/tweet/tweetApiSlice";
+import { useAppSelector } from "../../app/hooks";
+import { useAddCommentMutation } from "../../features/comment/commentApiSlice";
+import { showToast } from "../../lib/handleToast";
 
 const CommentCreateModal = () => {
-	// TODO: get tweet
-	// const tweet = useAppSelector(state => selectTweetById(state, ''))
-	const { isOpen, setIsOpen } = useCommentCreateModal();
+	const { isOpen, closeModal, id: tweetId } = useCommentCreateModal();
+	const tweet = useAppSelector((state) => selectTweetById(state, tweetId));
+	const [addComment, { isLoading }] = useAddCommentMutation();
+
 	const {
 		handleSubmit,
 		formState: { isSubmitting, isValid },
 		control,
 		watch,
+		reset,
 	} = useForm<CommentCreateInput>({
 		resolver: zodResolver(CommentCreateSchema),
 		defaultValues: {
@@ -28,14 +34,26 @@ const CommentCreateModal = () => {
 	});
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<CommentCreateInput> = (data) => {
-		console.log(data);
-
-		// reset();
+	const onSubmit: SubmitHandler<CommentCreateInput> = async (data) => {
+		if (isLoading) {
+			return;
+		}
+		try {
+			await addComment({ tweetId, body: data.content });
+			showToast({
+				message: "Successfully commented!",
+				variant: "success",
+			});
+			reset();
+		} catch (err) {
+			showToast({ message: "Something went wrong", variant: "error" });
+		} finally {
+			onClose();
+		}
 	};
 
 	const onClose = () => {
-		setIsOpen(false);
+		closeModal();
 	};
 
 	// TODO: make modal accept custom modal header
@@ -49,7 +67,7 @@ const CommentCreateModal = () => {
 						color={"primary"}
 						sx={{ fontSize: "inherit", display: "inline" }}
 					>
-						@elonmusk
+						@{tweet?.owner.username}
 					</Typography>
 				</>
 			}

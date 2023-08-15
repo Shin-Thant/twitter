@@ -4,7 +4,7 @@ export type ModalContextState = {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const modalState: ModalContextState = {
+const modalState: ModalContextState = {
 	isOpen: false,
 	setIsOpen: () => undefined,
 };

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, Box, Paper } from "@mui/material";
+import { Avatar, Box, Button, Paper, Stack } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
@@ -21,7 +21,7 @@ const TweetCreator = ({ user }: Props) => {
 	const {
 		watch,
 		handleSubmit,
-		formState: { isSubmitting },
+		formState: { isSubmitting, isValid, errors },
 		control,
 		reset,
 	} = useForm<TweetCreateInput>({
@@ -29,6 +29,8 @@ const TweetCreator = ({ user }: Props) => {
 		defaultValues: {
 			content: "",
 		},
+		mode: "onChange",
+		// reValidateMode: "onSubmit",
 	});
 	const content = watch("content");
 
@@ -57,6 +59,11 @@ const TweetCreator = ({ user }: Props) => {
 		} catch (err) {
 			showToast({ message: "Something went wrong!", variant: "error" });
 		}
+	};
+
+	const onReset = () => {
+		// reset input state, errors
+		reset();
 	};
 
 	return (
@@ -105,24 +112,36 @@ const TweetCreator = ({ user }: Props) => {
 					/>
 				</Box>
 
-				<Box
+				<Stack
+					direction="row"
+					justifyContent="flex-end"
+					alignItems="center"
+					spacing={2}
 					sx={{
 						mt: 2,
-						display: "flex",
-						justifyContent: "flex-end",
-						alignItems: "center",
 					}}
 				>
+					{(!!errors.content?.message || !!content.length) && (
+						<Button
+							type="button"
+							variant="text"
+							sx={{ textTransform: "none" }}
+							onClick={onReset}
+						>
+							reset
+						</Button>
+					)}
+
 					<SubmitButton
 						isLoading={isSubmitting}
-						isDisabled={!content.length}
+						isDisabled={!content.trim().length || !isValid}
 						sx={{
 							minWidth: 100,
 						}}
 					>
 						{isSubmitting ? "Loading..." : "Tweet"}
 					</SubmitButton>
-				</Box>
+				</Stack>
 			</StyledForm>
 		</Paper>
 	);
