@@ -1,13 +1,19 @@
 import { Box, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import { Owner } from "../../../features/tweet/tweetTypes";
 import getRelativeTime from "../../../helpers/getRelativeTime";
+import { MouseEventHandler } from "react";
 
 type Props = {
 	owner: Owner;
 	createdAt: string;
 };
 const TweetTitle = ({ owner, createdAt }: Props) => {
+	const onProfileNavigate: MouseEventHandler<HTMLSpanElement> = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		// navigate to user
+	};
+
 	return (
 		<Box
 			sx={{
@@ -17,16 +23,17 @@ const TweetTitle = ({ owner, createdAt }: Props) => {
 			}}
 		>
 			<Typography
+				onClick={onProfileNavigate}
 				component="h1"
+				className="auto_line"
 				sx={{
+					cursor: "pointer",
 					fontWeight: "600",
 					fontSize: "0.95rem",
 				}}
 				title={owner.name}
 			>
-				<Link className="router_link auto_line" to="/">
-					{owner.name}
-				</Link>
+				{owner.name}
 			</Typography>
 			<Typography color="text.secondary" fontSize={"0.8rem"}>
 				&bull;
@@ -36,6 +43,7 @@ const TweetTitle = ({ owner, createdAt }: Props) => {
 				variant="body2"
 				color="text.secondary"
 				sx={{
+					cursor: "default",
 					minWidth: "max-content",
 					display: "inline-block",
 				}}

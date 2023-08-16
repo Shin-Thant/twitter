@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { MouseEventHandler } from "react";
 
 type Props = {
 	avatar: string | undefined;
@@ -8,19 +8,37 @@ type Props = {
 	sx?: SxProps<Theme>;
 };
 const TweetAvatar = ({ avatar, name, sx }: Props) => {
+	const onProfileNavigate: MouseEventHandler<HTMLDivElement> = (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		// navigate to user
+	};
+
 	return (
-		<Link className="router_link" to="/">
+		<>
 			{!avatar ? (
-				<Avatar sx={sx}>{name[0]}</Avatar>
+				<Avatar
+					onMouseDown={(e) => e.stopPropagation()}
+					onClick={onProfileNavigate}
+					sx={{ ...sx, cursor: "pointer" }}
+				>
+					{name[0]}
+				</Avatar>
 			) : (
 				<Avatar
-					sx={{ ...sx, bgcolor: "none" }}
+					onMouseDown={(e) => e.stopPropagation()}
+					onClick={onProfileNavigate}
+					sx={{
+						...sx,
+						bgcolor: "none",
+						cursor: "pointer",
+					}}
 					src={avatar}
 					alt={`${avatar}-profile-picture`}
 					imgProps={{ loading: "lazy" }}
 				/>
 			)}
-		</Link>
+		</>
 	);
 };
 

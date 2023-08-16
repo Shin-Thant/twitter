@@ -1,5 +1,5 @@
 import { Box, Card } from "@mui/material";
-import { ForwardedRef, forwardRef, memo } from "react";
+import { ForwardedRef, forwardRef, memo, useRef } from "react";
 import { Tweet } from "../../features/tweet/tweetTypes";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
@@ -7,6 +7,9 @@ import TweetHeader from "./TweetHeader";
 import TweetCommentBtn from "./buttons/TweetCommentBtn";
 import TweetLikeBtn from "./buttons/TweetLikeBtn";
 import TweetShareBtn from "./buttons/TweetShareBtn";
+import TouchRipple, {
+	TouchRippleActions,
+} from "@mui/material/ButtonBase/TouchRipple";
 
 type Props = {
 	tweet: Tweet;
@@ -14,6 +17,14 @@ type Props = {
 
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+		const onNaviate = () => {
+			console.log("parent click");
+
+			// navigate to tweet details
+		};
+
+		const rippleRef = useRef<TouchRippleActions>(null);
+
 		return (
 			<Card
 				ref={ref}
@@ -41,32 +52,67 @@ const TweetCard = forwardRef(
 				/>
 
 				<Box
+					onClick={onNaviate}
+					onMouseDown={(e) => {
+						rippleRef.current?.start(e);
+					}}
+					onMouseUp={(e) => {
+						rippleRef.current?.stop(e);
+					}}
 					sx={{
-						ml: { xs: 0, ss: 7, sm: 7.5 },
+						position: "relative",
+						cursor: "pointer",
+						borderRadius: 0,
+						pl: { xs: 0, ss: 7, sm: 7.5 },
 					}}
 				>
+					{/* <CardActionArea
+					onClick={onNaviate}
+					sx={{
+						borderRadius: 0,
+						pl: { xs: 0, ss: 7, sm: 7.5 },
+						"& .MuiCardActionArea-focusHighlight": {
+							bgcolor: "transparent",
+						},
+					}}
+				> */}
 					<TweetBody tweet={tweet} />
+					<TouchRipple ref={rippleRef} />
+					{/* </CardActionArea> */}
 
-					<TweetActions
-						likeBtn={
-							<TweetLikeBtn
-								likes={tweet.likes}
-								tweetId={tweet._id}
-							/>
-						}
-						commentBtn={
-							<TweetCommentBtn
-								comments={tweet.comments}
-								tweetId={tweet._id}
-							/>
-						}
-						shareBtn={
-							<TweetShareBtn
-								shares={tweet.shares}
-								tweetId={tweet._id}
-							/>
-						}
-					/>
+					<Box
+						onMouseDown={(e) => {
+							e.stopPropagation();
+						}}
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
+						sx={{
+							cursor: "default",
+							// ml: { xs: 0, ss: 7, sm: 7.5 },
+						}}
+					>
+						<TweetActions
+							likeBtn={
+								<TweetLikeBtn
+									likes={tweet.likes}
+									tweetId={tweet._id}
+								/>
+							}
+							commentBtn={
+								<TweetCommentBtn
+									comments={tweet.comments}
+									tweetId={tweet._id}
+								/>
+							}
+							shareBtn={
+								<TweetShareBtn
+									shares={tweet.shares}
+									tweetId={tweet._id}
+								/>
+							}
+						/>
+					</Box>
 				</Box>
 			</Card>
 		);
