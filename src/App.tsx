@@ -7,6 +7,7 @@ import ThemeModalProvider from "./context/ThemeModalContext";
 import Loading from "./pages/Loading";
 import { HelmetProvider } from "react-helmet-async";
 import IsAuthenticated from "./containers/IsAuthenticated";
+const TweetDetails = lazy(() => import("./pages/TweetDetails"));
 const Login = lazy(() => import("./pages/Login"));
 const Layout = lazy(() => import("./containers/Layout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -17,7 +18,10 @@ const router = createBrowserRouter([
 		path: "/",
 		element: <Layout />,
 		errorElement: <>error</>,
-		children: [{ path: "/", element: <Home /> }],
+		children: [
+			{ path: "/", element: <Home /> },
+			{ path: "/tweet/:id", element: <TweetDetails /> },
+		],
 	},
 	{
 		path: "login",
