@@ -1,27 +1,34 @@
 import Typography from "@mui/material/Typography";
 import { MouseEventHandler } from "react";
+import { Link } from "react-router-dom";
 
 type Props = {
 	username: string;
 };
 
 const TweetSubTitle = ({ username }: Props) => {
-	const onProfileNavigate: MouseEventHandler<HTMLSpanElement> = (e) => {
+	const stopMouseDownPropagation: MouseEventHandler<HTMLAnchorElement> = (
+		e
+	) => {
 		e.stopPropagation();
 		e.preventDefault();
-		// navigate to user
 	};
 
 	return (
-		<Typography
-			onClick={onProfileNavigate}
-			className="auto_line"
-			sx={{ width: "max-content", cursor: "pointer" }}
-			color="text.secondary"
-			variant="body2"
+		<Link
+			to="/"
+			className="router_link auto_line"
+			onMouseDown={stopMouseDownPropagation}
 		>
-			@{username}
-		</Typography>
+			<Typography
+				className="auto_line"
+				sx={{ width: "max-content", cursor: "pointer" }}
+				color="text.secondary"
+				variant="body2"
+			>
+				@{username}
+			</Typography>
+		</Link>
 	);
 };
 
