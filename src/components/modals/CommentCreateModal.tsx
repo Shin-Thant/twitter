@@ -53,6 +53,7 @@ const CommentCreateModal = () => {
 	};
 
 	const onClose = () => {
+		reset();
 		closeModal();
 	};
 
