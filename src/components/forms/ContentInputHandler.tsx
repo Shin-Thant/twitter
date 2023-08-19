@@ -10,7 +10,7 @@ interface InputProps {
 	required?: boolean;
 }
 interface Props extends InputProps {
-	field: ControllerRenderProps<{ content: string }>;
+	field: ControllerRenderProps<{ content: string }, "content">;
 	errorMessage: string | undefined;
 	contentLength: number;
 	totalLength?: number;
@@ -34,7 +34,7 @@ const ContentInputHandler = ({
 				hasError={!!errorMessage}
 				placeholder={placeholder}
 				autoFocus={autoFocus}
-				required={required ?? true}
+				required={required}
 			/>
 
 			<Box

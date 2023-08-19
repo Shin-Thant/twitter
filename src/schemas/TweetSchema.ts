@@ -9,12 +9,17 @@ export const TweetCreateSchema = z.object({
 	content: z
 		.string({ invalid_type_error: INVALID_TYPE_ERROR })
 		.trim()
-		.nonempty(NON_EMPTY_ERROR)
 		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
 });
 export type TweetCreateInput = z.infer<typeof TweetCreateSchema>;
 
-export const QuoteRetweetSchema = TweetCreateSchema.extend({});
+export const QuoteRetweetSchema = z.object({
+	content: z
+		.string({ invalid_type_error: INVALID_TYPE_ERROR })
+		.trim()
+		.nonempty(NON_EMPTY_ERROR)
+		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
+});
 export type ShareTweetInput = z.infer<typeof QuoteRetweetSchema>;
 
 export const TweetEditSchema = TweetCreateSchema.extend({});

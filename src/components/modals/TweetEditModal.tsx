@@ -75,7 +75,6 @@ const TweetEditModal = () => {
 							field={field}
 							errorMessage={errors.content?.message}
 							contentLength={content.length}
-							required={false}
 							autoFocus={true}
 						/>
 					)}

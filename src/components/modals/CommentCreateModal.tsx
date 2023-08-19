@@ -83,6 +83,7 @@ const CommentCreateModal = () => {
 							contentLength={content.length}
 							errorMessage={errors.content?.message}
 							placeholder="Add comment"
+							required={true}
 						/>
 					)}
 					name="content"

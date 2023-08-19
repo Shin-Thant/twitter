@@ -5,7 +5,7 @@ import { GetTweetsData, GetTweetsResponse, Tweet } from "./tweetTypes";
 import { currentPageSelector } from "../currentPageSlice";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
-type CreateTweetMutationArg = { body: string };
+type CreateTweetMutationArg = FormData;
 type EditTweetMutationArg = { tweetId: string; body: string };
 type LikeMutationArg = { tweetId: string; likes: string[] };
 type ShareMutationArg = { tweetId: string; body?: string };
@@ -41,6 +41,9 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 
 		createTweet: builder.mutation<Tweet, CreateTweetMutationArg>({
 			query: (arg) => ({
+				headers: {
+					"Content-Type": "multipart/formdata",
+				},
 				url: "tweets",
 				method: "POST",
 				body: arg,

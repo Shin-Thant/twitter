@@ -44,6 +44,7 @@ const TweetShareForm = ({ handleShare, closeModal }: Props) => {
 						errorMessage={errors.content?.message}
 						contentLength={content.length}
 						autoFocus={true}
+						required={true}
 					/>
 				)}
 				name="content"

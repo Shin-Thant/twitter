@@ -1,5 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, Box, Button, Paper, Stack } from "@mui/material";
+import PhotoOutlinedIcon from "@mui/icons-material/PhotoOutlined";
+import {
+	Avatar,
+	Box,
+	Button,
+	IconButton,
+	Paper,
+	Stack,
+	Typography,
+} from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
@@ -9,14 +18,20 @@ import { TweetCreateInput, TweetCreateSchema } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
 import { StyledForm } from "../forms/AuthFormComponents";
 import ContentInputHandler from "../forms/ContentInputHandler";
+import ImageInput from "../inputs/ImageInput";
+import UploadedImageList from "../lists/UploadedImageList";
+import { useState } from "react";
 
 const AVATAR_SIZE = { xs: 30, ss: 35 };
+
+type Form = TweetCreateInput & { photos?: File[] };
 
 type Props = {
 	user: User;
 };
 const TweetCreator = ({ user }: Props) => {
 	const [createTweet] = useCreateTweetMutation();
+	const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
 	const {
 		watch,
@@ -24,21 +39,27 @@ const TweetCreator = ({ user }: Props) => {
 		formState: { isSubmitting, isValid, errors },
 		control,
 		reset,
-	} = useForm<TweetCreateInput>({
+	} = useForm<Form>({
 		resolver: zodResolver(TweetCreateSchema),
 		defaultValues: {
 			content: "",
 		},
 		mode: "onChange",
-		// reValidateMode: "onSubmit",
 	});
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<TweetCreateInput> = async (data) => {
-		if (!data.content) return;
+	const onSubmit: SubmitHandler<Form> = async (data) => {
+		if (!data.content && !uploadedImages.length) return;
+		console.log("hi");
 
 		try {
-			const response = await createTweet({ body: data.content });
+			const formData = new FormData();
+			formData.append("body", data.content);
+			uploadedImages.forEach((image, i) => {
+				formData.append(`photo_${i}`, image);
+			});
+
+			const response = await createTweet(formData);
 
 			if (
 				"error" in response &&
@@ -71,8 +92,7 @@ const TweetCreator = ({ user }: Props) => {
 			variant="outlined"
 			sx={{
 				borderRadius: "10px",
-				display: "flex",
-				alignItems: "flex-start",
+				display: "block",
 				gap: 3,
 				borderWidth: { xs: "0", sm: "1px" },
 				boxShadow: { xs: "none", sm: "0 2px 5px rgba(0, 0, 0, 0.2)" },
@@ -82,66 +102,120 @@ const TweetCreator = ({ user }: Props) => {
 				bgcolor: "transparent",
 			}}
 		>
-			<Box>
-				<Avatar
-					src={user.avatar}
-					alt={`${user.name}-profile-image`}
-					sx={{
-						width: AVATAR_SIZE,
-						height: AVATAR_SIZE,
-						outline: "1px solid hsl(203, 100%, 47%)",
-						outlineOffset: "3px",
-						bgcolor: "primary.main",
-					}}
-				/>
-			</Box>
 			<StyledForm sx={{ flex: 1 }} onSubmit={handleSubmit(onSubmit)}>
+				<Stack direction="row" alignItems={"flex-start"} spacing={2}>
+					<Avatar
+						src={user.avatar}
+						alt={`${user.name}-profile-image`}
+						sx={{
+							width: AVATAR_SIZE,
+							height: AVATAR_SIZE,
+							outline: "1px solid hsl(203, 100%, 47%)",
+							outlineOffset: "3px",
+							bgcolor: "primary.main",
+						}}
+					/>
+
+					<Box sx={{ width: "100%" }}>
+						<Controller
+							render={({ field, formState: { errors } }) => (
+								<ContentInputHandler
+									field={field}
+									errorMessage={errors.content?.message}
+									contentLength={content.length}
+									placeholder="What's happening?"
+								/>
+							)}
+							name="content"
+							control={control}
+							defaultValue={""}
+						/>
+					</Box>
+				</Stack>
+
 				<Box>
-					<Controller
-						render={({ field, formState: { errors } }) => (
-							<ContentInputHandler
-								field={field}
-								errorMessage={errors.content?.message}
-								contentLength={content.length}
-								placeholder="What's happening?"
-							/>
+					<ImageInput
+						setUploadedImages={setUploadedImages}
+						render={({
+							images,
+							onImageUpload,
+							onImageUpdate,
+							onImageRemove,
+						}) => (
+							<Box>
+								{!!images.length && (
+									<Box sx={{ mt: 3 }}>
+										<UploadedImageList
+											images={images}
+											updateImage={onImageUpdate}
+											removeImage={onImageRemove}
+										/>
+									</Box>
+								)}
+
+								<Stack
+									direction="row"
+									justifyContent="space-between"
+									alignItems="center"
+									sx={{
+										mt: 3,
+									}}
+								>
+									<Box>
+										<IconButton
+											disabled={images.length === 4}
+											onClick={onImageUpload}
+											color="primary"
+											size="small"
+										>
+											<PhotoOutlinedIcon />
+										</IconButton>
+										<Typography
+											variant="caption"
+											component={"span"}
+										>
+											{images.length} / 4
+										</Typography>
+									</Box>
+
+									<Stack
+										direction="row"
+										justifyContent="flex-end"
+										alignItems="center"
+										spacing={2}
+									>
+										{(!!errors.content?.message ||
+											!!content.length) && (
+											<Button
+												type="button"
+												variant="text"
+												sx={{ textTransform: "none" }}
+												onClick={onReset}
+											>
+												reset
+											</Button>
+										)}
+										<SubmitButton
+											isLoading={isSubmitting}
+											isDisabled={
+												(!content.trim().length &&
+													!images.length) ||
+												!isValid
+											}
+											sx={{
+												minWidth: 100,
+											}}
+										>
+											{isSubmitting
+												? "Loading..."
+												: "Tweet"}
+										</SubmitButton>
+									</Stack>
+								</Stack>
+							</Box>
 						)}
-						name="content"
-						control={control}
-						defaultValue={""}
 					/>
 				</Box>
-
-				<Stack
-					direction="row"
-					justifyContent="flex-end"
-					alignItems="center"
-					spacing={2}
-					sx={{
-						mt: 2,
-					}}
-				>
-					{(!!errors.content?.message || !!content.length) && (
-						<Button
-							type="button"
-							variant="text"
-							sx={{ textTransform: "none" }}
-							onClick={onReset}
-						>
-							reset
-						</Button>
-					)}
-
-					<SubmitButton
-						isLoading={isSubmitting}
-						isDisabled={!content.trim().length || !isValid}
-						sx={{
-							minWidth: 100,
-						}}
-					>
-						{isSubmitting ? "Loading..." : "Tweet"}
-					</SubmitButton>
-				</Stack>
 			</StyledForm>
 		</Paper>
 	);
