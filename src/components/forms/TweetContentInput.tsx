@@ -4,7 +4,7 @@ import { SxProps, Theme } from "@mui/material/styles";
 import { ControllerRenderProps } from "react-hook-form";
 
 interface Props extends InputBaseProps {
-	field: ControllerRenderProps<{ content: string }, "content">;
+	field: ControllerRenderProps<{ content?: string }, "content">;
 	hasError: boolean;
 	sx?: SxProps<Theme>;
 }

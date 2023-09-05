@@ -1,37 +1,34 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import PhotoOutlinedIcon from "@mui/icons-material/PhotoOutlined";
-import {
-	Avatar,
-	Box,
-	Button,
-	IconButton,
-	Paper,
-	Stack,
-	Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, Paper, Stack } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
 import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
+import useImageInputHandler from "../../hooks/useImageInputHandler";
 import { showToast } from "../../lib/handleToast";
 import { TweetCreateInput, TweetCreateSchema } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
+import TweetImageUploadButton from "../buttons/TweetImageUploadButton";
 import { StyledForm } from "../forms/AuthFormComponents";
 import ContentInputHandler from "../forms/ContentInputHandler";
-import ImageInput from "../inputs/ImageInput";
+import WithImageInput from "../inputs/WithImageInput";
 import UploadedImageList from "../lists/UploadedImageList";
-import { useState } from "react";
+
+// TODO: modify the image upload to use it without using `render` prop
 
 const AVATAR_SIZE = { xs: 30, ss: 35 };
 
-type Form = TweetCreateInput & { photos?: File[] };
+type Form = TweetCreateInput;
 
 type Props = {
 	user: User;
 };
+
 const TweetCreator = ({ user }: Props) => {
 	const [createTweet] = useCreateTweetMutation();
-	const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+
+	const { images, onImageInputChange, removeAllImages } =
+		useImageInputHandler();
 
 	const {
 		watch,
@@ -49,43 +46,68 @@ const TweetCreator = ({ user }: Props) => {
 	const content = watch("content");
 
 	const onSubmit: SubmitHandler<Form> = async (data) => {
-		if (!data.content && !uploadedImages.length) return;
-		console.log("hi");
+		if (!data.content && !images.length) {
+			showErrorToast("Content or image must be provided!");
+			return;
+		}
 
 		try {
-			const formData = new FormData();
-			formData.append("body", data.content);
-			uploadedImages.forEach((image, i) => {
-				formData.append(`photo_${i}`, image);
-			});
-
+			const formData = createTweetFormData({ content });
 			const response = await createTweet(formData);
 
 			if (
 				"error" in response &&
 				isBaseQueryResponseError(response.error)
 			) {
-				showToast({
-					message: "Something went wrong!",
-					variant: "error",
-				});
+				showErrorToast();
 				return;
 			}
 
-			reset();
-			showToast({
-				message: "Successfully added new tweet!",
-				variant: "success",
-			});
+			onReset();
+			showSuccessToast();
 		} catch (err) {
-			showToast({ message: "Something went wrong!", variant: "error" });
+			showErrorToast();
 		}
 	};
 
-	const onReset = () => {
-		// reset input state, errors
+	function createTweetFormData({ content }: { content?: string }): FormData {
+		const formData = new FormData();
+
+		if (content) {
+			formData.set("body", content);
+		}
+		images.forEach((image) => {
+			if (image.file) {
+				formData.append(`photos`, image.file);
+			}
+		});
+		return formData;
+	}
+
+	function showSuccessToast() {
+		showToast({
+			message: "Successfully added new tweet!",
+			variant: "success",
+		});
+	}
+
+	function showErrorToast(message?: string) {
+		showToast({
+			message: message ?? "Something went wrong!",
+			variant: "error",
+		});
+	}
+
+	function onReset() {
+		removeAllImages();
 		reset();
-	};
+	}
+
+	const isSubmitButtonDisabled: boolean =
+		(!content?.trim().length && !images.length) || !isValid;
+
+	const showResetButton: boolean =
+		!!errors.content?.message || !!content?.length || !!images.length;
 
 	return (
 		<Paper
@@ -116,13 +138,15 @@ const TweetCreator = ({ user }: Props) => {
 						}}
 					/>
 
+					{/* <h2>{errors.photos?.message ?? "no"}</h2> */}
+
 					<Box sx={{ width: "100%" }}>
 						<Controller
 							render={({ field, formState: { errors } }) => (
 								<ContentInputHandler
 									field={field}
 									errorMessage={errors.content?.message}
-									contentLength={content.length}
+									contentLength={content?.length ?? 0}
 									placeholder="What's happening?"
 								/>
 							)}
@@ -134,8 +158,9 @@ const TweetCreator = ({ user }: Props) => {
 				</Stack>
 
 				<Box>
-					<ImageInput
-						setUploadedImages={setUploadedImages}
+					<WithImageInput
+						images={images}
+						onImageInputChange={onImageInputChange}
 						render={({
 							images,
 							onImageUpload,
@@ -161,22 +186,14 @@ const TweetCreator = ({ user }: Props) => {
 										mt: 3,
 									}}
 								>
-									<Box>
-										<IconButton
-											disabled={images.length === 4}
-											onClick={onImageUpload}
-											color="primary"
-											size="small"
-										>
-											<PhotoOutlinedIcon />
-										</IconButton>
-										<Typography
-											variant="caption"
-											component={"span"}
-										>
-											{images.length} / 4
-										</Typography>
-									</Box>
+									<TweetImageUploadButton
+										disabled={
+											isSubmitting || images.length === 4
+										}
+										onClick={onImageUpload}
+										currentImageCount={images.length}
+										totalImageCount={4}
+									/>
 
 									<Stack
 										direction="row"
@@ -184,8 +201,7 @@ const TweetCreator = ({ user }: Props) => {
 										alignItems="center"
 										spacing={2}
 									>
-										{(!!errors.content?.message ||
-											!!content.length) && (
+										{showResetButton && (
 											<Button
 												type="button"
 												variant="text"
@@ -197,11 +213,7 @@ const TweetCreator = ({ user }: Props) => {
 										)}
 										<SubmitButton
 											isLoading={isSubmitting}
-											isDisabled={
-												(!content.trim().length &&
-													!images.length) ||
-												!isValid
-											}
+											isDisabled={isSubmitButtonDisabled}
 											sx={{
 												minWidth: 100,
 											}}

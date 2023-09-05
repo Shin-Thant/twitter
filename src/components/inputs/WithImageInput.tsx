@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import ReactImageUploading, {
 	ErrorsType,
 	ImageListType,
@@ -9,6 +9,7 @@ import { showToast } from "../../lib/handleToast";
 const MAX_IMAGE_COUNT = 4 as const;
 const ACCEPT_TYPES = ["jpg", "png", "jpeg"];
 const MAX_FILE_SIZE_IN_BYTES = 150000 as const;
+
 const UPLOAD_ERRORS: Record<keyof ErrorsType, string> = {
 	acceptType: "Invalid image type!",
 	maxFileSize: "Exceeded file size limit!",
@@ -23,30 +24,12 @@ type ImageHandlers = {
 };
 
 type Props = {
-	setUploadedImages?: React.Dispatch<React.SetStateAction<File[]>>;
+	images: ImageListType;
+	onImageInputChange: ImageUploadingPropsType["onChange"];
 	render: (imageHandlers: ImageHandlers) => ReactElement;
 };
 
-const ImageInput = ({ setUploadedImages, render }: Props) => {
-	const [images, setImages] = useState<ImageListType>([]);
-
-	const onInputChange: ImageUploadingPropsType["onChange"] = (
-		imageList: ImageListType,
-		addUpdatedIndex?: number[] | undefined
-	) => {
-		if (setUploadedImages) {
-			const files: File[] = [];
-			imageList.forEach((item) => {
-				if (item.file) files.push(item.file);
-			});
-
-			console.log("setting", files);
-			setUploadedImages(files);
-		}
-		console.log({ imageList, addUpdatedIndex });
-		setImages([...imageList]);
-	};
-
+const WithImageInput = ({ images, onImageInputChange, render }: Props) => {
 	const onError: ImageUploadingPropsType["onError"] = (errors) => {
 		const errorMessage = getErrorMessage(errors);
 
@@ -67,7 +50,7 @@ const ImageInput = ({ setUploadedImages, render }: Props) => {
 		<ReactImageUploading
 			multiple
 			value={images}
-			onChange={onInputChange}
+			onChange={onImageInputChange}
 			maxFileSize={MAX_FILE_SIZE_IN_BYTES}
 			maxNumber={MAX_IMAGE_COUNT}
 			acceptType={ACCEPT_TYPES}
@@ -88,4 +71,4 @@ const ImageInput = ({ setUploadedImages, render }: Props) => {
 	);
 };
 
-export default ImageInput;
+export default WithImageInput;

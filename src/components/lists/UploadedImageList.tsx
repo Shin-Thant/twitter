@@ -39,7 +39,11 @@ const UploadedImageList = ({ images, updateImage, removeImage }: Props) => {
 					<Image
 						onClick={() => onImageUpdate(index)}
 						src={item.dataURL}
-						alt=""
+						alt={
+							item.file?.name
+								? `${item.file.name}-${index}`
+								: `Uploaded image ${index}`
+						}
 					/>
 
 					<ImageListItemBar
@@ -74,7 +78,6 @@ const Image = styled("img")(() => ({
 	width: "100%",
 	height: "120px",
 	objectFit: "cover",
-	borderRadius: "5px",
 	"&:hover": {
 		transform: "scale(1.1)",
 	},

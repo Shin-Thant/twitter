@@ -17,6 +17,7 @@ interface BasicTweet {
 	_id: string;
 	body: string;
 	owner: Owner;
+	images: string[];
 	likes: string[];
 	comments: { creator: Owner }[];
 	shares: SharedTweetPreview[];

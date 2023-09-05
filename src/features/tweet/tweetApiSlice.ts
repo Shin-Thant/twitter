@@ -41,9 +41,9 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 
 		createTweet: builder.mutation<Tweet, CreateTweetMutationArg>({
 			query: (arg) => ({
-				headers: {
-					"Content-Type": "multipart/formdata",
-				},
+				// headers: {
+				// 	"Content-Type": "multipart/form-data",
+				// },
 				url: "tweets",
 				method: "POST",
 				body: arg,

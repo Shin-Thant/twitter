@@ -10,7 +10,7 @@ interface InputProps {
 	required?: boolean;
 }
 interface Props extends InputProps {
-	field: ControllerRenderProps<{ content: string }, "content">;
+	field: ControllerRenderProps<{ content?: string }, "content">;
 	errorMessage: string | undefined;
 	contentLength: number;
 	totalLength?: number;
