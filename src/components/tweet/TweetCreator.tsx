@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, Box, Button, Paper, Stack } from "@mui/material";
+import { Avatar, Box, Paper, Stack } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
@@ -16,16 +16,16 @@ import UploadedImageList from "../lists/UploadedImageList";
 
 // TODO: modify the image upload to use it without using `render` prop
 
+const TOTAL_IMAGE_LIMIT = 4 as const;
 const AVATAR_SIZE = { xs: 30, ss: 35 };
 
 type Form = TweetCreateInput;
-
 type Props = {
 	user: User;
 };
 
 const TweetCreator = ({ user }: Props) => {
-	const [createTweet] = useCreateTweetMutation();
+	const [createTweet, { isLoading }] = useCreateTweetMutation();
 
 	const { images, onImageInputChange, removeAllImages } =
 		useImageInputHandler();
@@ -33,7 +33,7 @@ const TweetCreator = ({ user }: Props) => {
 	const {
 		watch,
 		handleSubmit,
-		formState: { isSubmitting, isValid, errors },
+		formState: { isSubmitting, isValid },
 		control,
 		reset,
 	} = useForm<Form>({
@@ -46,6 +46,7 @@ const TweetCreator = ({ user }: Props) => {
 	const content = watch("content");
 
 	const onSubmit: SubmitHandler<Form> = async (data) => {
+		if (isLoading) return;
 		if (!data.content && !images.length) {
 			showErrorToast("Content or image must be provided!");
 			return;
@@ -106,9 +107,6 @@ const TweetCreator = ({ user }: Props) => {
 	const isSubmitButtonDisabled: boolean =
 		(!content?.trim().length && !images.length) || !isValid;
 
-	const showResetButton: boolean =
-		!!errors.content?.message || !!content?.length || !!images.length;
-
 	return (
 		<Paper
 			variant="outlined"
@@ -165,9 +163,9 @@ const TweetCreator = ({ user }: Props) => {
 							onImageUpdate,
 							onImageRemove,
 						}) => (
-							<Box>
+							<Box sx={{ mt: 3 }}>
 								{!!images.length && (
-									<Box sx={{ mt: 3 }}>
+									<Box>
 										<UploadedImageList
 											images={images}
 											updateImage={onImageUpdate}
@@ -186,11 +184,12 @@ const TweetCreator = ({ user }: Props) => {
 								>
 									<TweetImageUploadButton
 										disabled={
-											isSubmitting || images.length === 4
+											isSubmitting ||
+											images.length === TOTAL_IMAGE_LIMIT
 										}
-										onClick={onImageUpload}
+										uploadImage={onImageUpload}
 										currentImageCount={images.length}
-										totalImageCount={4}
+										totalImageCount={TOTAL_IMAGE_LIMIT}
 									/>
 
 									<Stack
@@ -199,16 +198,6 @@ const TweetCreator = ({ user }: Props) => {
 										alignItems="center"
 										spacing={2}
 									>
-										{showResetButton && (
-											<Button
-												type="button"
-												variant="text"
-												sx={{ textTransform: "none" }}
-												onClick={onReset}
-											>
-												reset
-											</Button>
-										)}
 										<SubmitButton
 											isLoading={isSubmitting}
 											isDisabled={isSubmitButtonDisabled}

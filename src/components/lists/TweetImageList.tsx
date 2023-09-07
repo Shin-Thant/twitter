@@ -1,5 +1,8 @@
 import { ImageList, ImageListItem } from "@mui/material";
 
+// TODO: refactor <img />
+// TODO: show skeleton during loading
+
 type Props = {
 	images: string[];
 };

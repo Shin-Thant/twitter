@@ -3,7 +3,7 @@ import { Box, IconButton, Typography } from "@mui/material";
 
 type Props = {
 	disabled: boolean;
-	onClick: () => void;
+	uploadImage: () => void;
 	currentImageCount: number;
 	totalImageCount: number;
 };
@@ -12,13 +12,13 @@ const TweetImageUploadButton = ({
 	disabled,
 	currentImageCount,
 	totalImageCount,
-	onClick,
+	uploadImage,
 }: Props) => {
 	return (
 		<Box>
 			<IconButton
 				disabled={disabled}
-				onClick={onClick}
+				onClick={uploadImage}
 				color="primary"
 				size="small"
 			>
