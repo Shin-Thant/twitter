@@ -47,13 +47,6 @@ const TweetCard = forwardRef(
 					createdAt={tweet.createdAt}
 				/>
 
-				{!!tweet?.images?.length && (
-					<img
-						src={`http://localhost:3500/api/photos/${tweet.images[0]}`}
-						alt=""
-					/>
-				)}
-
 				<Box
 					onClick={onNaviate}
 					sx={{
