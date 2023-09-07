@@ -17,7 +17,7 @@ const TweetSubTitle = ({ username }: Props) => {
 	return (
 		<Link
 			to="/"
-			className="router_link auto_line"
+			className="router_link auto_line w-max"
 			onMouseDown={stopMouseDownPropagation}
 		>
 			<Typography

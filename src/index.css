@@ -27,3 +27,6 @@ html {
 .no_underline {
 	text-decoration: none;
 }
+.w-max {
+	width: max-content;
+}

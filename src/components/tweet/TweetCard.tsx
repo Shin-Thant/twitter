@@ -1,5 +1,5 @@
-import { Box, Card } from "@mui/material";
-import { ForwardedRef, forwardRef, memo, useRef } from "react";
+import { Box, Card, CardActionArea } from "@mui/material";
+import { ForwardedRef, forwardRef, memo } from "react";
 import { Tweet } from "../../features/tweet/tweetTypes";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
@@ -7,9 +7,6 @@ import TweetHeader from "./TweetHeader";
 import TweetCommentBtn from "./buttons/TweetCommentBtn";
 import TweetLikeBtn from "./buttons/TweetLikeBtn";
 import TweetShareBtn from "./buttons/TweetShareBtn";
-import TouchRipple, {
-	TouchRippleActions,
-} from "@mui/material/ButtonBase/TouchRipple";
 
 type Props = {
 	tweet: Tweet;
@@ -22,8 +19,6 @@ const TweetCard = forwardRef(
 
 			// navigate to tweet details
 		};
-
-		const rippleRef = useRef<TouchRippleActions>(null);
 
 		return (
 			<Card
@@ -41,6 +36,7 @@ const TweetCard = forwardRef(
 						xs: "none",
 						sm: "0 3px 5px rgb(0, 0, 0, 0.2)",
 					},
+					position: "relative",
 					pb: { xs: 1, sm: 0 },
 					mb: { xs: 0, sm: 3 },
 				}}
@@ -60,32 +56,24 @@ const TweetCard = forwardRef(
 
 				<Box
 					onClick={onNaviate}
-					onMouseDown={(e) => {
-						rippleRef.current?.start(e);
-					}}
-					onMouseUp={(e) => {
-						rippleRef.current?.stop(e);
-					}}
 					sx={{
 						position: "relative",
 						cursor: "pointer",
 						borderRadius: 0,
-						pl: { xs: 0, ss: 7, sm: 7.5 },
 					}}
 				>
-					{/* <CardActionArea
-					onClick={onNaviate}
-					sx={{
-						borderRadius: 0,
-						pl: { xs: 0, ss: 7, sm: 7.5 },
-						"& .MuiCardActionArea-focusHighlight": {
-							bgcolor: "transparent",
-						},
-					}}
-				> */}
-					<TweetBody tweet={tweet} />
-					<TouchRipple ref={rippleRef} />
-					{/* </CardActionArea> */}
+					<CardActionArea
+						onClick={onNaviate}
+						sx={{
+							borderRadius: 0,
+							pl: { xs: 0, ss: 7, sm: 7.5 },
+							"& .MuiCardActionArea-focusHighlight": {
+								bgcolor: "transparent",
+							},
+						}}
+					>
+						<TweetBody tweet={tweet} />
+					</CardActionArea>
 
 					<Box
 						onMouseDown={(e) => {

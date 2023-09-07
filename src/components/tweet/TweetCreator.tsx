@@ -138,8 +138,6 @@ const TweetCreator = ({ user }: Props) => {
 						}}
 					/>
 
-					{/* <h2>{errors.photos?.message ?? "no"}</h2> */}
-
 					<Box sx={{ width: "100%" }}>
 						<Controller
 							render={({ field, formState: { errors } }) => (
