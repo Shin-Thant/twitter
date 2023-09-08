@@ -1,4 +1,4 @@
-import { ImageList, ImageListItem } from "@mui/material";
+import { ImageList, ImageListItem, styled } from "@mui/material";
 
 // TODO: refactor <img />
 // TODO: show skeleton during loading
@@ -20,23 +20,29 @@ const TweetImageList = ({ images }: Props) => {
 					rows={getRowCountFor({
 						totalImages: images.length,
 					})}
+					sx={{
+						overflow: "hidden",
+						borderRadius: "8px",
+					}}
 				>
-					<img
+					<Image
 						src={`http://localhost:3500/api/v1/photos/${image}`}
 						alt={`Tweet image ${image}`}
 						loading="lazy"
-						style={{
-							borderRadius: "5px",
-							width: "100%",
-							height: "100%",
-							objectFit: "cover",
-						}}
 					/>
 				</ImageListItem>
 			))}
 		</ImageList>
 	);
 };
+
+const Image = styled("img")(({ theme }) => ({
+	borderRadius: "10px",
+	width: "100%",
+	height: "100%",
+	objectFit: "cover",
+	backgroundColor: theme.palette.tweet.imageBg,
+}));
 
 export default TweetImageList;
 
