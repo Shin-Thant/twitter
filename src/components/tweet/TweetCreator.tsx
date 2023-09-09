@@ -20,7 +20,6 @@ import UploadedImageList from "../lists/UploadedImageList";
 // TODO: modify the image upload to use it without using `render` prop
 
 const TOTAL_IMAGE_LIMIT = 4 as const;
-const AVATAR_SIZE = { xs: 30, ss: 35 };
 
 type Props = {
 	user: User;
@@ -113,8 +112,8 @@ const TweetCreator = ({ user }: Props) => {
 						src={user.avatar}
 						alt={`${user.name}-profile-image`}
 						sx={{
-							width: AVATAR_SIZE,
-							height: AVATAR_SIZE,
+							width: { xs: 30, ss: 35 },
+							height: { xs: 30, ss: 35 },
 							outline: "1px solid hsl(203, 100%, 47%)",
 							outlineOffset: "3px",
 							bgcolor: "primary.main",
