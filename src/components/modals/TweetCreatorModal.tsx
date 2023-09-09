@@ -1,18 +1,23 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Stack } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
+import useImageInputHandler from "../../hooks/useImageInputHandler";
+import {
+	createTweetFormData,
+	useTweetCreateForm,
+} from "../../hooks/useTweetCreateForm";
 import { useTweetCreatorModal } from "../../hooks/useTweetCreatorModal";
 import { showToast } from "../../lib/handleToast";
-import { TweetCreateInput, TweetCreateSchema } from "../../schemas/TweetSchema";
+import { TweetCreateInput } from "../../schemas/TweetSchema";
 import ModalActionButton from "../buttons/ModalActionButton";
-import ContentInputHandler from "../forms/ContentInputHandler";
-import Modal from "./Modal";
-import useImageInputHandler from "../../hooks/useImageInputHandler";
-import WithImageInput from "../inputs/WithImageInput";
 import TweetImageUploadButton from "../buttons/TweetImageUploadButton";
+import ContentInputHandler from "../forms/ContentInputHandler";
+import WithImageInput from "../inputs/WithImageInput";
 import UploadedImageList from "../lists/UploadedImageList";
+import Modal from "./Modal";
+
+//! try to refactor with HOC pattern
 
 // TODO: test and try to refactor this
 
@@ -31,13 +36,7 @@ const TweetCreatorModal = () => {
 		watch,
 		formState: { isSubmitting, isValid },
 		reset,
-	} = useForm<TweetCreateInput>({
-		resolver: zodResolver(TweetCreateSchema),
-		defaultValues: {
-			content: "",
-		},
-		mode: "onChange",
-	});
+	} = useTweetCreateForm();
 
 	const content = watch("content");
 
@@ -49,7 +48,10 @@ const TweetCreatorModal = () => {
 		}
 
 		try {
-			const formData = createTweetFormData({ content: data.content });
+			const formData = createTweetFormData({
+				content: data.content,
+				images,
+			});
 			const response = await createTweet(formData);
 
 			if (
@@ -67,20 +69,6 @@ const TweetCreatorModal = () => {
 			onClose();
 		}
 	};
-
-	function createTweetFormData({ content }: { content?: string }): FormData {
-		const formData = new FormData();
-
-		if (content) {
-			formData.set("body", content);
-		}
-		images.forEach((image) => {
-			if (image.file) {
-				formData.append(`photos`, image.file);
-			}
-		});
-		return formData;
-	}
 
 	function showSuccessToast() {
 		showToast({

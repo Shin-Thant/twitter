@@ -1,12 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, Box, Paper, Stack } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { User } from "../../features/user/userTypes";
 import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
 import useImageInputHandler from "../../hooks/useImageInputHandler";
+import {
+	createTweetFormData,
+	useTweetCreateForm,
+} from "../../hooks/useTweetCreateForm";
 import { showToast } from "../../lib/handleToast";
-import { TweetCreateInput, TweetCreateSchema } from "../../schemas/TweetSchema";
+import { TweetCreateInput } from "../../schemas/TweetSchema";
 import SubmitButton from "../buttons/SubmitButton";
 import TweetImageUploadButton from "../buttons/TweetImageUploadButton";
 import { StyledForm } from "../forms/AuthFormComponents";
@@ -19,7 +22,6 @@ import UploadedImageList from "../lists/UploadedImageList";
 const TOTAL_IMAGE_LIMIT = 4 as const;
 const AVATAR_SIZE = { xs: 30, ss: 35 };
 
-type Form = TweetCreateInput;
 type Props = {
 	user: User;
 };
@@ -36,16 +38,10 @@ const TweetCreator = ({ user }: Props) => {
 		formState: { isSubmitting, isValid },
 		control,
 		reset,
-	} = useForm<Form>({
-		resolver: zodResolver(TweetCreateSchema),
-		defaultValues: {
-			content: "",
-		},
-		mode: "onChange",
-	});
+	} = useTweetCreateForm();
 	const content = watch("content");
 
-	const onSubmit: SubmitHandler<Form> = async (data) => {
+	const onSubmit: SubmitHandler<TweetCreateInput> = async (data) => {
 		if (isLoading) return;
 		if (!data.content && !images.length) {
 			showErrorToast("Content or image must be provided!");
@@ -53,7 +49,10 @@ const TweetCreator = ({ user }: Props) => {
 		}
 
 		try {
-			const formData = createTweetFormData({ content });
+			const formData = createTweetFormData({
+				content: data.content,
+				images,
+			});
 			const response = await createTweet(formData);
 
 			if (
@@ -70,20 +69,6 @@ const TweetCreator = ({ user }: Props) => {
 			showErrorToast();
 		}
 	};
-
-	function createTweetFormData({ content }: { content?: string }): FormData {
-		const formData = new FormData();
-
-		if (content) {
-			formData.set("body", content);
-		}
-		images.forEach((image) => {
-			if (image.file) {
-				formData.append(`photos`, image.file);
-			}
-		});
-		return formData;
-	}
 
 	function showSuccessToast() {
 		showToast({

@@ -51,13 +51,13 @@ const TweetCard = forwardRef(
 					onClick={onNaviate}
 					sx={{
 						position: "relative",
-						cursor: "pointer",
 						borderRadius: 0,
 					}}
 				>
 					<CardActionArea
 						onClick={onNaviate}
 						sx={{
+							cursor: "pointer",
 							borderRadius: 0,
 							pl: { xs: 0, ss: 7, sm: 7.5 },
 							"& .MuiCardActionArea-focusHighlight": {
@@ -77,7 +77,7 @@ const TweetCard = forwardRef(
 						}}
 						sx={{
 							cursor: "default",
-							// ml: { xs: 0, ss: 7, sm: 7.5 },
+							ml: { xs: 0, ss: 7, sm: 7.5 },
 						}}
 					>
 						<TweetActions
