@@ -15,7 +15,7 @@ type Props = {
 	removeImage: (index: number) => void;
 };
 
-const UploadedImageList = ({ images, updateImage, removeImage }: Props) => {
+const PreviewImageList = ({ images, updateImage, removeImage }: Props) => {
 	const onImageUpdate = (index: number) => {
 		updateImage(index);
 	};
@@ -84,4 +84,4 @@ const Image = styled("img")(() => ({
 	transition: "transform 220ms ease",
 }));
 
-export default UploadedImageList;
+export default PreviewImageList;

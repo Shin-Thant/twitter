@@ -14,7 +14,7 @@ import ModalActionButton from "../buttons/ModalActionButton";
 import TweetImageUploadButton from "../buttons/TweetImageUploadButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import WithImageInput from "../inputs/WithImageInput";
-import UploadedImageList from "../lists/UploadedImageList";
+import PreviewImageList from "../lists/PreviewImageList";
 import Modal from "./Modal";
 
 //! try to refactor with HOC pattern
@@ -125,7 +125,7 @@ const TweetCreatorModal = () => {
 					}) => (
 						<Box sx={{ mt: 3 }}>
 							{!!images.length && (
-								<UploadedImageList
+								<PreviewImageList
 									images={images}
 									updateImage={onImageUpdate}
 									removeImage={onImageRemove}
