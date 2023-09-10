@@ -83,7 +83,7 @@ const darkModeColors = {
 	tweet: {
 		bg: "#000",
 		borderColor: "hsl(0, 0%, 25%)",
-		imageBg: "#969696",
+		imageBg: "#95959D",
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
 	btn: {
@@ -103,7 +103,7 @@ const lightModeColors = {
 	tweet: {
 		bg: "#fff",
 		borderColor: "hsl(0, 0%, 65%)",
-		imageBg: "#525252",
+		imageBg: "#58585F",
 	},
 	option_icon: { normal: "hsl(0, 0%, 70%)", hover: "hsl(0, 0%, 30%" },
 	btn: {
