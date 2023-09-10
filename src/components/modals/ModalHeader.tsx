@@ -1,30 +1,13 @@
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { Box, IconButton, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
-import { useThemeMode } from "../../hooks/useThemeMode";
+import { Box, Typography } from "@mui/material";
 import { ReactNode } from "react";
+import ModalCloseButton from "../buttons/ModalCloseButton";
 
 type Props = {
 	title: string | ReactNode;
 	closeModal: () => void;
 };
 
-interface Palette {
-	color: string;
-	hoverColor: string;
-}
-const LIGHT_PALETTE: Palette = {
-	color: grey[400],
-	hoverColor: grey[700],
-};
-const DARK_PALETTE: Palette = {
-	color: grey[700],
-	hoverColor: grey[300],
-};
-
 const ModalHeader = ({ title, closeModal }: Props) => {
-	const isDarkMode = useThemeMode() === "dark";
-
 	return (
 		<Box
 			mb={3}
@@ -40,23 +23,7 @@ const ModalHeader = ({ title, closeModal }: Props) => {
 			>
 				{title}
 			</Typography>
-			<IconButton
-				onClick={closeModal}
-				size="small"
-				sx={{
-					color: isDarkMode
-						? DARK_PALETTE.color
-						: LIGHT_PALETTE.color,
-					"&:hover": {
-						color: isDarkMode
-							? DARK_PALETTE.hoverColor
-							: LIGHT_PALETTE.hoverColor,
-					},
-					transition: "color 200ms ease",
-				}}
-			>
-				<CloseRoundedIcon />
-			</IconButton>
+			<ModalCloseButton closeModal={closeModal} />
 		</Box>
 	);
 };
