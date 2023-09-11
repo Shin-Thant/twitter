@@ -17,8 +17,6 @@ import ContentInputHandler from "../forms/ContentInputHandler";
 import WithImageInput from "../inputs/WithImageInput";
 import PreviewImageList from "../lists/PreviewImageList";
 
-// TODO: modify the image upload to use it without using `render` prop
-
 const TOTAL_IMAGE_LIMIT = 4 as const;
 
 type Props = {

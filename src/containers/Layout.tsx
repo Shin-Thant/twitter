@@ -12,11 +12,13 @@ import Sidebar from "../nav/sidebar/Sidebar";
 import ProviderContainer from "./ProviderContainer";
 import TweetCreatorModal from "../components/modals/TweetCreatorModal";
 import CommentCreateModal from "../components/modals/CommentCreateModal";
+import ImageModal from "../components/modals/ImageModal";
 
 export default function Layout() {
 	return (
 		<ProviderContainer>
 			<LogoutModal />
+			<ImageModal />
 			<TweetCreatorModal />
 			<TweetShareModal />
 			<TweetInfoModal />

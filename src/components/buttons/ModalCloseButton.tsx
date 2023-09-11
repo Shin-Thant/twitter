@@ -17,15 +17,15 @@ const DARK_PALETTE: Palette = {
 };
 
 type Props = {
-	closeModal: () => void;
+	onClose: () => void;
 };
 
-const ModalCloseButton = ({ closeModal }: Props) => {
+const ModalCloseButton = ({ onClose }: Props) => {
 	const isDarkMode = useThemeMode() === "dark";
 
 	return (
 		<IconButton
-			onClick={closeModal}
+			onClick={onClose}
 			size="small"
 			sx={{
 				color: isDarkMode ? DARK_PALETTE.color : LIGHT_PALETTE.color,

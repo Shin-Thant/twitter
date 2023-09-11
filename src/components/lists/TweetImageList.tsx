@@ -1,24 +1,49 @@
 import { ImageList, ImageListItem, styled } from "@mui/material";
+import { MouseEvent } from "react";
+import { IMAGE_URL } from "../../app/config";
+import { z } from "zod";
+import { useImageModal } from "../../hooks/useImageModal";
+import { showToast } from "../../lib/handleToast";
 
-// TODO: refactor <img />
-// TODO: show skeleton during loading
+const IMAGE_NAME_REGEX = /^([0-9a-fA-F]{32})-([0-9]+)\.(png|jpeg|jpg)$/;
+
+const imageUrlSchema = z.string().nonempty().trim().regex(IMAGE_NAME_REGEX);
 
 type Props = {
+	tweetId: string;
 	images: string[];
 };
 
-const TweetImageList = ({ images }: Props) => {
+const TweetImageList = ({ tweetId, images }: Props) => {
+	const { showModal } = useImageModal();
+
+	const getOnImageClick = ({ imageUrl }: { imageUrl: string }) => {
+		const onImageClick = (e: MouseEvent<HTMLLIElement>) => {
+			e.stopPropagation();
+
+			const { success } = imageUrlSchema.safeParse(imageUrl);
+			if (!success) {
+				showToast({ message: "Can't show image!", variant: "error" });
+				return;
+			}
+
+			showModal({ imageUrl, tweetId });
+		};
+		return onImageClick;
+	};
+
 	return (
 		<ImageList cols={2} rowHeight={120}>
 			{images.map((image, index) => (
 				<ImageListItem
 					key={image}
+					onClick={getOnImageClick({ imageUrl: image })}
 					cols={getColumnCountFor({
 						totalImages: images.length,
-						imageIndex: index,
 					})}
 					rows={getRowCountFor({
 						totalImages: images.length,
+						imageIndex: index,
 					})}
 					sx={{
 						overflow: "hidden",
@@ -26,7 +51,7 @@ const TweetImageList = ({ images }: Props) => {
 					}}
 				>
 					<Image
-						src={`http://localhost:3500/api/v1/photos/${image}`}
+						src={`${IMAGE_URL}/${image}`}
 						alt={`Tweet image ${image}`}
 						loading="lazy"
 					/>
@@ -46,27 +71,27 @@ const Image = styled("img")(({ theme }) => ({
 
 export default TweetImageList;
 
-function getColumnCountFor({
-	totalImages,
-	imageIndex,
-}: {
-	totalImages: number;
-	imageIndex: number;
-}): number {
+function getColumnCountFor({ totalImages }: { totalImages: number }): number {
 	if (totalImages === 1) {
-		return 2;
-	}
-	if (totalImages === 3 && imageIndex === 2) {
 		return 2;
 	}
 	return 1;
 }
 
-function getRowCountFor({ totalImages }: { totalImages: number }) {
+function getRowCountFor({
+	totalImages,
+	imageIndex,
+}: {
+	totalImages: number;
+	imageIndex: number;
+}) {
 	if (totalImages === 1) {
 		return 2;
 	}
 	if (totalImages === 2) {
+		return 2;
+	}
+	if (totalImages === 3 && imageIndex === 0) {
 		return 2;
 	}
 	return 1;

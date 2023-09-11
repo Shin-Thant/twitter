@@ -4,7 +4,7 @@ import { ReactNode, ReactElement } from "react";
 import ModalHeader from "./ModalHeader";
 
 type Props = {
-	title: string | ReactNode;
+	title?: string | ReactNode;
 	isOpen: boolean;
 	onClose: () => void;
 	children: ReactNode | ReactElement;
@@ -44,7 +44,7 @@ export default function Modal({
 					...modalStyle,
 				}}
 			>
-				<ModalHeader title={title} closeModal={onClose} />
+				{!!title && <ModalHeader title={title} closeModal={onClose} />}
 				{children}
 			</Box>
 		</MuiModal>

@@ -59,7 +59,7 @@ const TweetCard = forwardRef(
 						sx={{
 							cursor: "pointer",
 							borderRadius: 0,
-							pl: { xs: 0, ss: 7, sm: 7.5 },
+							pl: { xs: 5.5, ss: 7, sm: 7.5 },
 							"& .MuiCardActionArea-focusHighlight": {
 								bgcolor: "transparent",
 							},

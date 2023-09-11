@@ -17,10 +17,6 @@ import WithImageInput from "../inputs/WithImageInput";
 import PreviewImageList from "../lists/PreviewImageList";
 import Modal from "./Modal";
 
-//! try to refactor with HOC pattern
-
-// TODO: test and try to refactor this
-
 const TOTAL_IMAGE_LIMIT = 4 as const;
 
 const TweetCreatorModal = () => {

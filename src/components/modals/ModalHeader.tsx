@@ -2,6 +2,8 @@ import { Box, Typography } from "@mui/material";
 import { ReactNode } from "react";
 import ModalCloseButton from "../buttons/ModalCloseButton";
 
+// TODO: refactor with component composition
+
 type Props = {
 	title: string | ReactNode;
 	closeModal: () => void;
@@ -23,7 +25,7 @@ const ModalHeader = ({ title, closeModal }: Props) => {
 			>
 				{title}
 			</Typography>
-			<ModalCloseButton closeModal={closeModal} />
+			<ModalCloseButton onClose={closeModal} />
 		</Box>
 	);
 };

@@ -24,7 +24,9 @@ const TweetBody = ({ tweet }: Props) => {
 				</Typography>
 			)}
 
-			{!!tweet.images?.length && <TweetImageList images={tweet.images} />}
+			{!!tweet.images?.length && (
+				<TweetImageList images={tweet.images} tweetId={tweet._id} />
+			)}
 
 			{tweet.type === "share" && <NestedTweet origin={tweet.origin} />}
 		</CardContent>
