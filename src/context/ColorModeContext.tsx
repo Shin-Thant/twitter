@@ -6,7 +6,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import isValidColorMode from "../helpers/isValidColorMode";
+import isValidColorMode from "../util/isValidColorMode";
 import useDeviceTheme from "../hooks/useDeviceTheme";
 import {
 	getModeFromLocalStorage,

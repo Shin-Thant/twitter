@@ -1,5 +1,5 @@
 import { z } from "zod";
-import checkInputSpaces from "../helpers/checkInputSpaces";
+import checkInputSpaces from "../util/checkInputSpaces";
 
 export const SignUpSchema = z.object({
 	username: z

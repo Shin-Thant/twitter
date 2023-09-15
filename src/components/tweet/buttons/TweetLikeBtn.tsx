@@ -4,7 +4,7 @@ import { startTransition } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import { useHandleLikesMutation } from "../../../features/tweet/tweetApiSlice";
 import { userIdSelector } from "../../../features/user/userSlice";
-import getUpdatedStringList from "../../../helpers/getUpdatedStringList";
+import getUpdatedStringList from "../../../util/getUpdatedStringList";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
 import CardButton from "../../buttons/CardButton";
 

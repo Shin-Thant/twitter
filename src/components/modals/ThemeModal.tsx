@@ -1,6 +1,6 @@
 import { FormControlLabel, Radio, RadioGroup, styled } from "@mui/material";
 import { ChangeEvent, useCallback } from "react";
-import isValidColorMode from "../../helpers/isValidColorMode";
+import isValidColorMode from "../../util/isValidColorMode";
 import useColorMode from "../../hooks/useColorMode";
 import useThemeModal from "../../hooks/useThemeModal";
 import Modal from "./Modal";

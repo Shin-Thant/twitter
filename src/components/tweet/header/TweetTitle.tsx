@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { Owner } from "../../../features/tweet/tweetTypes";
-import getRelativeTime from "../../../helpers/getRelativeTime";
+import getRelativeTime from "../../../util/getRelativeTime";
 import { MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
 

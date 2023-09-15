@@ -1,4 +1,4 @@
-import getRelativeTime from "../helpers/getRelativeTime";
+import getRelativeTime from "../util/getRelativeTime";
 
 function getInputDate(timeAgo: number | string): Date {
 	if (typeof timeAgo === "string") {

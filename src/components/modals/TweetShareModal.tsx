@@ -13,7 +13,7 @@ import { SharedTweetPreview } from "../../features/tweet/tweetTypes";
 import {
 	BaseQueryResponseError,
 	isBaseQueryResponseError,
-} from "../../helpers/errorHelpers";
+} from "../../util/errorHelpers";
 import { useTweetShareModal } from "../../hooks/useTweetShareModal";
 import { showToast } from "../../lib/handleToast";
 import TweetShareForm from "../forms/TweetShareForm";
@@ -40,7 +40,11 @@ function handleToast({ variant }: { variant: "success" | "error" }) {
 }
 
 export default function TweetShareModal() {
-	const { id: tweetId, isOpen: isModalOpen, closeModal } = useTweetShareModal();
+	const {
+		id: tweetId,
+		isOpen: isModalOpen,
+		closeModal,
+	} = useTweetShareModal();
 	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
 
 	const foundTweet = useAppSelector((state) =>

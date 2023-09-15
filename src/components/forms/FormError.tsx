@@ -6,7 +6,7 @@ import {
 	isBaseQueryFetchError,
 	isBaseQueryResponseError,
 	isValidResponseErrorData,
-} from "../../helpers/errorHelpers";
+} from "../../util/errorHelpers";
 
 type Props = { error: FetchBaseQueryError | SerializedError };
 

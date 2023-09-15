@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
-import { isBaseQueryResponseError } from "../../helpers/errorHelpers";
+import { isBaseQueryResponseError } from "../../util/errorHelpers";
 import useImageInputHandler from "../../hooks/useImageInputHandler";
 import {
 	createTweetFormData,

@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { CaseReducer, createSlice } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { RootState } from "../../app/store";
-import isTokenErrorPayload from "../../helpers/isTokenErrorPayload";
+import isTokenErrorPayload from "../../util/isTokenErrorPayload";
 import { checkUserEndpoint } from "./authApiSlice";
 
 type AuthState = {

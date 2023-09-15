@@ -9,7 +9,7 @@ import {
 	createFetchError,
 	checkResponseDataContainToken,
 	isValidResponseErrorData,
-} from "../helpers/errorHelpers";
+} from "../util/errorHelpers";
 import { baseQuery } from "./baseQuery";
 
 type BaseQueryWithReauth = BaseQueryFn<

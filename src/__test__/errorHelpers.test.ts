@@ -1,7 +1,7 @@
 import {
 	checkResponseDataContainToken,
 	createFetchError,
-} from "../helpers/errorHelpers";
+} from "../util/errorHelpers";
 
 describe("Test errorHelpers", () => {
 	describe("createFetchError", () => {
