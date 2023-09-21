@@ -8,12 +8,12 @@ interface InputProps {
 	autoFocus?: boolean;
 	placeholder?: string;
 	required?: boolean;
+	disabled?: boolean;
 }
 interface Props extends InputProps {
-	field: ControllerRenderProps<
-		{ content?: string } | { content: string },
-		"content"
-	>;
+	field:
+		| ControllerRenderProps<{ content?: string }, "content">
+		| ControllerRenderProps<{ content: string }, "content">;
 	errorMessage: string | undefined;
 	contentLength: number;
 	totalLength?: number;
@@ -27,6 +27,7 @@ const ContentInputHandler = ({
 	autoFocus,
 	placeholder,
 	required,
+	disabled,
 }: Props) => {
 	return (
 		<>
@@ -38,6 +39,7 @@ const ContentInputHandler = ({
 				placeholder={placeholder}
 				autoFocus={autoFocus}
 				required={required}
+				disabled={disabled}
 			/>
 
 			<Box

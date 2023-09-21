@@ -6,7 +6,7 @@ import { currentPageSelector } from "../currentPageSlice";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
 type CreateTweetMutationArg = FormData;
-type EditTweetMutationArg = { tweetId: string; body: string };
+type EditTweetMutationArg = { tweetId: string; body: FormData };
 type LikeMutationArg = { tweetId: string; likes: string[] };
 type ShareMutationArg = { tweetId: string; body?: string };
 type DeleteMutationArg = { tweetId: string };
@@ -41,9 +41,6 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 
 		createTweet: builder.mutation<Tweet, CreateTweetMutationArg>({
 			query: (arg) => ({
-				// headers: {
-				// 	"Content-Type": "multipart/form-data",
-				// },
 				url: "tweets",
 				method: "POST",
 				body: arg,
@@ -55,24 +52,25 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			query: ({ body, tweetId }) => ({
 				method: "PUT",
 				url: `/tweets/${tweetId}`,
-				body: {
-					body,
-				},
+				body,
 			}),
-			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
-				const rootState = getState() as RootState;
-				const cacheKey = currentPageSelector(rootState, "tweet");
-
-				const result = dispatch(
-					optimisticEditUpdate({ ...arg, cacheKey })
-				);
-
-				try {
-					await queryFulfilled;
-				} catch (err) {
-					result.undo();
-				}
+			invalidatesTags(_res, _err, arg) {
+				return [{ type: "Tweets", id: arg.tweetId }];
 			},
+			// async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+			// 	const rootState = getState() as RootState;
+			// 	const cacheKey = currentPageSelector(rootState, "tweet");
+
+			// 	const result = dispatch(
+			// 		optimisticEditUpdate({ ...arg, cacheKey })
+			// 	);
+
+			// 	try {
+			// 		await queryFulfilled;
+			// 	} catch (err) {
+			// 		result.undo();
+			// 	}
+			// },
 		}),
 
 		handleLikes: builder.mutation<Tweet, LikeMutationArg>({
@@ -143,25 +141,26 @@ const optimisticLikeUpdate = ({
 	);
 };
 
-const optimisticEditUpdate = ({
-	body,
-	tweetId,
-	cacheKey,
-}: EditTweetMutationArg & { cacheKey: number }) => {
-	return tweetApiSlice.util.updateQueryData(
-		"getTweets",
-		{ currentPage: cacheKey, itemsPerPage: 10 },
-		(draft) => {
-			const foundTweet = draft.data.find(
-				(tweet) => tweet._id === tweetId
-			);
+// TODO: handle this
+// const optimisticEditUpdate = ({
+// 	body,
+// 	tweetId,
+// 	cacheKey,
+// }: EditTweetMutationArg & { cacheKey: number }) => {
+// 	return tweetApiSlice.util.updateQueryData(
+// 		"getTweets",
+// 		{ currentPage: cacheKey, itemsPerPage: 10 },
+// 		(draft) => {
+// 			const foundTweet = draft.data.find(
+// 				(tweet) => tweet._id === tweetId
+// 			);
 
-			if (foundTweet) {
-				foundTweet.body = body;
-			}
-		}
-	);
-};
+// 			if (foundTweet) {
+// 				foundTweet.body = body;
+// 			}
+// 		}
+// 	);
+// };
 
 const resultSelector = createSelector(
 	(state: RootState) => ({
@@ -186,6 +185,9 @@ const dataSelector = createSelector(
 export const selectTweetById = createSelector(
 	[dataSelector, (_: RootState, id: string) => id],
 	(data, id) => {
+		if (!id) {
+			return undefined;
+		}
 		return data?.data.find((tweet) => tweet._id === id);
 	}
 );

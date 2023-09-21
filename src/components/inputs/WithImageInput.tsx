@@ -8,11 +8,14 @@ import { showToast } from "../../lib/handleToast";
 
 const MAX_IMAGE_COUNT = 4 as const;
 const ACCEPT_TYPES = ["jpg", "png", "jpeg"];
-const MAX_FILE_SIZE_IN_BYTES = 150000 as const;
+const MAX_FILE_SIZE_IN_BYTES = 120000 as const;
+const ONE_KILOBYTES_IN_BYTES = 1000 as const;
 
 const UPLOAD_ERRORS: Record<keyof ErrorsType, string> = {
 	acceptType: "Invalid image type!",
-	maxFileSize: "Exceeded file size limit!",
+	maxFileSize: `Image size can't be more than ${
+		MAX_FILE_SIZE_IN_BYTES / ONE_KILOBYTES_IN_BYTES
+	} kilobytes!`,
 	maxNumber: "Exceeded file count!",
 };
 

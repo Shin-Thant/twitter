@@ -55,7 +55,7 @@ const TweetCard = forwardRef(
 					}}
 				>
 					<CardActionArea
-						onClick={onNaviate}
+						// onClick={onNaviate}
 						sx={{
 							cursor: "pointer",
 							borderRadius: 0,

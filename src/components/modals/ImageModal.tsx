@@ -34,8 +34,6 @@ const ImageModal = () => {
 				justifyContent="space-between"
 				sx={{ mb: 2 }}
 			>
-				<ModalCloseButton onClose={onClose} />
-
 				<Button
 					variant="outlined"
 					sx={{ borderRadius: "50px", textTransform: "none" }}
@@ -43,6 +41,7 @@ const ImageModal = () => {
 				>
 					Go to post
 				</Button>
+				<ModalCloseButton onClose={onClose} />
 			</Stack>
 
 			<Stack

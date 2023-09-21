@@ -1,23 +1,31 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ImageListType, ImageUploadingPropsType } from "react-images-uploading";
 
 const useImageInputHandler = () => {
 	const [images, setImages] = useState<ImageListType>([]);
 
-	const onImageInputChange: ImageUploadingPropsType["onChange"] = (
-		imageList: ImageListType,
-		_addUpdatedIndex?: number[] | undefined
-	) => {
-		setImages([...imageList]);
-	};
+	const onImageInputChange: ImageUploadingPropsType["onChange"] = useCallback(
+		(imageList: ImageListType, _addUpdatedIndex?: number[] | undefined) => {
+			setImages([...imageList]);
+		},
+		[]
+	);
 
-	function removeAllImages() {
+	const loadImages = useCallback((imageList: ImageListType) => {
+		if (!imageList.length) {
+			return;
+		}
+		setImages([...imageList]);
+	}, []);
+
+	const removeAllImages = useCallback(() => {
 		setImages([]);
-	}
+	}, []);
 
 	return {
 		images,
 		onImageInputChange,
+		loadImages,
 		removeAllImages,
 	};
 };
