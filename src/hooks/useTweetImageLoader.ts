@@ -1,7 +1,6 @@
-import React from "react";
-import { createImageTypeListFor } from "../util/createImageTypeListFor";
-import useSWR from "swr";
 import { ImageListType } from "react-images-uploading";
+import useSWR from "swr";
+import { createImageTypeListFor } from "../util/createImageTypeListFor";
 
 type Props = {
 	imageNames?: string[];
@@ -12,16 +11,6 @@ const useTweetImageLoader = ({ imageNames, loadImages }: Props) => {
 	return useSWR(
 		!!imageNames && !!imageNames.length ? imageNames : null,
 		async function (imageNames: string[]) {
-			// return new Promise((resolve) => {
-			// 	setTimeout(async () => {
-			// 		const result = await createImageTypeListFor({
-			// 			imageNames,
-			// 		});
-			// 		loadImages(result);
-			// 		resolve(result);
-			// 	}, 3000);
-			// });
-
 			const result = await createImageTypeListFor({
 				imageNames,
 			});

@@ -55,22 +55,27 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				body,
 			}),
 			invalidatesTags(_res, _err, arg) {
+				const body = arg.body.get("body");
+				if (body) {
+					return [];
+				}
+
 				return [{ type: "Tweets", id: arg.tweetId }];
 			},
-			// async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
-			// 	const rootState = getState() as RootState;
-			// 	const cacheKey = currentPageSelector(rootState, "tweet");
+			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
+				const rootState = getState() as RootState;
+				const cacheKey = currentPageSelector(rootState, "tweet");
 
-			// 	const result = dispatch(
-			// 		optimisticEditUpdate({ ...arg, cacheKey })
-			// 	);
+				const result = dispatch(
+					optimisticEditUpdate({ ...arg, cacheKey })
+				);
 
-			// 	try {
-			// 		await queryFulfilled;
-			// 	} catch (err) {
-			// 		result.undo();
-			// 	}
-			// },
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					result.undo();
+				}
+			},
 		}),
 
 		handleLikes: builder.mutation<Tweet, LikeMutationArg>({
@@ -142,25 +147,27 @@ const optimisticLikeUpdate = ({
 };
 
 // TODO: handle this
-// const optimisticEditUpdate = ({
-// 	body,
-// 	tweetId,
-// 	cacheKey,
-// }: EditTweetMutationArg & { cacheKey: number }) => {
-// 	return tweetApiSlice.util.updateQueryData(
-// 		"getTweets",
-// 		{ currentPage: cacheKey, itemsPerPage: 10 },
-// 		(draft) => {
-// 			const foundTweet = draft.data.find(
-// 				(tweet) => tweet._id === tweetId
-// 			);
+const optimisticEditUpdate = ({
+	body,
+	tweetId,
+	cacheKey,
+}: EditTweetMutationArg & { cacheKey: number }) => {
+	return tweetApiSlice.util.updateQueryData(
+		"getTweets",
+		{ currentPage: cacheKey, itemsPerPage: 10 },
+		(draft) => {
+			const tweetBody = body.get("body");
 
-// 			if (foundTweet) {
-// 				foundTweet.body = body;
-// 			}
-// 		}
-// 	);
-// };
+			const foundTweet = draft.data.find(
+				(tweet) => tweet._id === tweetId
+			);
+
+			if (foundTweet && !!tweetBody && typeof tweetBody === "string") {
+				foundTweet.body = tweetBody;
+			}
+		}
+	);
+};
 
 const resultSelector = createSelector(
 	(state: RootState) => ({
