@@ -1,9 +1,9 @@
 import { Button, Stack, styled } from "@mui/material";
-import { IMAGE_URL } from "../../app/config";
 import { useImageModal } from "../../hooks/useImageModal";
 import ModalCloseButton from "../buttons/ModalCloseButton";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
+import { IMAGE_URL } from "../../config";
 
 const ImageModal = () => {
 	const { isOpen, imageUrl, closeModal } = useImageModal();

@@ -146,7 +146,6 @@ const optimisticLikeUpdate = ({
 	);
 };
 
-// TODO: handle this
 const optimisticEditUpdate = ({
 	body,
 	tweetId,

@@ -1,9 +1,9 @@
 import { ImageList, ImageListItem, styled } from "@mui/material";
 import { MouseEvent } from "react";
-import { IMAGE_URL } from "../../app/config";
 import { z } from "zod";
 import { useImageModal } from "../../hooks/useImageModal";
 import { showToast } from "../../lib/handleToast";
+import { IMAGE_URL } from "../../config";
 
 const IMAGE_NAME_REGEX = /^([0-9a-fA-F]{32})-([0-9]+)\.(png|jpeg|jpg)$/;
 

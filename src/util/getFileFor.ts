@@ -1,4 +1,4 @@
-import { IMAGE_URL } from "../app/config";
+import { IMAGE_URL } from "../config";
 
 export async function getFileFor({ name }: { name: string }): Promise<File> {
 	const imageBlob = await fetchImageAsBlob({
