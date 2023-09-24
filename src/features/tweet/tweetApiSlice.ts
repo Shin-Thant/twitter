@@ -56,7 +56,8 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags(_res, _err, arg) {
 				const body = arg.body.get("body");
-				if (body) {
+				const imgs = arg.body.get("photos");
+				if (body && !imgs) {
 					return [];
 				}
 
