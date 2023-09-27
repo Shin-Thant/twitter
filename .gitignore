@@ -30,3 +30,5 @@ playground.mongodb
 
 # markdown
 *.md
+
+vite.config.ts.*
