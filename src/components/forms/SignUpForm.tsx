@@ -13,9 +13,13 @@ import {
 import FieldError from "./FieldError";
 import FormError from "./FormError";
 import SubmitButton from "../buttons/SubmitButton";
+import { useAppDispatch } from "../../app/hooks";
+import { setUser } from "../../features/user/userSlice";
 
 export default function SignUpForm() {
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+
 	const [signup, { isError, error: mutationError }] = useSignUpMutation();
 	const {
 		register,
@@ -38,6 +42,8 @@ export default function SignUpForm() {
 		if ("error" in res) {
 			return;
 		}
+
+		dispatch(setUser(res.data));
 
 		navigate("/login");
 	};
