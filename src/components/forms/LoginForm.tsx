@@ -52,7 +52,8 @@ export default function LoginForm() {
 		dispatch(setAuth(result.accessToken));
 		dispatch(setUser(result.user));
 
-		navigate(from ? from : "/");
+		const isEmailVerified = result.user.emailVerified;
+		navigate(!isEmailVerified ? "/verify-email" : from ?? "/");
 	};
 
 	return (

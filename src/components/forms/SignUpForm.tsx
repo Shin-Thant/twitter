@@ -44,8 +44,7 @@ export default function SignUpForm() {
 		}
 
 		dispatch(setUser(res.data));
-
-		navigate("/login");
+		navigate("/verify-email");
 	};
 
 	return (

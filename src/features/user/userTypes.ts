@@ -3,6 +3,7 @@ export type User = {
 	name: string;
 	username: string;
 	email: string;
+	emailVerified: boolean;
 	avatar?: string;
 	followers: string[];
 	following: string[];
