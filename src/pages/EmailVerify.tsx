@@ -1,16 +1,20 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
-import { authStatusSelector } from "../features/auth/authSlice";
-import { userSelector } from "../features/user/userSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useLogoutMutation } from "../features/auth/authApiSlice";
+import { authStatusSelector, setAuth } from "../features/auth/authSlice";
+import { setUser, userSelector } from "../features/user/userSlice";
 import EmailOpen from "../img/email_open.svg";
 
 export default function EmailVerify() {
 	const user = useAppSelector(userSelector);
 	const authStatus = useAppSelector(authStatusSelector);
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+
+	const [logout] = useLogoutMutation();
 
 	useEffect(() => {
 		let isMounted = true;
@@ -33,6 +37,15 @@ export default function EmailVerify() {
 			isMounted = false;
 		};
 	}, [user, authStatus, navigate]);
+
+	const onLinkClick = async () => {
+		if (authStatus === "login") {
+			await logout();
+		}
+		dispatch(setAuth(null));
+		dispatch(setUser(null));
+		navigate("/login");
+	};
 
 	return (
 		<>
@@ -102,7 +115,7 @@ export default function EmailVerify() {
 						.
 					</Typography>
 
-					<Typography color="grey" sx={{ mb: 1 }}>
+					<Typography color="grey" fontWeight={500} sx={{ mb: 1 }}>
 						Didn't receive an email?
 					</Typography>
 					<Stack direction="row" justifyContent="center">
@@ -116,6 +129,19 @@ export default function EmailVerify() {
 						>
 							Resend email
 						</Button>
+					</Stack>
+					<Stack
+						direction="row"
+						justifyContent="space-between"
+						alignItems="center"
+						mt={1.5}
+					>
+						<Typography color="text.primary">
+							Want to login as another user?
+						</Typography>
+						<Link onClick={onLinkClick} sx={{ cursor: "pointer" }}>
+							Login
+						</Link>
 					</Stack>
 				</Box>
 			</Box>
