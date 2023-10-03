@@ -1,21 +1,13 @@
 import { Box, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Owner } from "../../../features/tweet/tweetTypes";
 import getRelativeTime from "../../../util/getRelativeTime";
-import { MouseEventHandler } from "react";
-import { Link } from "react-router-dom";
 
 type Props = {
 	owner: Owner;
 	createdAt: string;
 };
 const TweetTitle = ({ owner, createdAt }: Props) => {
-	const stopMouseDownPropagation: MouseEventHandler<HTMLAnchorElement> = (
-		e
-	) => {
-		e.stopPropagation();
-		e.preventDefault();
-	};
-
 	return (
 		<Box
 			sx={{
@@ -24,11 +16,7 @@ const TweetTitle = ({ owner, createdAt }: Props) => {
 				gap: 1.2,
 			}}
 		>
-			<Link
-				to="/"
-				onMouseDown={stopMouseDownPropagation}
-				className="router_link auto_line"
-			>
+			<Link to="/" className="router_link auto_line">
 				<Typography
 					component="h1"
 					sx={{
@@ -50,7 +38,6 @@ const TweetTitle = ({ owner, createdAt }: Props) => {
 				variant="body2"
 				color="text.secondary"
 				sx={{
-					cursor: "default",
 					minWidth: "max-content",
 					display: "inline-block",
 				}}

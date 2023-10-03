@@ -7,9 +7,6 @@ import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
 import TweetOptionsMenu from "./menus/TweetOptionsMenu";
 
-const width = { xs: 30, ss: 35 };
-const height = { xs: 30, ss: 35 };
-
 type Props = {
 	tweetId: string;
 	owner: Owner;
@@ -28,8 +25,8 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 					name={owner.name}
 					sx={{
 						bgcolor: "hsl(330, 100%, 50%)",
-						width,
-						height,
+						width: { xs: 30, ss: 35 },
+						height: { xs: 30, ss: 35 },
 						objectFit: "cover",
 						fontSize: "1rem",
 					}}

@@ -7,6 +7,7 @@ import TweetHeader from "./TweetHeader";
 import TweetCommentBtn from "./buttons/TweetCommentBtn";
 import TweetLikeBtn from "./buttons/TweetLikeBtn";
 import TweetShareBtn from "./buttons/TweetShareBtn";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
 	tweet: Tweet;
@@ -14,10 +15,10 @@ type Props = {
 
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
-		const onNaviate = () => {
-			console.log("parent click");
+		const navigate = useNavigate();
 
-			// navigate to tweet details
+		const onNaviate = () => {
+			navigate(`/tweet/${tweet._id}`)
 		};
 
 		return (

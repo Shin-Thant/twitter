@@ -86,11 +86,12 @@ const TweetEditModal = () => {
 				isValidResponseErrorData(result.error.data)
 			) {
 				showErrorToast(result.error.data.message);
+				return;
 			}
+
+			onClose();
 		} catch (err) {
 			showErrorToast();
-		} finally {
-			onClose();
 		}
 	};
 

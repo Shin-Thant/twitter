@@ -5,6 +5,7 @@ import { GetTweetsData, GetTweetsResponse, Tweet } from "./tweetTypes";
 import { currentPageSelector } from "../currentPageSlice";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
+type GetTweetByIdQueryArg = { tweetId: string };
 type CreateTweetMutationArg = FormData;
 type EditTweetMutationArg = { tweetId: string; body: FormData };
 type LikeMutationArg = { tweetId: string; likes: string[] };
@@ -34,6 +35,18 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 						type: "Tweets" as const,
 						id: tweet._id,
 					})),
+					{ type: "Tweets", id: "LIST" },
+				];
+			},
+		}),
+
+		getTweetById: builder.query<Tweet, GetTweetByIdQueryArg>({
+			query: ({ tweetId }) => {
+				return `/tweets/${tweetId}`;
+			},
+			providesTags: (_result, _error, arg) => {
+				return [
+					{ type: "Tweets", id: arg.tweetId },
 					{ type: "Tweets", id: "LIST" },
 				];
 			},
@@ -201,6 +214,7 @@ export const selectTweetById = createSelector(
 
 export const {
 	useGetTweetsQuery,
+	useGetTweetByIdQuery,
 	useCreateTweetMutation,
 	useEditTweetMutation,
 	useHandleLikesMutation,
