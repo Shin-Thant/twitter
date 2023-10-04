@@ -12,6 +12,7 @@ import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
 import { MouseEventHandler } from "react";
 import TweetImageList from "../lists/TweetImageList";
+import { useNavigate } from "react-router-dom";
 
 // TODO: use the created tweet header component instead of card header
 
@@ -22,10 +23,13 @@ type Props = {
 };
 
 const NestedTweet = ({ origin }: Props) => {
+	const navigate = useNavigate();
+
 	const onNavigate: ButtonEventHandler = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		// navigate to tweet details
+
+		navigate(`/tweet/${origin._id}`);
 	};
 
 	const stopMouseDownPropagation: ButtonEventHandler = (e) => {
