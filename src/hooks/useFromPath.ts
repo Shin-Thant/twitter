@@ -16,6 +16,6 @@ function isStateWithFromData(state: unknown): state is StateWithFromData {
 		!!state &&
 		typeof state === "object" &&
 		"from" in state &&
-		typeof state.from !== "string"
+		typeof state.from === "string"
 	);
 }
