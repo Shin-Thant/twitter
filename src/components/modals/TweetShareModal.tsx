@@ -9,7 +9,7 @@ import {
 	useHandleDeleteTweetMutation,
 	useHandleShareMutation,
 } from "../../features/tweet/tweetApiSlice";
-import { SharedTweetPreview } from "../../features/tweet/tweetTypes";
+import { NestedTweetPreview } from "../../features/tweet/tweetTypes";
 import {
 	BaseQueryResponseError,
 	isBaseQueryResponseError,
@@ -28,6 +28,8 @@ function checkResponseError(
 		isBaseQueryResponseError(response.error)
 	);
 }
+
+// TODO: refactor
 
 function handleToast({ variant }: { variant: "success" | "error" }) {
 	showToast({
@@ -108,7 +110,7 @@ export default function TweetShareModal() {
 	};
 
 	const onDelete = async () => {
-		const sharedTweetWithoutBody: SharedTweetPreview | undefined =
+		const sharedTweetWithoutBody: NestedTweetPreview | undefined =
 			foundTweet
 				? foundTweet?.shares.find((share) => !share.body)
 				: undefined;
@@ -137,10 +139,10 @@ export default function TweetShareModal() {
 	};
 
 	const closeAndReset = (option?: { reset: boolean }) => {
-		closeModal();
 		if (option?.reset) {
 			setIsQuoteTweet(false);
 		}
+		closeModal();
 	};
 
 	return (

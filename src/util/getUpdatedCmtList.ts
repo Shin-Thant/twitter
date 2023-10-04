@@ -1,4 +1,4 @@
-import { Comment } from "../features/comment/types";
+import { Comment } from "../features/comment/commentTypes";
 
 export default function getUpdatedCmtList(
 	list: Comment[],

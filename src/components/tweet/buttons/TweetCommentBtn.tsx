@@ -1,6 +1,6 @@
 import CommentOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import CommentFilledIcon from "@mui/icons-material/TextsmsRounded";
-import { Comment } from "../../../features/comment/types";
+import { Comment } from "../../../features/comment/commentTypes";
 import CardButton from "../../buttons/CardButton";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
 import { useAppSelector } from "../../../app/hooks";

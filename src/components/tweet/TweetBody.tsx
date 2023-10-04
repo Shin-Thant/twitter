@@ -25,7 +25,11 @@ const TweetBody = ({ tweet }: Props) => {
 			)}
 
 			{!!tweet.images?.length && (
-				<TweetImageList images={tweet.images} tweetId={tweet._id} />
+				<TweetImageList
+					images={tweet.images}
+					tweetId={tweet._id}
+					rowHeight={100}
+				/>
 			)}
 
 			{tweet.type === "share" && <NestedTweet origin={tweet.origin} />}

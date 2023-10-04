@@ -1,3 +1,4 @@
+import { Comment } from "../comment/commentTypes";
 import { User } from "../user/userTypes";
 
 export type Owner = Omit<
@@ -5,7 +6,7 @@ export type Owner = Omit<
 	"email" | "id" | "createdAt" | "updatedAt" | "followers"
 >;
 
-export type SharedTweetPreview = {
+export type NestedTweetPreview = {
 	_id: string;
 	origin: string;
 	body: string;
@@ -15,12 +16,12 @@ export type SharedTweetPreview = {
 
 interface BasicTweet {
 	_id: string;
-	body: string;
+	body?: string;
 	owner: Owner;
 	images: string[];
 	likes: string[];
-	comments: { creator: Owner }[];
-	shares: SharedTweetPreview[];
+	comments: Comment[];
+	shares: NestedTweetPreview[];
 	createdAt: string;
 	updatedAt: string;
 }

@@ -12,9 +12,10 @@ const imageUrlSchema = z.string().nonempty().trim().regex(IMAGE_NAME_REGEX);
 type Props = {
 	tweetId: string;
 	images: string[];
+	rowHeight: number;
 };
 
-const TweetImageList = ({ tweetId, images }: Props) => {
+const TweetImageList = ({ tweetId, images, rowHeight }: Props) => {
 	const { showModal } = useImageModal();
 
 	const getOnImageClick = ({ imageUrl }: { imageUrl: string }) => {
@@ -33,7 +34,7 @@ const TweetImageList = ({ tweetId, images }: Props) => {
 	};
 
 	return (
-		<ImageList cols={2} rowHeight={120}>
+		<ImageList cols={2} rowHeight={rowHeight}>
 			{images.map((image, index) => (
 				<ImageListItem
 					key={image}
@@ -48,6 +49,7 @@ const TweetImageList = ({ tweetId, images }: Props) => {
 					sx={{
 						overflow: "hidden",
 						borderRadius: "8px",
+						cursor: "pointer",
 					}}
 				>
 					<Image

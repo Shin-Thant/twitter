@@ -11,6 +11,7 @@ import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
 import { MouseEventHandler } from "react";
+import TweetImageList from "../lists/TweetImageList";
 
 // TODO: use the created tweet header component instead of card header
 
@@ -83,20 +84,27 @@ const NestedTweet = ({ origin }: Props) => {
 					sx={{
 						px: 0,
 						ml: { xs: 0, ss: 4.5 },
-						"&.MuiCardContent-root": {
-							pb: 0,
-						},
 					}}
 				>
-					<Typography
-						variant="body2"
-						sx={{
-							fontWeight: 400,
-						}}
-						className="auto_line--tweet_origin"
-					>
-						{origin.body}
-					</Typography>
+					{origin.body && (
+						<Typography
+							sx={{
+								fontWeight: 400,
+								mb: origin.images.length ? 1 : 0,
+							}}
+							className="auto_line--tweet_origin"
+						>
+							{origin.body}
+						</Typography>
+					)}
+
+					{!!origin.images?.length && (
+						<TweetImageList
+							images={origin.images}
+							tweetId={origin._id}
+							rowHeight={80}
+						/>
+					)}
 				</CardContent>
 			</CardActionArea>
 		</Card>
