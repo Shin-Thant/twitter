@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { authStatusSelector } from "../features/auth/authSlice";
-import { useLocationState } from "../hooks/useLocationState";
+import { useFromPath } from "../hooks/useFromPath";
 import { userSelector } from "../features/user/userSlice";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 const IsAuthenticated = ({ children }: Props) => {
 	const authStatus = useAppSelector(authStatusSelector);
 	const user = useAppSelector(userSelector);
-	const from = useLocationState();
+	const from = useFromPath();
 	const navigate = useNavigate();
 
 	useEffect(() => {

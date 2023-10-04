@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { useLoginMutation } from "../../features/auth/authApiSlice";
 import { setAuth } from "../../features/auth/authSlice";
 import { setUser } from "../../features/user/userSlice";
-import { useLocationState } from "../../hooks/useLocationState";
+import { useFromPath } from "../../hooks/useFromPath";
 import { LoginInputs, LoginSchema } from "../../schemas/LoginSchema";
 import SubmitButton from "../buttons/SubmitButton";
 import {
@@ -27,7 +27,7 @@ export default function LoginForm() {
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
-	const from = useLocationState();
+	const from = useFromPath();
 
 	const {
 		register,

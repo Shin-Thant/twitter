@@ -2,6 +2,7 @@ import { useTransition } from "react";
 import { Button } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
+import { createLocationState } from "../../util/createLocatioState";
 
 const styles = {
 	textTransform: "none",
@@ -28,14 +29,14 @@ type Props = {
 
 const AuthButton = ({ sx, displayIn, fullWidth, onNavigate }: Props) => {
 	const navigate = useNavigate();
-	const location = useLocation();
+	const currentPathName = useLocation().pathname;
 	const [isPending, startTransition] = useTransition();
 
 	const goTo = (route: "/login" | "/signup") => {
 		if (!onNavigate) {
 			navigate(
 				{ pathname: route },
-				{ state: { from: location.pathname } }
+				{ state: createLocationState({ from: currentPathName }) }
 			);
 			return;
 		}
@@ -44,7 +45,7 @@ const AuthButton = ({ sx, displayIn, fullWidth, onNavigate }: Props) => {
 		startTransition(() => {
 			navigate(
 				{ pathname: route },
-				{ state: { from: location.pathname } }
+				{ state: createLocationState({ from: currentPathName }) }
 			);
 		});
 	};
