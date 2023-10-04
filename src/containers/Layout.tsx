@@ -1,22 +1,22 @@
 import { Box } from "@mui/material";
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
 import Toast from "../components/feedbacks/Toast";
+import CommentCreateModal from "../components/modals/CommentCreateModal";
+import ImageModal from "../components/modals/ImageModal";
 import LogoutModal from "../components/modals/LogoutModal";
 import ThemeModal from "../components/modals/ThemeModal";
+import TweetCreatorModal from "../components/modals/TweetCreatorModal";
 import TweetDeleteModal from "../components/modals/TweetDeleteModal";
 import TweetEditModal from "../components/modals/TweetEditModal";
 import TweetInfoModal from "../components/modals/TweetInfoModal";
 import TweetShareModal from "../components/modals/TweetShareModal";
-import Navbar from "../nav/navbar/Navbar";
-import Sidebar from "../nav/sidebar/Sidebar";
-import ProviderContainer from "./ProviderContainer";
-import TweetCreatorModal from "../components/modals/TweetCreatorModal";
-import CommentCreateModal from "../components/modals/CommentCreateModal";
-import ImageModal from "../components/modals/ImageModal";
-import { useEffect } from "react";
-import { useAppSelector } from "../app/hooks";
 import { authStatusSelector } from "../features/auth/authSlice";
 import { userSelector } from "../features/user/userSlice";
+import Sidebar from "../nav/sidebar/Sidebar";
+import ProviderContainer from "./ProviderContainer";
+import Navbar from "../nav/navbar/Navbar";
 
 export default function Layout() {
 	const authStatus = useAppSelector(authStatusSelector);
@@ -57,9 +57,7 @@ export default function Layout() {
 
 				<Box flex={1} sx={{ height: "100vh", overflow: "auto" }}>
 					<Navbar />
-					<Box>
-						<Outlet />
-					</Box>
+					<Outlet />
 				</Box>
 			</Box>
 		</ProviderContainer>
