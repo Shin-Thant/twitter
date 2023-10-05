@@ -1,6 +1,7 @@
 import { CardContent, Typography } from "@mui/material";
 import { Tweet } from "../../features/tweet/tweetTypes";
 import TweetImageList from "../lists/TweetImageList";
+import EmptyNestedTweet from "./EmptyNestedTweet";
 import NestedTweet from "./NestedTweet";
 
 type Props = {
@@ -32,7 +33,10 @@ const TweetBody = ({ tweet }: Props) => {
 				/>
 			)}
 
-			{tweet.type === "share" && <NestedTweet origin={tweet.origin} />}
+			{tweet.type === "share" && !!tweet.origin && (
+				<NestedTweet origin={tweet.origin} />
+			)}
+			{tweet.type === "share" && !tweet.origin && <EmptyNestedTweet />}
 		</CardContent>
 	);
 };
