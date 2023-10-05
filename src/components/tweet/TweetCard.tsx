@@ -52,54 +52,51 @@ const TweetCard = forwardRef(
 					createdAt={tweet.createdAt}
 				/>
 
-				<Box>
-					<CardActionArea
-						onClick={onNaviate}
+				<CardActionArea
+					onClick={onNaviate}
+					sx={{
+						cursor: "pointer",
+						pl: { xs: 5.5, ss: 7, sm: 7.5 },
+						"& .MuiCardActionArea-focusHighlight": {
+							bgcolor: "transparent",
+						},
+					}}
+				>
+					<TweetBody tweet={tweet} />
+
+					<Box
+						onMouseDown={(e) => {
+							e.stopPropagation();
+						}}
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
 						sx={{
-							cursor: "pointer",
-							pl: { xs: 5.5, ss: 7, sm: 7.5 },
-							"& .MuiCardActionArea-focusHighlight": {
-								bgcolor: "transparent",
-							},
+							cursor: "default",
 						}}
 					>
-						<TweetBody tweet={tweet} />
-
-						<Box
-							onMouseDown={(e) => {
-								e.stopPropagation();
-							}}
-							onClick={(e) => {
-								e.stopPropagation();
-							}}
-							sx={{
-								cursor: "default",
-								// ml: { xs: 0, ss: 7, sm: 7.5 },
-							}}
-						>
-							<TweetActions
-								likeBtn={
-									<TweetLikeBtn
-										likes={tweet.likes}
-										tweetId={tweet._id}
-									/>
-								}
-								commentBtn={
-									<TweetCommentBtn
-										comments={tweet.comments}
-										tweetId={tweet._id}
-									/>
-								}
-								shareBtn={
-									<TweetShareBtn
-										shares={tweet.shares}
-										tweetId={tweet._id}
-									/>
-								}
-							/>
-						</Box>
-					</CardActionArea>
-				</Box>
+						<TweetActions
+							likeBtn={
+								<TweetLikeBtn
+									likes={tweet.likes}
+									tweetId={tweet._id}
+								/>
+							}
+							commentBtn={
+								<TweetCommentBtn
+									comments={tweet.comments}
+									tweetId={tweet._id}
+								/>
+							}
+							shareBtn={
+								<TweetShareBtn
+									shares={tweet.shares}
+									tweetId={tweet._id}
+								/>
+							}
+						/>
+					</Box>
+				</CardActionArea>
 			</Card>
 		);
 	}
