@@ -1,13 +1,14 @@
 import { Box, Card, CardActionArea } from "@mui/material";
 import { ForwardedRef, forwardRef, memo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Tweet } from "../../features/tweet/tweetTypes";
+import { createLocationState } from "../../util/createLocatioState";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
 import TweetHeader from "./TweetHeader";
 import TweetCommentBtn from "./buttons/TweetCommentBtn";
 import TweetLikeBtn from "./buttons/TweetLikeBtn";
 import TweetShareBtn from "./buttons/TweetShareBtn";
-import { useNavigate } from "react-router-dom";
 
 type Props = {
 	tweet: Tweet;
@@ -16,9 +17,12 @@ type Props = {
 const TweetCard = forwardRef(
 	({ tweet }: Props, ref: ForwardedRef<HTMLDivElement>) => {
 		const navigate = useNavigate();
+		const currentPathName = useLocation().pathname;
 
 		const onNaviate = () => {
-			navigate(`/tweet/${tweet._id}`)
+			navigate(`/tweet/${tweet._id}`, {
+				state: createLocationState({ from: currentPathName }),
+			});
 		};
 
 		return (
@@ -37,7 +41,6 @@ const TweetCard = forwardRef(
 						xs: "none",
 						sm: "0 3px 5px rgb(0, 0, 0, 0.2)",
 					},
-					position: "relative",
 					pb: { xs: 1, sm: 0 },
 					mb: { xs: 0, sm: 3 },
 				}}
@@ -48,17 +51,11 @@ const TweetCard = forwardRef(
 					createdAt={tweet.createdAt}
 				/>
 
-				<Box
-					sx={{
-						position: "relative",
-						borderRadius: 0,
-					}}
-				>
+				<Box>
 					<CardActionArea
 						onClick={onNaviate}
 						sx={{
 							cursor: "pointer",
-							borderRadius: 0,
 							pl: { xs: 5.5, ss: 7, sm: 7.5 },
 							"& .MuiCardActionArea-focusHighlight": {
 								bgcolor: "transparent",

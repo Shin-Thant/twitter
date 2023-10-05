@@ -5,14 +5,14 @@ const TWEET_DETAIL_REGEX = /^\/tweet\/[a-zA-Z0-9]+$/;
 
 export const useRedirectOnActionComplete = () => {
 	const navigate = useNavigate();
-	const location = useLocation();
+	const currentPathName = useLocation().pathname;
 
 	const redirectOnActionComplete = () => {
-		if (location.pathname === HOME_PATH) {
+		if (currentPathName === HOME_PATH) {
 			return;
 		}
 
-		if (TWEET_DETAIL_REGEX.test(location.pathname)) {
+		if (TWEET_DETAIL_REGEX.test(currentPathName)) {
 			navigate(HOME_PATH);
 		}
 	};

@@ -6,13 +6,14 @@ import {
 	Typography,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { MouseEventHandler } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SharedTweet } from "../../features/tweet/tweetTypes";
+import { createLocationState } from "../../util/createLocatioState";
+import TweetImageList from "../lists/TweetImageList";
 import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
-import { MouseEventHandler } from "react";
-import TweetImageList from "../lists/TweetImageList";
-import { useNavigate } from "react-router-dom";
 
 // TODO: use the created tweet header component instead of card header
 
@@ -24,12 +25,15 @@ type Props = {
 
 const NestedTweet = ({ origin }: Props) => {
 	const navigate = useNavigate();
+	const currentPathName = useLocation().pathname;
 
 	const onNavigate: ButtonEventHandler = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 
-		navigate(`/tweet/${origin._id}`);
+		navigate(`/tweet/${origin._id}`, {
+			state: createLocationState({ from: currentPathName }),
+		});
 	};
 
 	const stopMouseDownPropagation: ButtonEventHandler = (e) => {
