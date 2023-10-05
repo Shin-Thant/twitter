@@ -80,14 +80,18 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				const rootState = getState() as RootState;
 				const cacheKey = currentPageSelector(rootState, "tweet");
 
-				const result = dispatch(
-					optimisticEditUpdate({ ...arg, cacheKey })
+				const getTweetsOptimisticResult = dispatch(
+					getTweetsOptimisticEditUpdate({ ...arg, cacheKey })
+				);
+				const getTweetByIdOptimisticResult = dispatch(
+					getTweetByIdOptimisticEditUpdate({ ...arg })
 				);
 
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					result.undo();
+					getTweetsOptimisticResult.undo();
+					getTweetByIdOptimisticResult.undo();
 				}
 			},
 		}),
@@ -101,14 +105,18 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				const rootState = getState() as RootState;
 				const cacheKey = currentPageSelector(rootState, "tweet");
 
-				const result = dispatch(
-					optimisticLikeUpdate({ ...arg, cacheKey })
+				const getTweetsOptimisticResult = dispatch(
+					getTweetsOptimisticLikeUpdate({ ...arg, cacheKey })
+				);
+				const getTweetByIdOptimisticResult = dispatch(
+					getTweetByIdOptimisticLikeUpdate({ ...arg })
 				);
 
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					result.undo();
+					getTweetsOptimisticResult.undo();
+					getTweetByIdOptimisticResult.undo();
 				}
 			},
 		}),
@@ -140,7 +148,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 	}),
 });
 
-const optimisticLikeUpdate = ({
+const getTweetsOptimisticLikeUpdate = ({
 	tweetId,
 	likes,
 	cacheKey,
@@ -160,7 +168,20 @@ const optimisticLikeUpdate = ({
 	);
 };
 
-const optimisticEditUpdate = ({
+const getTweetByIdOptimisticLikeUpdate = ({
+	tweetId,
+	likes,
+}: LikeMutationArg) => {
+	return tweetApiSlice.util.updateQueryData(
+		"getTweetById",
+		{ tweetId },
+		(draft) => {
+			draft.likes = likes;
+		}
+	);
+};
+
+const getTweetsOptimisticEditUpdate = ({
 	body,
 	tweetId,
 	cacheKey,
@@ -177,6 +198,22 @@ const optimisticEditUpdate = ({
 
 			if (foundTweet && !!tweetBody && typeof tweetBody === "string") {
 				foundTweet.body = tweetBody;
+			}
+		}
+	);
+};
+const getTweetByIdOptimisticEditUpdate = ({
+	body,
+	tweetId,
+}: EditTweetMutationArg) => {
+	return tweetApiSlice.util.updateQueryData(
+		"getTweetById",
+		{ tweetId },
+		(draft) => {
+			const tweetBody = body.get("body");
+
+			if (!!tweetBody && typeof tweetBody === "string") {
+				draft.body = tweetBody;
 			}
 		}
 	);
