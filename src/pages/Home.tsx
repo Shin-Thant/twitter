@@ -1,10 +1,10 @@
 import { Container, Divider } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { useAppSelector } from "../app/hooks";
-import TweetCreator from "../components/tweet/TweetCreator";
-import { userSelector } from "../features/user/userSlice";
-import TweetsContainer from "../containers/TweetsContainer";
 import FloatTweetButton from "../components/buttons/FloatTweetButton";
+import TweetCreator from "../components/tweet/TweetCreator";
+import TweetsContainer from "../containers/TweetsContainer";
+import { userSelector } from "../features/user/userSlice";
 
 export default function Home() {
 	const user = useAppSelector(userSelector);

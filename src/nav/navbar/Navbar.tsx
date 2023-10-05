@@ -7,7 +7,7 @@ import AuthButton from "./AuthButton";
 import { useAppSelector } from "../../app/hooks";
 import { authStatusSelector } from "../../features/auth/authSlice";
 
-const Navigation = () => {
+const Navbar = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const authStatus = useAppSelector(authStatusSelector);
@@ -63,4 +63,4 @@ const Navigation = () => {
 	);
 };
 
-export default Navigation;
+export default Navbar;
