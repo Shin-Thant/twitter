@@ -19,7 +19,7 @@ export default function SignUp() {
 					top="1rem"
 					left="1rem"
 				>
-					<BackButton />
+					<BackButton text={"Back"} spacing={{ xs: 2, sm: 1 }} />
 				</Box>
 
 				<Stack

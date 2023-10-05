@@ -14,7 +14,7 @@ export default function Login() {
 			</Helmet>
 
 			<Box p="1rem" bgcolor="bg.auth" height="100vh">
-				<BackButton />
+				<BackButton text={"Back"} spacing={{ xs: 2, sm: 1 }} />
 
 				<Stack
 					width={"100%"}
