@@ -2,12 +2,22 @@ import { Button, Stack, styled } from "@mui/material";
 import { useImageModal } from "../../hooks/useImageModal";
 import ModalCloseButton from "../buttons/ModalCloseButton";
 import Modal from "./Modal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IMAGE_URL } from "../../config";
+import { useEffect } from "react";
+
+const regex = /^\/tweet\/[a-zA-Z0-9]+$/;
 
 const ImageModal = () => {
 	const { isOpen, imageUrl, closeModal } = useImageModal();
 	const navigate = useNavigate();
+	const currentPathName = useLocation().pathname;
+
+	const isInTweetDetailPage = regex.test(currentPathName);
+
+	useEffect(() => {
+		console.log("render image");
+	});
 
 	const onNavigate = () => {
 		navigate("/");
@@ -31,16 +41,20 @@ const ImageModal = () => {
 		>
 			<Stack
 				direction="row"
-				justifyContent="space-between"
+				justifyContent={
+					isInTweetDetailPage ? "flex-end" : "space-between"
+				}
 				sx={{ mb: 2 }}
 			>
-				<Button
-					variant="outlined"
-					sx={{ borderRadius: "50px", textTransform: "none" }}
-					onClick={onNavigate}
-				>
-					Go to post
-				</Button>
+				{!isInTweetDetailPage && (
+					<Button
+						variant="outlined"
+						sx={{ borderRadius: "50px", textTransform: "none" }}
+						onClick={onNavigate}
+					>
+						Go to post
+					</Button>
+				)}
 				<ModalCloseButton onClose={onClose} />
 			</Stack>
 
