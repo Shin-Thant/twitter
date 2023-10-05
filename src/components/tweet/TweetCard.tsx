@@ -29,6 +29,7 @@ const TweetCard = forwardRef(
 			<Card
 				ref={ref}
 				sx={{
+					color: "text.primary",
 					borderWidth: { xs: "0 0 1px 0", sm: "1px 1px 1px 1px" },
 					borderStyle: "solid",
 					borderColor: "tweet.borderColor",
