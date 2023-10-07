@@ -1,7 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import moment from "moment";
 import { Owner } from "../../../features/tweet/tweetTypes";
-import getRelativeTime from "../../../util/getRelativeTime";
+
+function getRelativeTime({ date }: { date: string }) {
+	return moment(date).fromNow();
+}
 
 type Props = {
 	owner: Owner;
@@ -42,9 +46,7 @@ const TweetTitle = ({ owner, createdAt }: Props) => {
 					display: "inline-block",
 				}}
 			>
-				{getRelativeTime({
-					inputDate: new Date(createdAt),
-				})}
+				{getRelativeTime({ date: createdAt })}
 			</Typography>
 		</Box>
 	);
