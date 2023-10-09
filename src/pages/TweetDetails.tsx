@@ -8,6 +8,7 @@ import TweetHeader from "../components/tweet/TweetHeader";
 import TweetCommentBtn from "../components/tweet/buttons/TweetCommentBtn";
 import TweetLikeBtn from "../components/tweet/buttons/TweetLikeBtn";
 import TweetShareBtn from "../components/tweet/buttons/TweetShareBtn";
+import CommentsContainer from "../containers/CommentsContainer";
 import Container from "../containers/Container";
 import { useGetTweetByIdQuery } from "../features/tweet/tweetApiSlice";
 
@@ -81,12 +82,10 @@ export default function TweetDetails() {
 							}
 						/>
 
-						<Divider sx={{ mb: 2 }} />
+						<Divider sx={{ mb: 3 }} />
 
 						{/* show comment */}
-						{/* {data.comments.map((comment) => (
-							<div key={comment._id}>{comment.body}</div>
-						))} */}
+						<CommentsContainer tweetId={tweetId} />
 					</>
 				)}
 			</Container>
