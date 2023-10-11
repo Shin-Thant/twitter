@@ -4,7 +4,7 @@ import baseQueryWithReauth from "../../lib/baseQueryWithReauth";
 const apiSlice = createApi({
 	reducerPath: "api",
 	baseQuery: baseQueryWithReauth,
-	tagTypes: ['Tweets'],
+	tagTypes: ["Tweets", "Comments"],
 	endpoints: () => ({}),
 });
 
