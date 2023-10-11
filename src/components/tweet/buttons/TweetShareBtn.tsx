@@ -1,24 +1,18 @@
 import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import { useAppSelector } from "../../../app/hooks";
-import { SharedTweetPreview } from "../../../features/tweet/tweetTypes";
+import { NestedTweetPreview } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
 import { useTweetShareModal } from "../../../hooks/useTweetShareModal";
 import CardButton from "../../buttons/CardButton";
-import { selectTweetById } from "../../../features/tweet/tweetApiSlice";
-import { showToast } from "../../../lib/handleToast";
 
 type Props = {
 	tweetId: string;
-	shares: SharedTweetPreview[];
+	shares: NestedTweetPreview[];
 };
 
 export default function TweetShareBtn({ tweetId, shares }: Props) {
-	const foundTweet = useAppSelector((state) =>
-		selectTweetById(state, tweetId)
-	);
-
 	const loginUserId = useAppSelector(userIdSelector);
 	const isSharedByLoginUser: boolean = loginUserId
 		? !!shares.find((share) => share.owner === loginUserId)
@@ -30,10 +24,6 @@ export default function TweetShareBtn({ tweetId, shares }: Props) {
 	const handleModal = () => {
 		if (!loginUserId) {
 			setTweetInfoModal(true);
-			return;
-		}
-		if (!foundTweet) {
-			showToast({ message: "Something went wrong!", variant: "error" });
 			return;
 		}
 		openModal(tweetId);
