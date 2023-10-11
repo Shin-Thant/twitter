@@ -28,12 +28,32 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						body,
 					},
 				}),
-				invalidatesTags: (_res, _err, arg) => [
-					{ type: "Tweets", id: arg.tweetId },
+				invalidatesTags: (_res, _err, { tweetId }) => [
+					{ type: "Comments", id: `/${tweetId}/LIST` },
 				],
 			}
 		),
+
+		likeComment: builder.mutation<
+			Comment,
+			{ lkes: string[]; tweetId: string; commentId: string }
+		>({
+			query: (arg) => ({
+				url: `/comments/${arg.commentId}/likes`,
+				method: "PUT",
+			}),
+			invalidatesTags: (_res, _err, { tweetId, commentId }) => [
+				{
+					type: "Comments",
+					id: `/${tweetId}/${commentId}`,
+				},
+			],
+		}),
 	}),
 });
 
-export const { useGetCommentsQuery, useAddCommentMutation } = commentApiSlice;
+export const {
+	useGetCommentsQuery,
+	useAddCommentMutation,
+	useLikeCommentMutation,
+} = commentApiSlice;
