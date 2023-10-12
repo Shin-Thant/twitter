@@ -1,8 +1,8 @@
-import { Comment } from "../../features/comment/commentTypes";
+import { ListResultComment } from "../../features/comment/commentTypes";
 import CommentItem from "../comments/CommentItem";
 
 type Props = {
-	comments: Comment[];
+	comments: ListResultComment[];
 };
 
 const CommentList = ({ comments }: Props) => {
