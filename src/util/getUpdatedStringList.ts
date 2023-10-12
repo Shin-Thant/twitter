@@ -1,8 +1,12 @@
-export default function getUpdatedStringList(
-	isAdded: boolean,
-	list: string[],
-	newItem: string
-) {
+export default function getUpdatedStringList({
+	isAdded,
+	list,
+	newItem,
+}: {
+	isAdded: boolean;
+	list: string[];
+	newItem: string;
+}) {
 	let updatedStrList: string[];
 
 	if (isAdded) {

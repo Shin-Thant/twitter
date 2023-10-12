@@ -29,11 +29,11 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 			return;
 		}
 
-		const updatedLikes = getUpdatedStringList(
-			isLikedByLoginUser,
-			likes,
-			loginUserId
-		);
+		const updatedLikes = getUpdatedStringList({
+			isAdded: isLikedByLoginUser,
+			list: likes,
+			newItem: loginUserId,
+		});
 
 		try {
 			await handleLike({
