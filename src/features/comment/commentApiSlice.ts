@@ -1,6 +1,9 @@
 import apiSlice from "../../app/api/apiSlice";
 import { Comment } from "./commentTypes";
 
+type AddCommentArg = { tweetId: string; body: string };
+type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
+
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		getComments: builder.query<Comment[], { tweetId: string }>({
@@ -19,35 +22,46 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		addComment: builder.mutation<string, { tweetId: string; body: string }>(
-			{
-				query: ({ body, tweetId }) => ({
-					url: `/tweets/${tweetId}/comments`,
-					method: "POST",
-					body: {
-						body,
-					},
-				}),
-				invalidatesTags: (_res, _err, { tweetId }) => [
-					{ type: "Comments", id: `/${tweetId}/LIST` },
-				],
-			}
-		),
+		addComment: builder.mutation<Comment, AddCommentArg>({
+			query: ({ body, tweetId }) => ({
+				url: `/tweets/${tweetId}/comments`,
+				method: "POST",
+				body: {
+					body,
+				},
+			}),
+			invalidatesTags: (_res, _err, { tweetId }) => [
+				{ type: "Comments", id: `/${tweetId}/LIST` },
+			],
+		}),
 
-		likeComment: builder.mutation<
-			Comment,
-			{ lkes: string[]; tweetId: string; commentId: string }
-		>({
+		likeComment: builder.mutation<Comment, LikeCommentArg>({
 			query: (arg) => ({
 				url: `/comments/${arg.commentId}/likes`,
 				method: "PUT",
 			}),
-			invalidatesTags: (_res, _err, { tweetId, commentId }) => [
-				{
-					type: "Comments",
-					id: `/${tweetId}/${commentId}`,
-				},
-			],
+			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+				const result = dispatch(
+					commentApiSlice.util.updateQueryData(
+						"getComments",
+						{ tweetId: arg.tweetId },
+						(draft) => {
+							const foundComment = draft.find(
+								(comment) => comment._id === arg.commentId
+							);
+							if (foundComment) {
+								foundComment.likes = arg.likes;
+							}
+						}
+					)
+				);
+
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					result.undo();
+				}
+			},
 		}),
 	}),
 });
