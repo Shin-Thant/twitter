@@ -1,12 +1,12 @@
 import apiSlice from "../../app/api/apiSlice";
-import { Comment } from "./commentTypes";
+import { Comment, ListResultComment } from "./commentTypes";
 
 type AddCommentArg = { tweetId: string; body: string };
 type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
 
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getComments: builder.query<Comment[], { tweetId: string }>({
+		getComments: builder.query<ListResultComment[], { tweetId: string }>({
 			query: ({ tweetId }) => `/tweets/${tweetId}/comments`,
 			providesTags: (result, _error, { tweetId }) => {
 				if (!result) {
@@ -63,6 +63,10 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
+
+		// replyComment: builder.mutation<>({
+
+		// })
 	}),
 });
 
