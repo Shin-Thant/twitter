@@ -5,7 +5,7 @@ import BackButton from "../components/buttons/BackButton";
 import TweetActions from "../components/tweet/TweetActions";
 import TweetBody from "../components/tweet/TweetBody";
 import TweetHeader from "../components/tweet/TweetHeader";
-import TweetCommentBtn from "../components/tweet/buttons/TweetCommentBtn";
+import TweetCommentBtn from "../components/tweet/buttons/TweetCommentButton";
 import TweetLikeBtn from "../components/tweet/buttons/TweetLikeBtn";
 import TweetShareBtn from "../components/tweet/buttons/TweetShareBtn";
 import CommentsContainer from "../containers/CommentsContainer";
@@ -24,7 +24,7 @@ export default function TweetDetails() {
 	);
 
 	if (!tweetId) {
-		return "no tweet id!";
+		return <>"no tweet id!"</>;
 	}
 
 	return (

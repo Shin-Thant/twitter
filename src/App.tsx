@@ -7,12 +7,12 @@ import ColorModeProvider from "./context/ColorModeContext";
 import DrawerControllerProvider from "./context/DrawerControllerContext";
 import ThemeModalProvider from "./context/ThemeModalContext";
 import Loading from "./pages/Loading";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import TweetDetails from "./pages/TweetDetails";
 const EmailVerify = lazy(() => import("./pages/EmailVerify"));
-const TweetDetails = lazy(() => import("./pages/TweetDetails"));
-const Login = lazy(() => import("./pages/Login"));
 const Layout = lazy(() => import("./containers/Layout"));
 const Home = lazy(() => import("./pages/Home"));
-const SignUp = lazy(() => import("./pages/SignUp"));
 
 const router = createBrowserRouter([
 	{
