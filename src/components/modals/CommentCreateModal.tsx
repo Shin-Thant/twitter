@@ -57,8 +57,6 @@ const CommentCreateModal = () => {
 		closeModal();
 	};
 
-	// TODO: make modal accept custom modal header
-	// expected title `Comment @elonmusk`
 	return (
 		<Modal
 			title={
