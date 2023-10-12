@@ -6,6 +6,7 @@ export interface Comment {
 	owner: Owner;
 	tweet: string;
 	parent?: string;
+	likes: string[];
 	comments?: Comment[];
 	createdAt: string;
 	updatedAt: string;
