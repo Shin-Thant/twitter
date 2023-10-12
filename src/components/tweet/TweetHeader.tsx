@@ -33,7 +33,7 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 				/>
 			}
 			title={<TweetTitle owner={owner} createdAt={createdAt} />}
-			subheader={<TweetSubTitle text={`@${owner.username}`} />}
+			subheader={<TweetSubTitle username={owner.username} />}
 			action={
 				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : false
 			}

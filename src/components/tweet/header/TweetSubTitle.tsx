@@ -2,10 +2,10 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
 type Props = {
-	text: string;
+	username: string;
 };
 
-const TweetSubTitle = ({ text }: Props) => {
+const TweetSubTitle = ({ username }: Props) => {
 	return (
 		<Link to="/" className="router_link auto_line w-max">
 			<Typography
@@ -14,7 +14,7 @@ const TweetSubTitle = ({ text }: Props) => {
 				color="text.secondary"
 				variant="body2"
 			>
-				{text}
+				@{username}
 			</Typography>
 		</Link>
 	);
