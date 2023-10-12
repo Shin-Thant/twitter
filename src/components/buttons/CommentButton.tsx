@@ -4,7 +4,7 @@ import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
 import CardButton from "./CardButton";
 
 type Props = {
-	isCommentedByLoginUser: boolean;
+	isCommentedByLoginUser?: boolean;
 	count: number;
 	openCommentModal: () => void;
 };
@@ -28,7 +28,7 @@ const CommentButton = ({
 		<CardButton
 			isLoading={false}
 			label={count}
-			isDoneByLoginUser={isCommentedByLoginUser}
+			isDoneByLoginUser={isCommentedByLoginUser ?? false}
 			type="comment"
 			handleClick={onComment}
 		>

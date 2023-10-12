@@ -6,7 +6,7 @@ import { createLocationState } from "../../util/createLocatioState";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
 import TweetHeader from "./TweetHeader";
-import TweetCommentBtn from "./buttons/TweetCommentBtn";
+import TweetCommentButton from "./buttons/TweetCommentButton";
 import TweetLikeBtn from "./buttons/TweetLikeBtn";
 import TweetShareBtn from "./buttons/TweetShareBtn";
 
@@ -83,7 +83,7 @@ const TweetCard = forwardRef(
 								/>
 							}
 							commentBtn={
-								<TweetCommentBtn
+								<TweetCommentButton
 									comments={tweet.comments}
 									tweetId={tweet._id}
 								/>
