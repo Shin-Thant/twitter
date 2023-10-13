@@ -1,6 +1,6 @@
 import { Owner, Tweet } from "../tweet/tweetTypes";
 
-interface GetCommentsTweet {
+interface GetCommentsResultTweet {
 	_id: string;
 	owner: {
 		_id: string;
@@ -12,10 +12,10 @@ export interface Comment {
 	_id: string;
 	body: string;
 	owner: string | Owner;
-	tweet: string | Tweet | GetCommentsTweet;
-	origin?: CommentOrigin;
+	tweet: string | Tweet | GetCommentsResultTweet;
+	origin?: string | CommentOrigin;
 	likes: string[];
-	comments: (Comment | ListResultComment)[];
+	comments: (string | Comment | ListResultComment)[];
 	createdAt: string;
 	updatedAt: string;
 }
@@ -23,8 +23,6 @@ export interface Comment {
 export interface CommentOrigin extends Comment {
 	tweet: string;
 	owner: Owner;
-	origin?: CommentOrigin;
-	comments: ListResultComment[];
 }
 
 export interface CreateResultComment extends Comment {
@@ -34,6 +32,14 @@ export interface CreateResultComment extends Comment {
 
 export interface ListResultComment extends Comment {
 	owner: Owner;
-	tweet: GetCommentsTweet;
+	tweet: GetCommentsResultTweet;
+	origin: CommentOrigin;
 	comments: ListResultComment[];
+}
+
+export interface CreateReplyResult extends Comment {
+	tweet: string;
+	origin: string;
+	owner: string;
+	comments: string[];
 }

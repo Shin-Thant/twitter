@@ -1,8 +1,9 @@
 import apiSlice from "../../app/api/apiSlice";
-import { Comment, ListResultComment } from "./commentTypes";
+import { Comment, CreateReplyResult, ListResultComment } from "./commentTypes";
 
 type AddCommentArg = { tweetId: string; body: string };
 type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
+type ReplyCommentArg = { tweetId: string; commentId: string; body: string };
 
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -64,9 +65,18 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		// replyComment: builder.mutation<>({
-
-		// })
+		replyComment: builder.mutation<CreateReplyResult, ReplyCommentArg>({
+			query: ({ commentId, body }) => ({
+				url: `/comments/${commentId}/reply`,
+				method: "POST",
+				body: {
+					body,
+				},
+			}),
+			invalidatesTags: (_res, _err, { tweetId }) => [
+				{ type: "Comments", id: `/${tweetId}/LIST` },
+			],
+		}),
 	}),
 });
 
