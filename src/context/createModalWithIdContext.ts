@@ -6,7 +6,7 @@ export interface ModalWithIdContextState {
 	openModal(id: string): void;
 	closeModal(): void;
 }
-const modalWithIdState = {
+const modalWithIdState: ModalWithIdContextState = {
 	id: "",
 	isOpen: false,
 	openModal: () => undefined,

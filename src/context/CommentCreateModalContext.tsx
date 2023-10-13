@@ -1,5 +1,5 @@
 import { createModalWithIdContext } from "./createModalWithIdContext";
-import withModalAndIdContext from "./withModalAndIdContext";
+import withModalAndIdContext from "./WithModalAndIdContext";
 
 export const CommentCreateModalContext = createModalWithIdContext();
 
