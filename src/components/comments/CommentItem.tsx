@@ -74,10 +74,13 @@ const CommentItem = ({ comment }: Props) => {
 				<CommentLikeButton
 					commentId={comment._id}
 					ownerId={comment.owner._id}
+					tweetId={comment.tweet._id}
 					likes={comment.likes}
 				/>
 				<ReplyButton
+					commentId={comment._id}
 					ownerId={comment.owner._id}
+					tweetId={comment.tweet._id}
 					nestedCommentCount={comment.comments.length}
 				/>
 			</CardActions>

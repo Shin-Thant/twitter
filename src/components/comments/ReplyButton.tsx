@@ -4,6 +4,8 @@ import CommentButton from "../buttons/CommentButton";
 
 type Props = {
 	ownerId: string;
+	commentId: string;
+	tweetId: string;
 	nestedCommentCount: number;
 };
 

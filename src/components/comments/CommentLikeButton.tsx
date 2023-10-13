@@ -1,21 +1,20 @@
 import HeartOutlinedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HeartFilledIcon from "@mui/icons-material/FavoriteRounded";
-import CardButton from "../buttons/CardButton";
 import { useAppSelector } from "../../app/hooks";
-import { userIdSelector } from "../../features/user/userSlice";
 import { useLikeCommentMutation } from "../../features/comment/commentApiSlice";
+import { userIdSelector } from "../../features/user/userSlice";
 import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
 import getUpdatedStringList from "../../util/getUpdatedStringList";
-import { useParams } from "react-router-dom";
+import CardButton from "../buttons/CardButton";
 
 type Props = {
 	ownerId: string;
 	commentId: string;
+	tweetId: string;
 	likes: string[];
 };
 
-const CommentLikeButton = ({ ownerId, commentId, likes }: Props) => {
-	const tweetId = useParams().id;
+const CommentLikeButton = ({ ownerId, tweetId, commentId, likes }: Props) => {
 	const [handleLike, { isLoading }] = useLikeCommentMutation();
 
 	const loginUserId = useAppSelector(userIdSelector);
