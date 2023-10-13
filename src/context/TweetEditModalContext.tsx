@@ -1,8 +1,8 @@
 import { createModalWithIdContext } from "./createModalWithIdContext";
-import withModalAndIdContext from "./WithModalAndIdContext";
+import WithModalAndIdContext from "./WithModalAndIdContext";
 
 export const TweetEditModalContext = createModalWithIdContext();
 
-export const TweetEditModalProvider = withModalAndIdContext(
+export const TweetEditModalProvider = WithModalAndIdContext(
 	TweetEditModalContext
 );

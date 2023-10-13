@@ -1,7 +1,7 @@
 import { ReactNode, Context, useState, useCallback } from "react";
 import { ModalWithIdContextState } from "./createModalWithIdContext";
 
-export default function withModalAndIdContext(
+export default function WithModalAndIdContext(
 	Context: Context<ModalWithIdContextState>
 ) {
 	function ComponentWithModalAndIdContext({

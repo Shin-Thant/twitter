@@ -1,7 +1,7 @@
 import { createModalWithIdContext } from "./createModalWithIdContext";
-import withModalAndIdContext from "./WithModalAndIdContext";
+import WithModalAndIdContext from "./WithModalAndIdContext";
 
 export const TweetShareModalContext = createModalWithIdContext();
 
-const TweetShareModalProvider = withModalAndIdContext(TweetShareModalContext);
+const TweetShareModalProvider = WithModalAndIdContext(TweetShareModalContext);
 export default TweetShareModalProvider;
