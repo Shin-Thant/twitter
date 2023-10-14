@@ -11,6 +11,7 @@ import TweetShareBtn from "../components/tweet/buttons/TweetShareBtn";
 import CommentsContainer from "../containers/CommentsContainer";
 import Container from "../containers/Container";
 import { useGetTweetByIdQuery } from "../features/tweet/tweetApiSlice";
+import ReplyCreateModal from "../components/modals/ReplyCreateModal";
 
 export default function TweetDetails() {
 	const { id: tweetId } = useParams();
@@ -20,6 +21,7 @@ export default function TweetDetails() {
 		{
 			skip: !tweetId,
 			refetchOnFocus: true,
+			pollingInterval: 15 * 60 * 60 * 1000,
 		}
 	);
 
@@ -34,6 +36,8 @@ export default function TweetDetails() {
 					{data ? `${data.owner.username}'s Tweet` : "Tweet Details"}
 				</title>
 			</Helmet>
+
+			<ReplyCreateModal />
 
 			<Container sx={{ color: "text.primary" }}>
 				<BackButton text={"Tweet"} spacing={2} sx={{ mb: 4, px: 1 }} />

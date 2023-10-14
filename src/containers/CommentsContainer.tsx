@@ -13,7 +13,10 @@ type Props = {
 const CommentsContainer = ({ tweetId }: Props) => {
 	const { isFetching, data } = useGetCommentsQuery(
 		{ tweetId },
-		{ refetchOnFocus: false }
+		{
+			refetchOnFocus: false,
+			pollingInterval: 15 * 60 * 60 * 1000,
+		}
 	);
 
 	return (
