@@ -6,15 +6,9 @@ export default function getUpdatedStringList({
 	isAdded: boolean;
 	list: string[];
 	newItem: string;
-}) {
-	let updatedStrList: string[];
-
+}): string[] {
 	if (isAdded) {
-		// remove item
-		updatedStrList = [...list.filter((item) => item !== newItem)];
-	} else {
-		// add item
-		updatedStrList = [...list, newItem];
+		return [...list.filter((item) => item !== newItem)];
 	}
-	return updatedStrList;
+	return [...list, newItem];
 }
