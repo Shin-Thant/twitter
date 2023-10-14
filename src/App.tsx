@@ -9,7 +9,7 @@ import ThemeModalProvider from "./context/ThemeModalContext";
 import Loading from "./pages/Loading";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import TweetDetails from "./pages/TweetDetails";
+import TweetDetails from "./pages/tweet-detail-page/TweetDetails";
 import { ReplyCreateModalContextProvider } from "./context/ReplyCreateModalContext";
 const EmailVerify = lazy(() => import("./pages/EmailVerify"));
 const Layout = lazy(() => import("./containers/Layout"));

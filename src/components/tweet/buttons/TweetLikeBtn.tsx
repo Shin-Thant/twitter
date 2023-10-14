@@ -1,11 +1,10 @@
 import HeartOutlinedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HeartFilledIcon from "@mui/icons-material/FavoriteRounded";
-import { startTransition } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import { useHandleLikesMutation } from "../../../features/tweet/tweetApiSlice";
 import { userIdSelector } from "../../../features/user/userSlice";
-import getUpdatedStringList from "../../../util/getUpdatedStringList";
 import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
+import getUpdatedStringList from "../../../util/getUpdatedStringList";
 import CardButton from "../../buttons/CardButton";
 
 type Props = {
@@ -40,12 +39,11 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 				tweetId,
 				likes: updatedLikes,
 			});
-
-			// startTransition(() => {
-			// 	isLikedByLoginUser = !isLikedByLoginUser;
-			// });
 		} catch (err) {
-			// console.log(err);
+			if (import.meta.env.VITE_ENV !== "production") {
+				console.log({ error_in_like_update: err });
+			}
+			console.error(err);
 		}
 	};
 
