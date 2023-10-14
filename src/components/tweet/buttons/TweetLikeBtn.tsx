@@ -17,7 +17,7 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 	const [handleLike, { isLoading }] = useHandleLikesMutation();
 	const { setIsOpen } = useTweetInfoModal();
 
-	let isLikedByLoginUser: boolean = loginUserId
+	const isLikedByLoginUser: boolean = loginUserId
 		? likes.includes(loginUserId)
 		: false;
 
@@ -41,9 +41,9 @@ export default function TweetLikeBtn({ likes, tweetId }: Props) {
 				likes: updatedLikes,
 			});
 
-			startTransition(() => {
-				isLikedByLoginUser = !isLikedByLoginUser;
-			});
+			// startTransition(() => {
+			// 	isLikedByLoginUser = !isLikedByLoginUser;
+			// });
 		} catch (err) {
 			// console.log(err);
 		}

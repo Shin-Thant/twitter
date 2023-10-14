@@ -4,12 +4,14 @@ import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
 import CardButton from "./CardButton";
 
 type Props = {
+	loginUserId?: string;
 	isCommentedByLoginUser?: boolean;
 	count: number;
 	openCommentModal: () => void;
 };
 
 const CommentButton = ({
+	loginUserId,
 	isCommentedByLoginUser,
 	count,
 	openCommentModal,
@@ -17,7 +19,7 @@ const CommentButton = ({
 	const { setIsOpen: setIsInfoModalOpen } = useTweetInfoModal();
 
 	const onComment = () => {
-		if (!isCommentedByLoginUser) {
+		if (!loginUserId) {
 			setIsInfoModalOpen(true);
 			return;
 		}

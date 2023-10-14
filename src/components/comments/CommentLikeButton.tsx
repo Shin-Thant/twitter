@@ -8,17 +8,19 @@ import getUpdatedStringList from "../../util/getUpdatedStringList";
 import CardButton from "../buttons/CardButton";
 
 type Props = {
-	ownerId: string;
 	commentId: string;
 	tweetId: string;
 	likes: string[];
 };
 
-const CommentLikeButton = ({ ownerId, tweetId, commentId, likes }: Props) => {
+const CommentLikeButton = ({ tweetId, commentId, likes }: Props) => {
 	const [handleLike, { isLoading }] = useLikeCommentMutation();
 
 	const loginUserId = useAppSelector(userIdSelector);
-	const isLikedByLoginUser = !likes.length ? false : loginUserId === ownerId;
+	const isLikedByLoginUser: boolean =
+		!loginUserId || !likes.length
+			? false
+			: !!likes.find((userId) => userId === loginUserId);
 
 	const { setIsOpen } = useTweetInfoModal();
 
@@ -39,7 +41,7 @@ const CommentLikeButton = ({ ownerId, tweetId, commentId, likes }: Props) => {
 			const updatedLikes = getUpdatedStringList({
 				isAdded: isLikedByLoginUser,
 				list: likes,
-				newItem: ownerId,
+				newItem: loginUserId,
 			});
 			await handleLike({
 				commentId,

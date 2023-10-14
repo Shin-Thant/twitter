@@ -1,19 +1,20 @@
 import { useAppSelector } from "../../../app/hooks";
-import { Comment } from "../../../features/comment/commentTypes";
+import { TweetDetailComment } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
 import { useCommentCreateModal } from "../../../hooks/useCommentCreateModal";
 import CommentButton from "../../buttons/CommentButton";
 
 type Props = {
-	comments: Comment[];
+	comments: TweetDetailComment[];
 	tweetId: string;
 };
 
 export default function TweetCommentBtn({ tweetId, comments }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
-	const isCommentedByLoginUser: boolean = loginUserId
-		? !!comments.find((cmt) => cmt.owner._id === loginUserId)
-		: false;
+	const isCommentedByLoginUser: boolean =
+		loginUserId && !!comments.length
+			? !!comments.find((cmt) => cmt.owner._id === loginUserId)
+			: false;
 
 	const { openModal } = useCommentCreateModal();
 
@@ -23,6 +24,7 @@ export default function TweetCommentBtn({ tweetId, comments }: Props) {
 
 	return (
 		<CommentButton
+			loginUserId={loginUserId}
 			isCommentedByLoginUser={isCommentedByLoginUser}
 			count={comments.length}
 			openCommentModal={openCommentModal}
