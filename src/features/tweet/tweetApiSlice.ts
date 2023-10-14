@@ -1,7 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
 import apiSlice from "../../app/api/apiSlice";
 import { RootState } from "../../app/store";
-import { GetTweetsData, GetTweetsResponse, Tweet } from "./tweetTypes";
+import {
+	GetTweetByIdResult,
+	GetTweetsData,
+	GetTweetsResponse,
+	Tweet,
+} from "./tweetTypes";
 import { currentPageSelector } from "../currentPageSlice";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
@@ -40,7 +45,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		getTweetById: builder.query<Tweet, GetTweetByIdQueryArg>({
+		getTweetById: builder.query<GetTweetByIdResult, GetTweetByIdQueryArg>({
 			query: ({ tweetId }) => {
 				return `/tweets/${tweetId}`;
 			},

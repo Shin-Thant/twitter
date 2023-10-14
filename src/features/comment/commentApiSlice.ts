@@ -1,9 +1,15 @@
 import apiSlice from "../../app/api/apiSlice";
-import { Comment, CreateReplyResult, ListResultComment } from "./commentTypes";
+import {
+	Comment,
+	CreateReplyResult,
+	GetCommentByIdResult,
+	ListResultComment,
+} from "./commentTypes";
 
 type AddCommentArg = { tweetId: string; body: string };
 type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
 type ReplyCommentArg = { tweetId: string; commentId: string; body: string };
+type GetCommentByIdArg = { tweetId: string; commentId: string };
 
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -23,6 +29,13 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
+		getCommentById: builder.query<GetCommentByIdResult, GetCommentByIdArg>({
+			query: ({ commentId }) => `/comments/${commentId}`,
+			providesTags: (_result, _error, { tweetId, commentId }) => [
+				{ type: "Comments", id: `/${tweetId}/${commentId}` },
+			],
+		}),
+
 		addComment: builder.mutation<Comment, AddCommentArg>({
 			query: ({ body, tweetId }) => ({
 				url: `/tweets/${tweetId}/comments`,
@@ -33,6 +46,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: (_res, _err, { tweetId }) => [
 				{ type: "Comments", id: `/${tweetId}/LIST` },
+				{ type: "Tweets", id: tweetId },
 			],
 		}),
 
@@ -82,6 +96,8 @@ const commentApiSlice = apiSlice.injectEndpoints({
 
 export const {
 	useGetCommentsQuery,
+	useGetCommentByIdQuery,
 	useAddCommentMutation,
 	useLikeCommentMutation,
+	useReplyCommentMutation,
 } = commentApiSlice;
