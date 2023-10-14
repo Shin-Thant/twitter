@@ -11,7 +11,7 @@ interface GetCommentsResultTweet {
 export interface Comment {
 	_id: string;
 	body: string;
-	owner: string | Owner;
+	owner: string | Owner | { _id: string; username: string };
 	tweet: string | Tweet | GetCommentsResultTweet;
 	origin?: string | CommentOrigin;
 	likes: string[];
@@ -41,5 +41,15 @@ export interface CreateReplyResult extends Comment {
 	tweet: string;
 	origin: string;
 	owner: string;
+	comments: string[];
+}
+
+export interface GetCommentByIdResult extends Comment {
+	tweet: string;
+	origin: string;
+	owner: {
+		_id: string;
+		username: string;
+	};
 	comments: string[];
 }

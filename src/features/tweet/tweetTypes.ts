@@ -53,3 +53,13 @@ export interface GetTweetsData {
 	pagination: Pagination;
 	data: Tweet[];
 }
+
+export interface TweetDetailComment extends Comment {
+	owner: Owner;
+	tweet: string;
+	comments: TweetDetailComment[];
+	origin: string;
+}
+export type GetTweetByIdResult = Tweet & {
+	comments: TweetDetailComment[];
+};
