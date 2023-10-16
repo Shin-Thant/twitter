@@ -14,6 +14,7 @@ import {
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
+import ModalHeaderSkeleton from "../skeletons/ModalHeaderSkeleton";
 
 const ReplyCreateModal = () => {
 	const { isOpen, closeModal, tweetId, originId } = useReplyCreateModal();
@@ -69,7 +70,16 @@ const ReplyCreateModal = () => {
 		<Modal
 			title={
 				isFetching ? (
-					"fetching comment"
+					<Stack direction="row" alignItems={"center"} spacing={1}>
+						<ModalHeaderSkeleton
+							width={90}
+							sx={{ borderRadius: "2px" }}
+						/>
+						<ModalHeaderSkeleton
+							width={40}
+							sx={{ borderRadius: "2px" }}
+						/>
+					</Stack>
 				) : (
 					<>
 						Reply to{" "}
