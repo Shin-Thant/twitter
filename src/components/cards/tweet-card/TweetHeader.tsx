@@ -1,15 +1,15 @@
 import { CardHeader } from "@mui/material";
 import { useAppSelector } from "../../../app/hooks";
-import { Owner } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
 import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
 import TweetOptionsMenu from "./menus/TweetOptionsMenu";
+import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 
 type Props = {
 	tweetId: string;
-	owner: Owner;
+	owner: GetTweetsUser;
 	createdAt: string;
 };
 

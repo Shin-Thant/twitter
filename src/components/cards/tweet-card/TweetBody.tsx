@@ -1,11 +1,11 @@
 import { CardContent, Typography } from "@mui/material";
-import { Tweet } from "../../../features/tweet/tweetTypes";
+import { GetTweetsResultTweet } from "../../../features/tweet/tweetTypes";
 import TweetImageList from "../../lists/TweetImageList";
 import EmptyNestedTweet from "./EmptyNestedTweet";
 import NestedTweet from "./NestedTweet";
 
 type Props = {
-	tweet: Tweet;
+	tweet: GetTweetsResultTweet;
 };
 const TweetBody = ({ tweet }: Props) => {
 	return (

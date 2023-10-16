@@ -3,7 +3,7 @@ import apiSlice from "../../app/api/apiSlice";
 import { RootState } from "../../app/store";
 import {
 	GetTweetByIdResult,
-	GetTweetsData,
+	GetTweetsResult,
 	GetTweetsResponse,
 	Tweet,
 } from "./tweetTypes";
@@ -19,7 +19,7 @@ type DeleteMutationArg = { tweetId: string };
 
 const tweetApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getTweets: builder.query<GetTweetsData, GetTweetsQueryArg>({
+		getTweets: builder.query<GetTweetsResult, GetTweetsQueryArg>({
 			query: ({ itemsPerPage, currentPage }) => {
 				return `/tweets?itemsPerPage=${itemsPerPage}&currentPage=${currentPage}`;
 			},

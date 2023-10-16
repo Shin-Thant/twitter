@@ -8,7 +8,7 @@ import {
 import { grey } from "@mui/material/colors";
 import { MouseEventHandler } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SharedTweet } from "../../../features/tweet/tweetTypes";
+import { GetTweetsResultOrigin } from "../../../features/tweet/tweetTypes";
 import { createLocationState } from "../../../util/createLocatioState";
 import TweetImageList from "../../lists/TweetImageList";
 import TweetAvatar from "./header/TweetAvatar";
@@ -20,7 +20,7 @@ import TweetTitle from "./header/TweetTitle";
 type ButtonEventHandler = MouseEventHandler<HTMLButtonElement>;
 
 type Props = {
-	origin: SharedTweet["origin"];
+	origin: GetTweetsResultOrigin;
 };
 
 const NestedTweet = ({ origin }: Props) => {

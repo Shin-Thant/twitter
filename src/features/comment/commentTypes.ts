@@ -1,4 +1,5 @@
-import { Owner, Tweet } from "../tweet/tweetTypes";
+import { CommonTweet, DefaultTweet, Owner, Tweet } from "../tweet/tweetTypes";
+import { CommonUser, DefaultUser } from "../user/userTypes";
 
 interface GetCommentsResultTweet {
 	_id: string;
@@ -15,7 +16,7 @@ export interface Comment {
 	tweet: string | Tweet | GetCommentsResultTweet;
 	origin?: string | CommentOrigin;
 	likes: string[];
-	comments: (string | Comment | ListResultComment)[];
+	comments?: (string | Comment | ListResultComment)[];
 	createdAt: string;
 	updatedAt: string;
 }
@@ -53,3 +54,21 @@ export interface GetCommentByIdResult extends Comment {
 	};
 	comments: string[];
 }
+
+// ============================================================
+export interface CommonComment {
+	_id: string;
+	body: string;
+	owner: string | CommonUser | DefaultUser;
+	tweet: string | CommonTweet | DefaultTweet;
+	origin?: string | CommonComment;
+	likes: string[];
+	comments?: (string | CommonComment)[];
+	createdAt: string;
+	updatedAt: string;
+}
+export type DefaultComment = Omit<CommonComment, "comments"> & {
+	origin?: string;
+	tweet: string;
+	owner: string;
+};

@@ -1,7 +1,7 @@
 import { Box, Card, CardActionArea } from "@mui/material";
 import { ForwardedRef, forwardRef, memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tweet } from "../../../features/tweet/tweetTypes";
+import { GetTweetsResultTweet } from "../../../features/tweet/tweetTypes";
 import { createLocationState } from "../../../util/createLocatioState";
 import TweetActions from "./TweetActions";
 import TweetBody from "./TweetBody";
@@ -11,7 +11,7 @@ import TweetLikeBtn from "./buttons/TweetLikeBtn";
 import TweetShareBtn from "./buttons/TweetShareBtn";
 
 type Props = {
-	tweet: Tweet;
+	tweet: GetTweetsResultTweet;
 };
 
 const TweetCard = forwardRef(

@@ -1,11 +1,11 @@
 import { useAppSelector } from "../../../../app/hooks";
-import { TweetDetailComment } from "../../../../features/tweet/tweetTypes";
+import { GetTweetsResultComment } from "../../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../../features/user/userSlice";
 import { useCommentCreateModal } from "../../../../hooks/useCommentCreateModal";
 import CommentButton from "../../../buttons/CommentButton";
 
 type Props = {
-	comments: TweetDetailComment[];
+	comments: GetTweetsResultComment[];
 	tweetId: string;
 };
 

@@ -1,5 +1,50 @@
-import { Comment } from "../comment/commentTypes";
-import { User } from "../user/userTypes";
+import {
+	Comment,
+	CommonComment,
+	DefaultComment,
+} from "../comment/commentTypes";
+import { CommonUser, DefaultUser, User } from "../user/userTypes";
+
+export interface CommonTweet {
+	type: "post" | "share";
+	_id: string;
+	body?: string;
+	origin?: string | CommonTweet | DefaultTweet;
+	owner: string | CommonTweet | DefaultUser | GetTweetsUser;
+	images: string[];
+	likes: string[];
+	comments?: (CommonComment | DefaultComment | GetTweetsResultComment)[];
+	shares: (string | CommonTweet | DefaultTweet | GetTweetsResultShare)[];
+	createdAt: string;
+	updatedAt: string;
+}
+export type DefaultTweet = Omit<CommonTweet, "comments"> & {
+	origin?: string;
+	owner: string;
+	shares: string[];
+};
+
+export type GetTweetsUser = Omit<CommonUser, "email">;
+export interface GetTweetsResultTweet extends CommonTweet {
+	origin?: GetTweetsResultOrigin;
+	owner: GetTweetsUser;
+	shares: GetTweetsResultShare[];
+	comments: GetTweetsResultComment[];
+}
+export type GetTweetsResultComment = DefaultComment & {
+	owner: GetTweetsUser;
+};
+export interface GetTweetsResultShare
+	extends Pick<CommonTweet, "_id" | "type" | "origin" | "body" | "owner"> {
+	origin: DefaultTweet;
+	body?: string;
+	owner: string;
+}
+export type GetTweetsResultOrigin = DefaultTweet & {
+	owner: GetTweetsUser;
+};
+
+// ========================================================
 
 export type Owner = Omit<User, "email" | "followers">;
 
@@ -37,6 +82,14 @@ interface OriginTweet extends BasicTweet {
 
 export type Tweet = PostTweet | SharedTweet;
 
+export type TweetCardType = Tweet & { comments: TweetCardComment[] };
+export interface TweetCardComment extends Comment {
+	owner: Owner;
+	origin?: string;
+	tweet: string;
+	comments?: string[];
+}
+
 export interface Pagination {
 	totalPages: number;
 	totalDocs: number;
@@ -45,13 +98,14 @@ export interface Pagination {
 	currentPage: number;
 	limit: number;
 }
+
 export interface GetTweetsResponse extends Pagination {
-	data: Tweet[];
+	data: GetTweetsResultTweet[];
 }
 
-export interface GetTweetsData {
+export interface GetTweetsResult {
 	pagination: Pagination;
-	data: Tweet[];
+	data: GetTweetsResultTweet[];
 }
 
 export interface TweetDetailComment extends Comment {

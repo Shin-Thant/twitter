@@ -1,14 +1,14 @@
 import { Box, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 import moment from "moment";
-import { Owner } from "../../../../features/tweet/tweetTypes";
+import { Link } from "react-router-dom";
+import { GetTweetsUser } from "../../../../features/tweet/tweetTypes";
 
 function getRelativeTime({ date }: { date: string }) {
 	return moment(date).fromNow();
 }
 
 type Props = {
-	owner: Owner;
+	owner: GetTweetsUser;
 	createdAt: string;
 };
 const TweetTitle = ({ owner, createdAt }: Props) => {
