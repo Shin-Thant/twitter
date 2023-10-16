@@ -1,11 +1,11 @@
 import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
-import { useAppSelector } from "../../../app/hooks";
-import { NestedTweetPreview } from "../../../features/tweet/tweetTypes";
-import { userIdSelector } from "../../../features/user/userSlice";
-import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
-import { useTweetShareModal } from "../../../hooks/useTweetShareModal";
-import CardButton from "../../buttons/CardButton";
+import { useAppSelector } from "../../../../app/hooks";
+import { NestedTweetPreview } from "../../../../features/tweet/tweetTypes";
+import { userIdSelector } from "../../../../features/user/userSlice";
+import { useTweetInfoModal } from "../../../../hooks/useTweetInfoModal";
+import { useTweetShareModal } from "../../../../hooks/useTweetShareModal";
+import CardButton from "../../../buttons/CardButton";
 
 type Props = {
 	tweetId: string;

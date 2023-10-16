@@ -9,8 +9,8 @@ import {
 	MenuItem,
 } from "@mui/material";
 import { useRef, useState } from "react";
-import { useTweetDeleteModal } from "../../../hooks/useTweetDeleteModal";
-import { useTweetEditModal } from "../../../hooks/useTweetEditModal";
+import { useTweetDeleteModal } from "../../../../hooks/useTweetDeleteModal";
+import { useTweetEditModal } from "../../../../hooks/useTweetEditModal";
 
 type Props = {
 	tweetId: string;

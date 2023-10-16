@@ -6,8 +6,8 @@ import {
 	Typography,
 } from "@mui/material";
 import { ListResultComment } from "../../../features/comment/commentTypes";
-import TweetAvatar from "../../tweet/header/TweetAvatar";
-import TweetTitle from "../../tweet/header/TweetTitle";
+import TweetAvatar from "../tweet-card/header/TweetAvatar";
+import TweetTitle from "../tweet-card/header/TweetTitle";
 import CommentLikeButton from "./CommentLikeButton";
 import CommentSubTitle from "./CommentSubTitle";
 import ReplyButton from "./ReplyButton";

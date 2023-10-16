@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import TweetCard from "../components/tweet/TweetCard";
+import TweetCard from "../components/cards/tweet-card/TweetCard";
 import {
 	currentPageSelector,
 	setTweetCurrentPage,

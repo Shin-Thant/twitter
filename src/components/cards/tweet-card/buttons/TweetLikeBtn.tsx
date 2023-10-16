@@ -1,11 +1,11 @@
 import HeartOutlinedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HeartFilledIcon from "@mui/icons-material/FavoriteRounded";
-import { useAppSelector } from "../../../app/hooks";
-import { useHandleLikesMutation } from "../../../features/tweet/tweetApiSlice";
-import { userIdSelector } from "../../../features/user/userSlice";
-import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
-import getUpdatedStringList from "../../../util/getUpdatedStringList";
-import CardButton from "../../buttons/CardButton";
+import { useAppSelector } from "../../../../app/hooks";
+import { useHandleLikesMutation } from "../../../../features/tweet/tweetApiSlice";
+import { userIdSelector } from "../../../../features/user/userSlice";
+import { useTweetInfoModal } from "../../../../hooks/useTweetInfoModal";
+import getUpdatedStringList from "../../../../util/getUpdatedStringList";
+import CardButton from "../../../buttons/CardButton";
 
 type Props = {
 	likes: string[];

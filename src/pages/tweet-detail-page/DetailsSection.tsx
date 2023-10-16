@@ -1,10 +1,10 @@
 import { Box, Divider } from "@mui/material";
-import TweetActions from "../../components/tweet/TweetActions";
-import TweetBody from "../../components/tweet/TweetBody";
-import TweetHeader from "../../components/tweet/TweetHeader";
-import TweetCommentBtn from "../../components/tweet/buttons/TweetCommentButton";
-import TweetLikeBtn from "../../components/tweet/buttons/TweetLikeBtn";
-import TweetShareBtn from "../../components/tweet/buttons/TweetShareBtn";
+import TweetActions from "../../components/cards/tweet-card/TweetActions";
+import TweetBody from "../../components/cards/tweet-card/TweetBody";
+import TweetHeader from "../../components/cards/tweet-card/TweetHeader";
+import TweetCommentBtn from "../../components/cards/tweet-card/buttons/TweetCommentButton";
+import TweetLikeBtn from "../../components/cards/tweet-card/buttons/TweetLikeBtn";
+import TweetShareBtn from "../../components/cards/tweet-card/buttons/TweetShareBtn";
 import { GetTweetByIdResult } from "../../features/tweet/tweetTypes";
 
 type Props = {

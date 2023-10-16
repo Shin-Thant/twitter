@@ -1,7 +1,7 @@
 import { CardHeader } from "@mui/material";
-import { useAppSelector } from "../../app/hooks";
-import { Owner } from "../../features/tweet/tweetTypes";
-import { userIdSelector } from "../../features/user/userSlice";
+import { useAppSelector } from "../../../app/hooks";
+import { Owner } from "../../../features/tweet/tweetTypes";
+import { userIdSelector } from "../../../features/user/userSlice";
 import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";

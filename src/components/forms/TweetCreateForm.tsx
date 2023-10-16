@@ -10,8 +10,8 @@ import { createTweetFormData } from "../../util/createTweetFormData";
 import { isBaseQueryResponseError } from "../../util/errorHelpers";
 import SubmitButton from "../buttons/SubmitButton";
 import TweetImageUploadButton from "../buttons/TweetImageUploadButton";
-import { StyledForm } from "../forms/AuthFormComponents";
-import ContentInputHandler from "../forms/ContentInputHandler";
+import { StyledForm } from "./AuthFormComponents";
+import ContentInputHandler from "./ContentInputHandler";
 import WithImageInput from "../inputs/WithImageInput";
 import PreviewImageList from "../lists/PreviewImageList";
 

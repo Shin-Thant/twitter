@@ -1,6 +1,6 @@
 import { CardContent, Typography } from "@mui/material";
-import { Tweet } from "../../features/tweet/tweetTypes";
-import TweetImageList from "../lists/TweetImageList";
+import { Tweet } from "../../../features/tweet/tweetTypes";
+import TweetImageList from "../../lists/TweetImageList";
 import EmptyNestedTweet from "./EmptyNestedTweet";
 import NestedTweet from "./NestedTweet";
 

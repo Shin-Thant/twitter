@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { Owner } from "../../../features/tweet/tweetTypes";
+import { Owner } from "../../../../features/tweet/tweetTypes";
 
 function getRelativeTime({ date }: { date: string }) {
 	return moment(date).fromNow();

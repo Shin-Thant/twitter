@@ -8,9 +8,9 @@ import {
 import { grey } from "@mui/material/colors";
 import { MouseEventHandler } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SharedTweet } from "../../features/tweet/tweetTypes";
-import { createLocationState } from "../../util/createLocatioState";
-import TweetImageList from "../lists/TweetImageList";
+import { SharedTweet } from "../../../features/tweet/tweetTypes";
+import { createLocationState } from "../../../util/createLocatioState";
+import TweetImageList from "../../lists/TweetImageList";
 import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
 import TweetTitle from "./header/TweetTitle";
