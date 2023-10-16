@@ -1,21 +1,3 @@
-export type User = {
-	_id: string;
-	name: string;
-	username: string;
-	email: string;
-	emailVerified: boolean;
-	avatar?: string;
-	followers: string[];
-	following: string[];
-	counts: {
-		followers: number;
-		following: number;
-	};
-	createdAt: string;
-	updatedAt: string;
-	id: string;
-};
-
 export interface CommonUser {
 	_id: string;
 	name: string;
@@ -37,3 +19,10 @@ export interface CommonUser {
 export type DefaultUser = Omit<CommonUser, "followers"> & {
 	folowing: string[];
 };
+
+export type UserWithoutEmail = Omit<DefaultUser, "email">;
+
+export interface GetMeResultUser extends CommonUser {
+	followers: DefaultUser[];
+	following: DefaultUser[];
+}

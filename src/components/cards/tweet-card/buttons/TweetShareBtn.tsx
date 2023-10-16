@@ -1,7 +1,10 @@
 import SharedOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import { useAppSelector } from "../../../../app/hooks";
-import { GetTweetsResultShare } from "../../../../features/tweet/tweetTypes";
+import {
+	GetTweetByIdResultShares,
+	GetTweetsResultShare,
+} from "../../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../../features/user/userSlice";
 import { useTweetInfoModal } from "../../../../hooks/useTweetInfoModal";
 import { useTweetShareModal } from "../../../../hooks/useTweetShareModal";
@@ -9,7 +12,7 @@ import CardButton from "../../../buttons/CardButton";
 
 type Props = {
 	tweetId: string;
-	shares: GetTweetsResultShare[];
+	shares: (GetTweetsResultShare | GetTweetByIdResultShares)[];
 };
 
 export default function TweetShareBtn({ tweetId, shares }: Props) {

@@ -5,7 +5,7 @@ import {
 	CardHeader,
 	Typography,
 } from "@mui/material";
-import { ListResultComment } from "../../../features/comment/commentTypes";
+import { GetCommentsResultComment } from "../../../features/comment/commentTypes";
 import TweetAvatar from "../tweet-card/header/TweetAvatar";
 import TweetTitle from "../tweet-card/header/TweetTitle";
 import CommentLikeButton from "./CommentLikeButton";
@@ -13,7 +13,7 @@ import CommentSubTitle from "./CommentSubTitle";
 import ReplyButton from "./ReplyButton";
 
 type Props = {
-	comment: ListResultComment;
+	comment: GetCommentsResultComment;
 };
 
 const CommentItem = ({ comment }: Props) => {

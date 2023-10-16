@@ -1,16 +1,12 @@
-import {
-	Comment,
-	CommonComment,
-	DefaultComment,
-} from "../comment/commentTypes";
-import { CommonUser, DefaultUser, User } from "../user/userTypes";
+import { CommonComment, DefaultComment } from "../comment/commentTypes";
+import { CommonUser, DefaultUser, UserWithoutEmail } from "../user/userTypes";
 
 export interface CommonTweet {
 	type: "post" | "share";
 	_id: string;
 	body?: string;
 	origin?: string | CommonTweet | DefaultTweet;
-	owner: string | CommonTweet | DefaultUser | GetTweetsUser;
+	owner: string | CommonUser | DefaultUser | GetTweetsUser;
 	images: string[];
 	likes: string[];
 	comments?: (CommonComment | DefaultComment | GetTweetsResultComment)[];
@@ -24,7 +20,7 @@ export type DefaultTweet = Omit<CommonTweet, "comments"> & {
 	shares: string[];
 };
 
-export type GetTweetsUser = Omit<CommonUser, "email">;
+export type GetTweetsUser = UserWithoutEmail;
 export interface GetTweetsResultTweet extends CommonTweet {
 	origin?: GetTweetsResultOrigin;
 	owner: GetTweetsUser;
@@ -44,51 +40,14 @@ export type GetTweetsResultOrigin = DefaultTweet & {
 	owner: GetTweetsUser;
 };
 
-// ========================================================
-
-export type Owner = Omit<User, "email" | "followers">;
-
-export type NestedTweetPreview = {
-	_id: string;
-	origin: string;
-	body: string;
-	owner: string;
-	type: "post" | "share";
-};
-
-interface BasicTweet {
-	_id: string;
-	body?: string;
-	owner: Owner;
-	images: string[];
-	likes: string[];
-	comments: Comment[];
-	shares: NestedTweetPreview[];
-	createdAt: string;
-	updatedAt: string;
+export interface GetTweetByIdResultTweet extends CommonTweet {
+	owner: UserWithoutEmail;
+	comments: GetTweetByIdResultComment[];
+	origin: DefaultTweet & { owner: UserWithoutEmail };
+	shares: GetTweetByIdResultShares[];
 }
-interface PostTweet extends BasicTweet {
-	type: "post";
-}
-export interface SharedTweet extends BasicTweet {
-	type: "share";
-	origin: OriginTweet;
-}
-interface OriginTweet extends BasicTweet {
-	type: "post" | "share";
-	origin: string;
-	owner: Owner;
-}
-
-export type Tweet = PostTweet | SharedTweet;
-
-export type TweetCardType = Tweet & { comments: TweetCardComment[] };
-export interface TweetCardComment extends Comment {
-	owner: Owner;
-	origin?: string;
-	tweet: string;
-	comments?: string[];
-}
+export type GetTweetByIdResultShares = GetTweetsResultShare;
+type GetTweetByIdResultComment = DefaultComment & { owner: UserWithoutEmail };
 
 export interface Pagination {
 	totalPages: number;
@@ -108,12 +67,4 @@ export interface GetTweetsResult {
 	data: GetTweetsResultTweet[];
 }
 
-export interface TweetDetailComment extends Comment {
-	owner: Owner;
-	tweet: string;
-	comments: TweetDetailComment[];
-	origin: string;
-}
-export type GetTweetByIdResult = Tweet & {
-	comments: TweetDetailComment[];
-};
+// ========================================================

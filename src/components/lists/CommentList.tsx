@@ -1,8 +1,8 @@
-import { ListResultComment } from "../../features/comment/commentTypes";
+import { GetCommentsResultComment } from "../../features/comment/commentTypes";
 import CommentItem from "../cards/comment-card/CommentItem";
 
 type Props = {
-	comments: ListResultComment[];
+	comments: GetCommentsResultComment[];
 };
 
 const CommentList = ({ comments }: Props) => {

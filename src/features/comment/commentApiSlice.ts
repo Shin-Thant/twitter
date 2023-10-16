@@ -1,9 +1,9 @@
 import apiSlice from "../../app/api/apiSlice";
 import {
-	Comment,
-	CreateReplyResult,
-	GetCommentByIdResult,
-	ListResultComment,
+	DefaultComment,
+	DefaultCommentWithPopulatedUser,
+	DefaultReply,
+	GetCommentsResultComment,
 } from "./commentTypes";
 
 type AddCommentArg = { tweetId: string; body: string };
@@ -13,7 +13,10 @@ type GetCommentByIdArg = { tweetId: string; commentId: string };
 
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getComments: builder.query<ListResultComment[], { tweetId: string }>({
+		getComments: builder.query<
+			GetCommentsResultComment[],
+			{ tweetId: string }
+		>({
 			query: ({ tweetId }) => `/tweets/${tweetId}/comments`,
 			providesTags: (result, _error, { tweetId }) => {
 				if (!result) {
@@ -29,14 +32,17 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		getCommentById: builder.query<GetCommentByIdResult, GetCommentByIdArg>({
+		getCommentById: builder.query<
+			DefaultCommentWithPopulatedUser,
+			GetCommentByIdArg
+		>({
 			query: ({ commentId }) => `/comments/${commentId}`,
 			providesTags: (_result, _error, { tweetId, commentId }) => [
 				{ type: "Comments", id: `/${tweetId}/${commentId}` },
 			],
 		}),
 
-		addComment: builder.mutation<Comment, AddCommentArg>({
+		addComment: builder.mutation<DefaultComment, AddCommentArg>({
 			query: ({ body, tweetId }) => ({
 				url: `/tweets/${tweetId}/comments`,
 				method: "POST",
@@ -50,7 +56,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			],
 		}),
 
-		likeComment: builder.mutation<Comment, LikeCommentArg>({
+		likeComment: builder.mutation<DefaultComment, LikeCommentArg>({
 			query: (arg) => ({
 				url: `/comments/${arg.commentId}/likes`,
 				method: "PUT",
@@ -79,7 +85,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		replyComment: builder.mutation<CreateReplyResult, ReplyCommentArg>({
+		replyComment: builder.mutation<DefaultReply, ReplyCommentArg>({
 			query: ({ commentId, body }) => ({
 				url: `/comments/${commentId}/reply`,
 				method: "POST",

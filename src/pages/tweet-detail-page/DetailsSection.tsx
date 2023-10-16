@@ -5,10 +5,10 @@ import TweetHeader from "../../components/cards/tweet-card/TweetHeader";
 import TweetCommentBtn from "../../components/cards/tweet-card/buttons/TweetCommentButton";
 import TweetLikeBtn from "../../components/cards/tweet-card/buttons/TweetLikeBtn";
 import TweetShareBtn from "../../components/cards/tweet-card/buttons/TweetShareBtn";
-import { GetTweetByIdResult } from "../../features/tweet/tweetTypes";
+import { GetTweetByIdResultTweet } from "../../features/tweet/tweetTypes";
 
 type Props = {
-	data: GetTweetByIdResult;
+	data: GetTweetByIdResultTweet;
 };
 
 const DetailsSection = ({ data }: Props) => {

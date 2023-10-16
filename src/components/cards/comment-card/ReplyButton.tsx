@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../app/hooks";
-import { ListResultComment } from "../../../features/comment/commentTypes";
+import { DefaultCommentWithPopulatedUser } from "../../../features/comment/commentTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
 import { useReplyCreateModal } from "../../../hooks/useReplyCreateModal";
 import CommentButton from "../../buttons/CommentButton";
@@ -8,7 +8,7 @@ type Props = {
 	ownerId: string;
 	commentId: string;
 	tweetId: string;
-	replies: ListResultComment[];
+	replies: DefaultCommentWithPopulatedUser[];
 };
 
 const ReplyButton = ({ tweetId, commentId, replies }: Props) => {

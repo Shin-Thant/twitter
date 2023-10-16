@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { checkUserEndpoint } from "../auth/authApiSlice";
 import { RootState } from "../../app/store";
 import isTokenErrorPayload from "../../util/isTokenErrorPayload";
-import { User } from "./userTypes";
+import { checkUserEndpoint } from "../auth/authApiSlice";
+import { GetMeResultUser } from "./userTypes";
 
 type State = {
-	user: User | null;
+	user: GetMeResultUser | null;
 };
 
 const initialState: State = { user: null };
@@ -14,7 +14,7 @@ const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		setUser: (state, action: PayloadAction<User | null>) => {
+		setUser: (state, action: PayloadAction<GetMeResultUser | null>) => {
 			state.user = action.payload;
 		},
 	},

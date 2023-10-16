@@ -1,13 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
 import apiSlice from "../../app/api/apiSlice";
 import { RootState } from "../../app/store";
-import {
-	GetTweetByIdResult,
-	GetTweetsResult,
-	GetTweetsResponse,
-	Tweet,
-} from "./tweetTypes";
 import { currentPageSelector } from "../currentPageSlice";
+import {
+	DefaultTweet,
+	GetTweetByIdResultTweet,
+	GetTweetsResponse,
+	GetTweetsResult,
+} from "./tweetTypes";
 
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
 type GetTweetByIdQueryArg = { tweetId: string };
@@ -45,7 +45,10 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		getTweetById: builder.query<GetTweetByIdResult, GetTweetByIdQueryArg>({
+		getTweetById: builder.query<
+			GetTweetByIdResultTweet,
+			GetTweetByIdQueryArg
+		>({
 			query: ({ tweetId }) => {
 				return `/tweets/${tweetId}`;
 			},
@@ -57,7 +60,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		createTweet: builder.mutation<Tweet, CreateTweetMutationArg>({
+		createTweet: builder.mutation<DefaultTweet, CreateTweetMutationArg>({
 			query: (arg) => ({
 				url: "tweets",
 				method: "POST",
@@ -66,7 +69,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: [{ type: "Tweets", id: "LIST" }],
 		}),
 
-		editTweet: builder.mutation<Tweet, EditTweetMutationArg>({
+		editTweet: builder.mutation<DefaultTweet, EditTweetMutationArg>({
 			query: ({ body, tweetId }) => ({
 				method: "PUT",
 				url: `/tweets/${tweetId}`,
@@ -101,7 +104,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		handleLikes: builder.mutation<Tweet, LikeMutationArg>({
+		handleLikes: builder.mutation<DefaultTweet, LikeMutationArg>({
 			query: ({ tweetId }) => ({
 				method: "PATCH",
 				url: `/tweets/${tweetId}/like`,
@@ -126,7 +129,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		handleShare: builder.mutation<Tweet, ShareMutationArg>({
+		handleShare: builder.mutation<DefaultTweet, ShareMutationArg>({
 			query: ({ tweetId, body }) => ({
 				url: `/tweets/${tweetId}/share`,
 				method: "POST",
