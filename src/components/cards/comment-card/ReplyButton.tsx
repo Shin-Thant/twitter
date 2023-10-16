@@ -1,8 +1,8 @@
-import { useAppSelector } from "../../app/hooks";
-import { ListResultComment } from "../../features/comment/commentTypes";
-import { userIdSelector } from "../../features/user/userSlice";
-import { useReplyCreateModal } from "../../hooks/useReplyCreateModal";
-import CommentButton from "../buttons/CommentButton";
+import { useAppSelector } from "../../../app/hooks";
+import { ListResultComment } from "../../../features/comment/commentTypes";
+import { userIdSelector } from "../../../features/user/userSlice";
+import { useReplyCreateModal } from "../../../hooks/useReplyCreateModal";
+import CommentButton from "../../buttons/CommentButton";
 
 type Props = {
 	ownerId: string;

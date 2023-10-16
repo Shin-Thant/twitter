@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import BackButton from "../../components/buttons/BackButton";
@@ -19,10 +18,6 @@ export default function TweetDetails() {
 			pollingInterval: 15 * 60 * 60 * 1000,
 		}
 	);
-
-	useEffect(() => {
-		console.log("changed");
-	}, [data]);
 
 	if (!tweetId) {
 		return <>"no tweet id!"</>;

@@ -1,5 +1,5 @@
 import { ListResultComment } from "../../features/comment/commentTypes";
-import CommentItem from "../comments/CommentItem";
+import CommentItem from "../cards/comment-card/CommentItem";
 
 type Props = {
 	comments: ListResultComment[];

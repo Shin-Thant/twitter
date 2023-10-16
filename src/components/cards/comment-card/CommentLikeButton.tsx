@@ -1,11 +1,11 @@
 import HeartOutlinedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import HeartFilledIcon from "@mui/icons-material/FavoriteRounded";
-import { useAppSelector } from "../../app/hooks";
-import { useLikeCommentMutation } from "../../features/comment/commentApiSlice";
-import { userIdSelector } from "../../features/user/userSlice";
-import { useTweetInfoModal } from "../../hooks/useTweetInfoModal";
-import getUpdatedStringList from "../../util/getUpdatedStringList";
-import CardButton from "../buttons/CardButton";
+import { useAppSelector } from "../../../app/hooks";
+import { useLikeCommentMutation } from "../../../features/comment/commentApiSlice";
+import { userIdSelector } from "../../../features/user/userSlice";
+import { useTweetInfoModal } from "../../../hooks/useTweetInfoModal";
+import getUpdatedStringList from "../../../util/getUpdatedStringList";
+import CardButton from "../../buttons/CardButton";
 
 type Props = {
 	commentId: string;
