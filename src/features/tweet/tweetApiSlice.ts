@@ -227,7 +227,7 @@ const getTweetByIdOptimisticEditUpdate = ({
 	);
 };
 
-const resultSelector = createSelector(
+const getTweetsResultSelector = createSelector(
 	(state: RootState) => ({
 		currentPage: state.currentPage.tweet.currentPage,
 		state,
@@ -240,18 +240,18 @@ const resultSelector = createSelector(
 	}
 );
 
-const dataSelector = createSelector(
-	(state: RootState) => resultSelector(state),
-	(fun) => {
-		return fun.data;
+const getTweetsDataSelector = createSelector(
+	(state: RootState) => getTweetsResultSelector(state),
+	(getTweetsResult) => {
+		return getTweetsResult.data;
 	}
 );
 
-export const selectTweetById = createSelector(
-	[dataSelector, (_: RootState, id: string) => id],
+export const selectTweetFromGetComments = createSelector(
+	[getTweetsDataSelector, (_: RootState, id: string) => id],
 	(data, id) => {
 		if (!id) {
-			return undefined;
+			return null;
 		}
 		return data?.data.find((tweet) => tweet._id === id);
 	}

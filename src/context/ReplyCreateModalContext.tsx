@@ -1,8 +1,8 @@
-import WithReplyModalContext from "./WithReplyModalContext";
-import { createReplyModalContext } from "./createReplyModalContext";
+import WithCommentModalContext from "./WithCommentModalContext";
+import { createCommentModalContext } from "./createCommentModalContext";
 
-export const ReplyCreateModalContext = createReplyModalContext();
+export const ReplyCreateModalContext = createCommentModalContext();
 
-export const ReplyCreateModalContextProvider = WithReplyModalContext(
+export const ReplyCreateModalContextProvider = WithCommentModalContext(
 	ReplyCreateModalContext
 );

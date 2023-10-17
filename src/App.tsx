@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import TweetDetails from "./pages/tweet-detail-page/TweetDetails";
 import { ReplyCreateModalContextProvider } from "./context/ReplyCreateModalContext";
+import { CommentEditModalContextProvider } from "./context/CommentEditModalContext";
 const EmailVerify = lazy(() => import("./pages/EmailVerify"));
 const Layout = lazy(() => import("./containers/Layout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -26,7 +27,9 @@ const router = createBrowserRouter([
 				path: "/tweet/:id",
 				element: (
 					<ReplyCreateModalContextProvider>
-						<TweetDetails />
+						<CommentEditModalContextProvider>
+							<TweetDetails />
+						</CommentEditModalContextProvider>
 					</ReplyCreateModalContextProvider>
 				),
 			},

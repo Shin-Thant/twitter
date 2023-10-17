@@ -1,11 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
 import {
-	useGetCommentByIdQuery,
-	useReplyCommentMutation,
+	selectCommentFromGetComments,
+	useUpdateCommentMutation,
 } from "../../features/comment/commentApiSlice";
-import { useReplyCreateModal } from "../../hooks/useReplyCreateModal";
+import useCommentEditModal from "../../hooks/useCommentEditModal";
 import { showToast } from "../../lib/handleToast";
 import {
 	CommentCreateInput,
@@ -14,19 +16,13 @@ import {
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
-import ModalHeaderSkeleton from "../skeletons/ModalHeaderSkeleton";
+import { useEffect } from "react";
 
-const ReplyCreateModal = () => {
-	const {
-		isOpen,
-		closeModal,
-		tweetId,
-		commentId: originId,
-	} = useReplyCreateModal();
-	const [replyComment, { isLoading }] = useReplyCommentMutation();
-	const { data, isFetching } = useGetCommentByIdQuery(
-		{ commentId: originId, tweetId },
-		{ skip: !isOpen || !originId || !tweetId }
+const CommentEditModal = () => {
+	const { isOpen, closeModal, tweetId, commentId } = useCommentEditModal();
+	const [replyComment, { isLoading }] = useUpdateCommentMutation();
+	const selectedComment = useAppSelector((state: RootState) =>
+		selectCommentFromGetComments(state, tweetId, commentId)
 	);
 
 	const {
@@ -35,6 +31,7 @@ const ReplyCreateModal = () => {
 		control,
 		watch,
 		reset,
+		setValue,
 	} = useForm<CommentCreateInput>({
 		resolver: zodResolver(CommentCreateSchema),
 		defaultValues: {
@@ -44,6 +41,17 @@ const ReplyCreateModal = () => {
 	});
 	const content = watch("content");
 
+	useEffect(() => {
+		let isMounted = true;
+		if (isMounted && !!selectedComment) {
+			setValue("content", selectedComment.body);
+		}
+
+		return () => {
+			isMounted = false;
+		};
+	}, [selectedComment, setValue]);
+
 	const onSubmit: SubmitHandler<CommentCreateInput> = async (data) => {
 		if (isLoading) {
 			return;
@@ -52,7 +60,7 @@ const ReplyCreateModal = () => {
 			await replyComment({
 				tweetId,
 				body: data.content,
-				commentId: originId,
+				commentId,
 			});
 			showToast({
 				message: "Successfully commented!",
@@ -72,34 +80,7 @@ const ReplyCreateModal = () => {
 	};
 
 	return (
-		<Modal
-			title={
-				isFetching ? (
-					<Stack direction="row" alignItems={"center"} spacing={1}>
-						<ModalHeaderSkeleton
-							width={90}
-							sx={{ borderRadius: "2px" }}
-						/>
-						<ModalHeaderSkeleton
-							width={40}
-							sx={{ borderRadius: "2px" }}
-						/>
-					</Stack>
-				) : (
-					<>
-						Reply to{" "}
-						<Typography
-							color={"primary"}
-							sx={{ fontSize: "inherit", display: "inline" }}
-						>
-							@{data?.owner.username}
-						</Typography>
-					</>
-				)
-			}
-			isOpen={isOpen}
-			onClose={onClose}
-		>
+		<Modal title={"Edit Comment"} isOpen={isOpen} onClose={onClose}>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Controller
 					render={({ field, formState: { errors } }) => (
@@ -107,7 +88,7 @@ const ReplyCreateModal = () => {
 							field={field}
 							contentLength={content.length}
 							errorMessage={errors.content?.message}
-							placeholder="Reply..."
+							placeholder="your comment"
 							required={true}
 						/>
 					)}
@@ -134,7 +115,7 @@ const ReplyCreateModal = () => {
 
 					<ModalActionButton
 						type="submit"
-						isLoading={isSubmitting || isFetching}
+						isLoading={isSubmitting}
 						disabled={!isValid}
 					>
 						{isSubmitting ? "Loading..." : "Reply"}
@@ -145,4 +126,4 @@ const ReplyCreateModal = () => {
 	);
 };
 
-export default ReplyCreateModal;
+export default CommentEditModal;

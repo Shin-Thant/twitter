@@ -9,14 +9,16 @@ import {
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
-import { selectTweetById } from "../../features/tweet/tweetApiSlice";
+import { selectTweetFromGetComments } from "../../features/tweet/tweetApiSlice";
 import { useAppSelector } from "../../app/hooks";
 import { useAddCommentMutation } from "../../features/comment/commentApiSlice";
 import { showToast } from "../../lib/handleToast";
 
 const CommentCreateModal = () => {
 	const { isOpen, closeModal, id: tweetId } = useCommentCreateModal();
-	const tweet = useAppSelector((state) => selectTweetById(state, tweetId));
+	const tweet = useAppSelector((state) =>
+		selectTweetFromGetComments(state, tweetId)
+	);
 	const [addComment, { isLoading }] = useAddCommentMutation();
 
 	const {

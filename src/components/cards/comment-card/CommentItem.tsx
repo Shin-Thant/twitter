@@ -22,6 +22,7 @@ const CommentItem = ({ comment }: Props) => {
 			}}
 		>
 			<CommentHeader
+				tweetId={comment.tweet._id}
 				commentId={comment._id}
 				owner={comment.owner}
 				createdAt={comment.createdAt}

@@ -5,7 +5,7 @@ import { Button, Collapse, Divider, SxProps, Theme } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import {
-	selectTweetById,
+	selectTweetFromGetComments,
 	useHandleDeleteTweetMutation,
 	useHandleShareMutation,
 } from "../../features/tweet/tweetApiSlice";
@@ -50,7 +50,7 @@ export default function TweetShareModal() {
 	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
 
 	const foundTweet = useAppSelector((state) =>
-		selectTweetById(state, tweetId)
+		selectTweetFromGetComments(state, tweetId)
 	);
 	const isSharedWithoutBody: boolean = foundTweet
 		? !!foundTweet?.shares.find((share) => !share.body)

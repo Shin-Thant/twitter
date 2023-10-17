@@ -8,13 +8,20 @@ import CommentOptionsMenu from "./CommentOptionsMenu";
 import CommentSubTitle from "./CommentSubTitle";
 
 type Props = {
+	tweetId: string;
 	commentId: string;
 	owner: UserWithoutEmail;
 	createdAt: string;
 	replyTo: string;
 };
 
-function CommentHeader({ commentId, owner, createdAt, replyTo }: Props) {
+function CommentHeader({
+	tweetId,
+	commentId,
+	owner,
+	createdAt,
+	replyTo,
+}: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isCommentOwner = loginUserId === owner._id;
 
@@ -37,7 +44,10 @@ function CommentHeader({ commentId, owner, createdAt, replyTo }: Props) {
 			subheader={<CommentSubTitle replyTo={replyTo} />}
 			action={
 				isCommentOwner ? (
-					<CommentOptionsMenu commentId={commentId} />
+					<CommentOptionsMenu
+						tweetId={tweetId}
+						commentId={commentId}
+					/>
 				) : null
 			}
 		/>
