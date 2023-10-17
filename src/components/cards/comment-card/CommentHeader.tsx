@@ -1,11 +1,11 @@
 import { CardHeader } from "@mui/material";
 import { useAppSelector } from "../../../app/hooks";
-import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
+import TweetSubTitle from "../tweet-card/header/TweetSubTitle";
+import TweetTitle from "../tweet-card/header/TweetTitle";
+import TweetOptionsMenu from "../tweet-card/menus/TweetOptionsMenu";
+import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 import CardAvatar from "../components/CardAvatar";
-import TweetSubTitle from "./header/TweetSubTitle";
-import TweetTitle from "./header/TweetTitle";
-import TweetOptionsMenu from "./menus/TweetOptionsMenu";
 
 type Props = {
 	tweetId: string;

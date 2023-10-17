@@ -1,6 +1,5 @@
 import { Avatar } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
-import { MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
 
 type Props = {
@@ -8,22 +7,10 @@ type Props = {
 	name: string;
 	sx?: SxProps<Theme>;
 };
-const TweetAvatar = ({ avatar, name, sx }: Props) => {
-	const stopMouseDownPropagation: MouseEventHandler<HTMLAnchorElement> = (
-		e
-	) => {
-		e.stopPropagation();
-		e.preventDefault();
-		// navigate to user
-	};
-
+const CardAvatar = ({ avatar, name, sx }: Props) => {
 	return (
 		<>
-			<Link
-				to="/"
-				onMouseDown={stopMouseDownPropagation}
-				className="router_link"
-			>
+			<Link to={"/"} className="router_link">
 				{!avatar ? (
 					<Avatar sx={{ ...sx }}>{name[0]}</Avatar>
 				) : (
@@ -42,4 +29,4 @@ const TweetAvatar = ({ avatar, name, sx }: Props) => {
 	);
 };
 
-export default TweetAvatar;
+export default CardAvatar;
