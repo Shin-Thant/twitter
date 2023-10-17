@@ -31,7 +31,7 @@ export type DefaultCommentWithPopulatedUser = DefaultComment & {
 };
 
 export interface GetCommentsResultComment extends CommonComment {
-	origin: DefaultCommentWithPopulatedUser;
+	origin?: DefaultCommentWithPopulatedUser;
 	owner: UserWithoutEmail;
 	tweet: GetCommentsResultTweet;
 	comments: DefaultCommentWithPopulatedUser[];

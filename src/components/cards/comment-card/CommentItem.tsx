@@ -1,15 +1,7 @@
-import {
-	Card,
-	CardActions,
-	CardContent,
-	CardHeader,
-	Typography,
-} from "@mui/material";
+import { Card, CardActions, CardContent, Typography } from "@mui/material";
 import { GetCommentsResultComment } from "../../../features/comment/commentTypes";
-import TweetAvatar from "../tweet-card/header/TweetAvatar";
-import TweetTitle from "../tweet-card/header/TweetTitle";
+import CommentHeader from "./CommentHeader";
 import CommentLikeButton from "./CommentLikeButton";
-import CommentSubTitle from "./CommentSubTitle";
 import ReplyButton from "./ReplyButton";
 
 type Props = {
@@ -29,34 +21,14 @@ const CommentItem = ({ comment }: Props) => {
 				borderRadius: { xs: "0", sm: "10px" },
 			}}
 		>
-			<CardHeader
-				avatar={
-					<TweetAvatar
-						avatar={comment.owner.avatar}
-						name={comment.owner.name}
-						sx={{
-							bgcolor: "hsl(330, 100%, 50%)",
-							width: { xs: 30, ss: 35 },
-							height: { xs: 30, ss: 35 },
-							objectFit: "cover",
-							fontSize: "1rem",
-						}}
-					/>
-				}
-				title={
-					<TweetTitle
-						owner={comment.owner}
-						createdAt={comment.createdAt}
-					/>
-				}
-				subheader={
-					<CommentSubTitle
-						replyTo={
-							!comment.origin
-								? comment.tweet.owner.username
-								: comment.origin.owner.username
-						}
-					/>
+			<CommentHeader
+				commentId={comment._id}
+				owner={comment.owner}
+				createdAt={comment.createdAt}
+				replyTo={
+					!comment.origin
+						? comment.tweet.owner.username
+						: comment.origin.owner.username
 				}
 			/>
 			<CardContent>

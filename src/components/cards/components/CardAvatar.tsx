@@ -7,6 +7,7 @@ type Props = {
 	name: string;
 	sx?: SxProps<Theme>;
 };
+
 const CardAvatar = ({ avatar, name, sx }: Props) => {
 	return (
 		<>

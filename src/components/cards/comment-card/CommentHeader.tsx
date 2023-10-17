@@ -1,21 +1,22 @@
 import { CardHeader } from "@mui/material";
 import { useAppSelector } from "../../../app/hooks";
-import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
+import { UserWithoutEmail } from "../../../features/user/userTypes";
 import CardAvatar from "../components/CardAvatar";
 import CardTitle from "../components/CardTitle";
-import TweetOptionsMenu from "../tweet-card/menus/TweetOptionsMenu";
+import CommentOptionsMenu from "./CommentOptionsMenu";
 import CommentSubTitle from "./CommentSubTitle";
 
 type Props = {
-	tweetId: string;
-	owner: GetTweetsUser;
+	commentId: string;
+	owner: UserWithoutEmail;
 	createdAt: string;
+	replyTo: string;
 };
 
-export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
+function CommentHeader({ commentId, owner, createdAt, replyTo }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
-	const isTweetOwner = owner._id === loginUserId;
+	const isCommentOwner = loginUserId === owner._id;
 
 	return (
 		<CardHeader
@@ -33,11 +34,14 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 				/>
 			}
 			title={<CardTitle owner={owner} createdAt={createdAt} />}
-			subheader={<CommentSubTitle replyTo={owner.username} />}
+			subheader={<CommentSubTitle replyTo={replyTo} />}
 			action={
-				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : false
+				isCommentOwner ? (
+					<CommentOptionsMenu commentId={commentId} />
+				) : null
 			}
-			sx={{ pb: 1 }}
 		/>
 	);
 }
+
+export default CommentHeader;

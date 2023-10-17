@@ -1,7 +1,7 @@
 import { CardHeader } from "@mui/material";
 import { useAppSelector } from "../../../app/hooks";
-import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
+import { UserWithoutEmail } from "../../../features/user/userTypes";
 import CardAvatar from "../components/CardAvatar";
 import CardTitle from "../components/CardTitle";
 import TweetSubTitle from "./header/TweetSubTitle";
@@ -9,7 +9,7 @@ import TweetOptionsMenu from "./menus/TweetOptionsMenu";
 
 type Props = {
 	tweetId: string;
-	owner: GetTweetsUser;
+	owner: UserWithoutEmail;
 	createdAt: string;
 };
 
@@ -35,7 +35,7 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 			title={<CardTitle owner={owner} createdAt={createdAt} />}
 			subheader={<TweetSubTitle username={owner.username} />}
 			action={
-				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : false
+				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : null
 			}
 			sx={{ pb: 1 }}
 		/>

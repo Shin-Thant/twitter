@@ -11,9 +11,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { GetTweetsResultOrigin } from "../../../features/tweet/tweetTypes";
 import { createLocationState } from "../../../util/createLocatioState";
 import TweetImageList from "../../lists/TweetImageList";
-import TweetAvatar from "./header/TweetAvatar";
 import TweetSubTitle from "./header/TweetSubTitle";
-import TweetTitle from "./header/TweetTitle";
+import CardAvatar from "../components/CardAvatar";
+import CardTitle from "../components/CardTitle";
 
 // TODO: use the created tweet header component instead of card header
 
@@ -62,7 +62,7 @@ const NestedTweet = ({ origin }: Props) => {
 			>
 				<CardHeader
 					avatar={
-						<TweetAvatar
+						<CardAvatar
 							avatar={origin.owner.avatar}
 							name={origin.owner.name}
 							sx={{
@@ -75,7 +75,7 @@ const NestedTweet = ({ origin }: Props) => {
 						/>
 					}
 					title={
-						<TweetTitle
+						<CardTitle
 							owner={origin.owner}
 							createdAt={origin.createdAt}
 						/>
