@@ -3,8 +3,8 @@ import { useAppSelector } from "../../../app/hooks";
 import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 import { userIdSelector } from "../../../features/user/userSlice";
 import CardAvatar from "../components/CardAvatar";
+import CardTitle from "../components/CardTitle";
 import TweetSubTitle from "./header/TweetSubTitle";
-import TweetTitle from "./header/TweetTitle";
 import TweetOptionsMenu from "./menus/TweetOptionsMenu";
 
 type Props = {
@@ -32,7 +32,7 @@ export default function TweetHeader({ tweetId, owner, createdAt }: Props) {
 					}}
 				/>
 			}
-			title={<TweetTitle owner={owner} createdAt={createdAt} />}
+			title={<CardTitle owner={owner} createdAt={createdAt} />}
 			subheader={<TweetSubTitle username={owner.username} />}
 			action={
 				isTweetOwner ? <TweetOptionsMenu tweetId={tweetId} /> : false

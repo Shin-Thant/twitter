@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { GetTweetsUser } from "../../../../features/tweet/tweetTypes";
+import { GetTweetsUser } from "../../../features/tweet/tweetTypes";
 
 function getRelativeTime({ date }: { date: string }) {
 	return moment(date).fromNow();
@@ -11,7 +11,7 @@ type Props = {
 	owner: GetTweetsUser;
 	createdAt: string;
 };
-const TweetTitle = ({ owner, createdAt }: Props) => {
+const CardTitle = ({ owner, createdAt }: Props) => {
 	return (
 		<Box
 			sx={{
@@ -52,4 +52,4 @@ const TweetTitle = ({ owner, createdAt }: Props) => {
 	);
 };
 
-export default TweetTitle;
+export default CardTitle;
