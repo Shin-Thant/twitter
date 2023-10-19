@@ -129,7 +129,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		handleShare: builder.mutation<DefaultTweet, ShareMutationArg>({
+		shareTweet: builder.mutation<DefaultTweet, ShareMutationArg>({
 			query: ({ tweetId, body }) => ({
 				url: `/tweets/${tweetId}/share`,
 				method: "POST",
@@ -141,10 +141,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
-		handleDeleteTweet: builder.mutation<
-			{ message: string },
-			DeleteMutationArg
-		>({
+		deleteTweet: builder.mutation<{ message: string }, DeleteMutationArg>({
 			query: ({ tweetId }) => ({
 				url: `/tweets/${tweetId}`,
 				method: "DELETE",
@@ -232,7 +229,7 @@ const getTweetsResultSelector = createSelector(
 		currentPage: state.currentPage.tweet.currentPage,
 		state,
 	}),
-	({ currentPage, state }: { currentPage: number; state: RootState }) => {
+	({ currentPage, state }) => {
 		return tweetApiSlice.endpoints.getTweets.select({
 			itemsPerPage: 10,
 			currentPage,
@@ -243,11 +240,12 @@ const getTweetsResultSelector = createSelector(
 const getTweetsDataSelector = createSelector(
 	(state: RootState) => getTweetsResultSelector(state),
 	(getTweetsResult) => {
+		if (!getTweetsResult.data) return null;
 		return getTweetsResult.data;
 	}
 );
 
-export const selectTweetFromGetComments = createSelector(
+export const selectTweetFromGetTweets = createSelector(
 	[getTweetsDataSelector, (_: RootState, id: string) => id],
 	(data, id) => {
 		if (!id) {
@@ -263,8 +261,8 @@ export const {
 	useCreateTweetMutation,
 	useEditTweetMutation,
 	useHandleLikesMutation,
-	useHandleShareMutation,
-	useHandleDeleteTweetMutation,
+	useShareTweetMutation,
+	useDeleteTweetMutation,
 } = tweetApiSlice;
 
 export default tweetApiSlice;

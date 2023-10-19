@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useAppSelector } from "../../app/hooks";
 import {
-	selectTweetFromGetComments,
+	selectTweetFromGetTweets,
 	useEditTweetMutation,
 } from "../../features/tweet/tweetApiSlice";
 import useImageInputHandler from "../../hooks/useImageInputHandler";
@@ -30,7 +30,7 @@ const TweetEditModal = () => {
 	const { id: tweetId, isOpen, closeModal } = useTweetEditModal();
 	const [editTweet, { isLoading }] = useEditTweetMutation();
 	const tweet = useAppSelector((state) =>
-		selectTweetFromGetComments(state, tweetId)
+		selectTweetFromGetTweets(state, tweetId)
 	);
 
 	const {

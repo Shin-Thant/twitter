@@ -5,19 +5,20 @@ import { Button, Collapse, Divider, SxProps, Theme } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import {
-	selectTweetFromGetComments,
-	useHandleDeleteTweetMutation,
-	useHandleShareMutation,
+	selectTweetFromGetTweets,
+	useDeleteTweetMutation,
+	useShareTweetMutation,
 } from "../../features/tweet/tweetApiSlice";
-import { NestedTweetPreview } from "../../features/tweet/tweetTypes";
+import { useTweetShareModal } from "../../hooks/useTweetShareModal";
+import { showToast } from "../../lib/handleToast";
 import {
 	BaseQueryResponseError,
 	isBaseQueryResponseError,
 } from "../../util/errorHelpers";
-import { useTweetShareModal } from "../../hooks/useTweetShareModal";
-import { showToast } from "../../lib/handleToast";
 import TweetShareForm from "../forms/TweetShareForm";
 import Modal from "./Modal";
+
+// TODO: refactor error handlings
 
 function checkResponseError(
 	response: object | undefined
@@ -28,8 +29,6 @@ function checkResponseError(
 		isBaseQueryResponseError(response.error)
 	);
 }
-
-// TODO: refactor
 
 function handleToast({ variant }: { variant: "success" | "error" }) {
 	showToast({
@@ -50,19 +49,18 @@ export default function TweetShareModal() {
 	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
 
 	const foundTweet = useAppSelector((state) =>
-		selectTweetFromGetComments(state, tweetId)
+		!tweetId ? null : selectTweetFromGetTweets(state, tweetId)
 	);
 	const isSharedWithoutBody: boolean = foundTweet
 		? !!foundTweet?.shares.find((share) => !share.body)
 		: false;
 
-	const [handleShare, { isLoading }] = useHandleShareMutation();
-	const [handleDelete, { isLoading: isDeleting }] =
-		useHandleDeleteTweetMutation();
+	const [shareTweet, { isLoading: isSharing }] = useShareTweetMutation();
+	const [deleteTweet, { isLoading: isDeleting }] = useDeleteTweetMutation();
 
 	const retweet = async () => {
 		try {
-			const response = await onShare();
+			const response = await handleShare();
 
 			if (checkResponseError(response)) {
 				handleToast({ variant: "error" });
@@ -80,7 +78,7 @@ export default function TweetShareModal() {
 
 	const quoteTweet = async (body?: string) => {
 		try {
-			const response = await onShare(body);
+			const response = await handleShare(body);
 
 			if (checkResponseError(response)) {
 				showToast({
@@ -99,6 +97,15 @@ export default function TweetShareModal() {
 		}
 	};
 
+	const handleShare = async (body?: string) => {
+		if (isSharing) {
+			return;
+		}
+		const requestBody = body ? { tweetId, body } : { tweetId };
+		const res = await shareTweet(requestBody);
+		return res;
+	};
+
 	const undoRetweet = async () => {
 		try {
 			await onDelete();
@@ -110,25 +117,16 @@ export default function TweetShareModal() {
 	};
 
 	const onDelete = async () => {
-		const sharedTweetWithoutBody: NestedTweetPreview | undefined =
-			foundTweet
-				? foundTweet?.shares.find((share) => !share.body)
-				: undefined;
+		const sharedTweetWithoutBody = foundTweet
+			? foundTweet?.shares.find((share) => !share.body)
+			: undefined;
 
 		if (isDeleting || !sharedTweetWithoutBody) {
 			return;
 		}
-		return await handleDelete({
+		return await deleteTweet({
 			tweetId: sharedTweetWithoutBody._id,
 		});
-	};
-
-	const onShare = async (body?: string) => {
-		if (isLoading) {
-			return;
-		}
-		const res = await handleShare({ tweetId, body: body ?? "" });
-		return res;
 	};
 
 	const onClose = () => {

@@ -1,6 +1,6 @@
 import ConfirmModal from "./ConfirmModal";
 import { useTweetDeleteModal } from "../../hooks/useTweetDeleteModal";
-import { useHandleDeleteTweetMutation } from "../../features/tweet/tweetApiSlice";
+import { useDeleteTweetMutation } from "../../features/tweet/tweetApiSlice";
 import { showToast } from "../../lib/handleToast";
 import {
 	isBaseQueryResponseError,
@@ -10,7 +10,7 @@ import { useRedirectOnActionComplete } from "../../hooks/useRedirectOnActionComp
 
 const TweetDeleteModal = () => {
 	const { isOpen, id: tweetId, closeModal } = useTweetDeleteModal();
-	const [deleteTweet, { isLoading }] = useHandleDeleteTweetMutation();
+	const [deleteTweet, { isLoading }] = useDeleteTweetMutation();
 	const { redirectOnActionComplete } = useRedirectOnActionComplete();
 
 	const handleDelete = async () => {
