@@ -41,12 +41,15 @@ function handleToast({ variant }: { variant: "success" | "error" }) {
 }
 
 export default function TweetShareModal() {
+	const [shareTweet, { isLoading: isSharing }] = useShareTweetMutation();
+	const [deleteTweet, { isLoading: isDeleting }] = useDeleteTweetMutation();
+
+	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
 	const {
 		id: tweetId,
 		isOpen: isModalOpen,
 		closeModal,
 	} = useTweetShareModal();
-	const [isQuoteTweet, setIsQuoteTweet] = useState(false);
 
 	const foundTweet = useAppSelector((state) =>
 		!tweetId ? null : selectTweetFromGetTweets(state, tweetId)
@@ -55,16 +58,13 @@ export default function TweetShareModal() {
 		? !!foundTweet?.shares.find((share) => !share.body)
 		: false;
 
-	const [shareTweet, { isLoading: isSharing }] = useShareTweetMutation();
-	const [deleteTweet, { isLoading: isDeleting }] = useDeleteTweetMutation();
-
 	const retweet = async () => {
 		try {
 			const response = await handleShare();
 
 			if (checkResponseError(response)) {
 				handleToast({ variant: "error" });
-				closeAndReset();
+				onClose();
 				return;
 			}
 
@@ -72,7 +72,7 @@ export default function TweetShareModal() {
 		} catch (err) {
 			handleToast({ variant: "error" });
 		} finally {
-			closeAndReset({ reset: false });
+			onClose();
 		}
 	};
 
@@ -85,7 +85,7 @@ export default function TweetShareModal() {
 					message: "Something went wrong!",
 					variant: "error",
 				});
-				closeAndReset();
+				onClose();
 				return;
 			}
 
@@ -93,7 +93,7 @@ export default function TweetShareModal() {
 		} catch (err) {
 			handleToast({ variant: "error" });
 		} finally {
-			closeAndReset();
+			onClose();
 		}
 	};
 
@@ -102,21 +102,20 @@ export default function TweetShareModal() {
 			return;
 		}
 		const requestBody = body ? { tweetId, body } : { tweetId };
-		const res = await shareTweet(requestBody);
-		return res;
+		return await shareTweet(requestBody);
 	};
 
 	const undoRetweet = async () => {
 		try {
-			await onDelete();
+			await handleDelete();
 		} catch (err) {
 			handleToast({ variant: "error" });
 		} finally {
-			closeAndReset({ reset: false });
+			onClose();
 		}
 	};
 
-	const onDelete = async () => {
+	const handleDelete = async () => {
 		const sharedTweetWithoutBody = foundTweet
 			? foundTweet?.shares.find((share) => !share.body)
 			: undefined;
@@ -130,16 +129,7 @@ export default function TweetShareModal() {
 	};
 
 	const onClose = () => {
-		// if (isLoading || isDeleting) {
-		// 	return;
-		// }
-		closeAndReset({ reset: true });
-	};
-
-	const closeAndReset = (option?: { reset: boolean }) => {
-		if (option?.reset) {
-			setIsQuoteTweet(false);
-		}
+		if (isQuoteTweet) setIsQuoteTweet(false);
 		closeModal();
 	};
 
