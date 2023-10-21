@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mui/material";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useAppSelector } from "../../app/hooks";
-import { RootState } from "../../app/store";
 import {
-	selectCommentFromGetComments,
+	useGetCommentByIdQuery,
 	useUpdateCommentMutation,
 } from "../../features/comment/commentApiSlice";
 import useCommentEditModal from "../../hooks/useCommentEditModal";
@@ -16,14 +15,16 @@ import {
 import ModalActionButton from "../buttons/ModalActionButton";
 import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
-import { useEffect } from "react";
 
 const CommentEditModal = () => {
 	const { isOpen, closeModal, tweetId, commentId } = useCommentEditModal();
-	const [replyComment, { isLoading }] = useUpdateCommentMutation();
-	const selectedComment = useAppSelector((state: RootState) =>
-		selectCommentFromGetComments(state, tweetId, commentId)
+
+	const { data, isFetching: isFetchingComment } = useGetCommentByIdQuery(
+		{ tweetId, commentId },
+		{ skip: !commentId && isOpen }
 	);
+
+	const [replyComment, { isLoading }] = useUpdateCommentMutation();
 
 	const {
 		handleSubmit,
@@ -43,14 +44,16 @@ const CommentEditModal = () => {
 
 	useEffect(() => {
 		let isMounted = true;
-		if (isMounted && !!selectedComment) {
-			setValue("content", selectedComment.body);
+		console.log(data);
+
+		if (isMounted && isOpen && !!data) {
+			setValue("content", data.body);
 		}
 
 		return () => {
 			isMounted = false;
 		};
-	}, [selectedComment, setValue]);
+	}, [isOpen, setValue, data]);
 
 	const onSubmit: SubmitHandler<CommentCreateInput> = async (data) => {
 		if (isLoading) {
@@ -115,7 +118,7 @@ const CommentEditModal = () => {
 
 					<ModalActionButton
 						type="submit"
-						isLoading={isSubmitting}
+						isLoading={isSubmitting || isFetchingComment}
 						disabled={!isValid}
 					>
 						{isSubmitting ? "Loading..." : "Reply"}
