@@ -28,6 +28,7 @@ export interface GetTweetsResultTweet extends CommonTweet {
 	comments: GetTweetsResultComment[];
 }
 export type GetTweetsResultComment = DefaultComment & {
+	type: "comment";
 	owner: GetTweetsUser;
 };
 export interface GetTweetsResultShare
@@ -47,7 +48,10 @@ export interface GetTweetByIdResultTweet extends CommonTweet {
 	shares: GetTweetByIdResultShares[];
 }
 export type GetTweetByIdResultShares = GetTweetsResultShare;
-type GetTweetByIdResultComment = DefaultComment & { owner: UserWithoutEmail };
+type GetTweetByIdResultComment = DefaultComment & {
+	type: "comment";
+	owner: UserWithoutEmail;
+};
 
 export interface Pagination {
 	totalPages: number;
