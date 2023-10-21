@@ -5,6 +5,7 @@ import {
 	DefaultCommentWithPopulatedUser,
 	DefaultReply,
 	GetCommentsResultComment,
+	GetCommentsResultReply,
 } from "./commentTypes";
 import { RootState } from "../../app/store";
 
@@ -35,6 +36,25 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			},
 		}),
 
+		getCommentReplies: builder.query<
+			GetCommentsResultReply[],
+			{ commentId: string }
+		>({
+			query: ({ commentId }) => `/comments/${commentId}/replies`,
+			providesTags: (result, error, { commentId }) => {
+				if (error || !result) {
+					return [{ type: "Replies", id: `/${commentId}/LIST` }];
+				}
+				return [
+					...result.map((reply) => ({
+						type: "Replies" as const,
+						id: `/${commentId}/${reply._id}`,
+					})),
+					{ type: "Replies", id: `/${commentId}/LIST` },
+				];
+			},
+		}),
+
 		getCommentById: builder.query<
 			DefaultCommentWithPopulatedUser,
 			GetCommentByIdArg
@@ -53,10 +73,22 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			invalidatesTags: (_res, _err, { tweetId }) => [
-				{ type: "Comments", id: `/${tweetId}/LIST` },
-				{ type: "Tweets", id: tweetId },
-			],
+			invalidatesTags: (result, _err, { tweetId }) => {
+				const tags = [
+					{ type: "Comments", id: `/${tweetId}/LIST` } as const,
+					{ type: "Tweets", id: tweetId } as const,
+				];
+				if (result) {
+					return [
+						...tags,
+						{
+							type: "Replies" as const,
+							id: `/${result._id}/LIST`,
+						},
+					];
+				}
+				return tags;
+			},
 		}),
 
 		likeComment: builder.mutation<DefaultComment, LikeCommentArg>({
@@ -90,7 +122,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 
 		replyComment: builder.mutation<DefaultReply, ReplyCommentArg>({
 			query: ({ commentId, body }) => ({
-				url: `/comments/${commentId}/reply`,
+				url: `/comments/${commentId}/replies`,
 				method: "POST",
 				body: {
 					body,
@@ -144,6 +176,8 @@ const getCommentsResultSelector = createSelector(
 		},
 	],
 	(state, res) => {
+		console.log({ res });
+
 		return res?.(state);
 	}
 );
@@ -170,6 +204,7 @@ export const selectCommentFromGetComments = createSelector(
 
 export const {
 	useGetCommentsQuery,
+	useGetCommentRepliesQuery,
 	useGetCommentByIdQuery,
 	useAddCommentMutation,
 	useLikeCommentMutation,

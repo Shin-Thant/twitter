@@ -2,6 +2,7 @@ import { CommonTweet, DefaultTweet } from "../tweet/tweetTypes";
 import { CommonUser, DefaultUser, UserWithoutEmail } from "../user/userTypes";
 
 export interface CommonComment {
+	type: "comment" | "reply";
 	_id: string;
 	body: string;
 	owner:
@@ -13,7 +14,7 @@ export interface CommonComment {
 	tweet: string | CommonTweet | DefaultTweet | GetCommentsResultTweet;
 	origin?: string | CommonComment;
 	likes: string[];
-	comments?: (string | CommonComment)[];
+	comments?: ({ _id: string } | CommonComment | GetCommentsResultReply)[];
 	createdAt: string;
 	updatedAt: string;
 }
@@ -31,12 +32,23 @@ export type DefaultCommentWithPopulatedUser = DefaultComment & {
 };
 
 export interface GetCommentsResultComment extends CommonComment {
+	type: "comment";
 	origin?: DefaultCommentWithPopulatedUser;
 	owner: UserWithoutEmail;
 	tweet: GetCommentsResultTweet;
-	comments: DefaultCommentWithPopulatedUser[];
+	comments: (GetCommentsResultReply | GetCommentsResultIntroReply)[];
 }
-export interface GetCommentsResultTweet
-	extends Pick<CommonTweet, "owner" | "_id"> {
+export type GetCommentsResultTweet = Pick<DefaultTweet, "owner" | "_id"> & {
 	owner: DefaultUser;
-}
+};
+
+export type GetCommentsResultReply = DefaultComment & {
+	type: "reply";
+	origin: DefaultComment & { owner: UserWithoutEmail };
+	owner: UserWithoutEmail;
+	comments?: (GetCommentsResultReply | GetCommentsResultIntroReply)[];
+};
+
+export type GetCommentsResultIntroReply = GetCommentsResultReply & {
+	comments?: { type: "reply"; _id: string; owner: UserWithoutEmail }[];
+};

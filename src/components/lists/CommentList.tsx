@@ -2,7 +2,10 @@ import { GetCommentsResultComment } from "../../features/comment/commentTypes";
 import CommentItem from "../cards/comment-card/CommentItem";
 
 type Props = {
-	comments: GetCommentsResultComment[];
+	comments: (
+		| GetCommentsResultComment
+		| GetCommentsResultComment["comments"][number]
+	)[];
 };
 
 const CommentList = ({ comments }: Props) => {
