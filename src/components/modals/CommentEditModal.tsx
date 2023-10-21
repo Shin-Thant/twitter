@@ -21,7 +21,7 @@ const CommentEditModal = () => {
 
 	const { data, isFetching: isFetchingComment } = useGetCommentByIdQuery(
 		{ tweetId, commentId },
-		{ skip: !commentId && isOpen }
+		{ skip: !commentId || !isOpen }
 	);
 
 	const [replyComment, { isLoading }] = useUpdateCommentMutation();
@@ -44,7 +44,6 @@ const CommentEditModal = () => {
 
 	useEffect(() => {
 		let isMounted = true;
-		console.log(data);
 
 		if (isMounted && isOpen && !!data) {
 			setValue("content", data.body);
@@ -121,7 +120,7 @@ const CommentEditModal = () => {
 						isLoading={isSubmitting || isFetchingComment}
 						disabled={!isValid}
 					>
-						{isSubmitting ? "Loading..." : "Reply"}
+						{isSubmitting ? "Loading..." : "Save"}
 					</ModalActionButton>
 				</Stack>
 			</form>
