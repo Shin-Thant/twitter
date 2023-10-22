@@ -15,6 +15,7 @@ import CommentHeader from "./CommentHeader";
 import CommentLikeButton from "./CommentLikeButton";
 import CommentOptionsMenu from "./CommentOptionsMenu";
 import ReplyButton from "./ReplyButton";
+import { useCommentThreadStore } from "../../../pages/tweet-detail-page/store/CommentThreadStore";
 
 type Props = {
 	getRepliesCacheKey?: string;
@@ -27,6 +28,12 @@ type Props = {
 const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
+
+	const setThreadId = useCommentThreadStore().setCommentId;
+
+	const changeThread = () => {
+		setThreadId(comment._id);
+	};
 
 	return (
 		<Card
@@ -97,7 +104,9 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 			</CardActions>
 
 			<Box px={2}>
-				{depth === 2 && <Button>go to another</Button>}
+				{depth === 2 && (
+					<Button onClick={changeThread}>go to another</Button>
+				)}
 
 				{comment.comments?.length &&
 					!("tweet" in comment.comments[0]) && (

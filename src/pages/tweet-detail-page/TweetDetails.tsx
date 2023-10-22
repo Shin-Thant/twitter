@@ -1,12 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import BackButton from "../../components/buttons/BackButton";
+import CommentEditModal from "../../components/modals/CommentEditModal";
 import ReplyCreateModal from "../../components/modals/ReplyCreateModal";
-import CommentsContainer from "../../containers/CommentsContainer";
 import Container from "../../containers/Container";
 import { useGetTweetByIdQuery } from "../../features/tweet/tweetApiSlice";
+import CommentsSection from "./CommentsSection";
 import DetailsSection from "./DetailsSection";
-import CommentEditModal from "../../components/modals/CommentEditModal";
 
 export default function TweetDetails() {
 	const { id: tweetId } = useParams();
@@ -45,9 +45,7 @@ export default function TweetDetails() {
 				) : (
 					<>
 						<DetailsSection data={data} />
-
-						{/* show comment */}
-						<CommentsContainer tweetId={tweetId} />
+						<CommentsSection tweetId={tweetId} />
 					</>
 				)}
 			</Container>

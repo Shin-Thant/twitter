@@ -26,7 +26,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			GetCommentsResultComment[],
 			{ tweetId: string }
 		>({
-			query: ({ tweetId }) => `/tweets/${tweetId ?? "none"}/comments`,
+			query: ({ tweetId }) => `/tweets/${tweetId}/comments`,
 			providesTags: (result, _error, { tweetId }) => {
 				if (!result) {
 					return [{ type: "Comments", id: `/${tweetId}/LIST` }];
