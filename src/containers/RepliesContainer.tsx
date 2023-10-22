@@ -26,7 +26,7 @@ const RepliesContainer = ({ commentId, show }: Props) => {
 			) : !data?.length ? (
 				"no data"
 			) : (
-				<ReplyList replies={data} />
+				<ReplyList getRepliesCacheKey={commentId} replies={data} />
 			)}
 		</Box>
 	);

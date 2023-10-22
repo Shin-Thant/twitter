@@ -7,20 +7,24 @@ import {
 	Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import RepliesContainer from "../../../containers/RepliesContainer";
 import { GetCommentsResultComment } from "../../../features/comment/commentTypes";
-import CommentList from "../../lists/CommentList";
+import ReplyList from "../../lists/ReplyList";
 import CommentHeader from "./CommentHeader";
 import CommentLikeButton from "./CommentLikeButton";
+import CommentOptionsMenu from "./CommentOptionsMenu";
 import ReplyButton from "./ReplyButton";
 
 type Props = {
+	getRepliesCacheKey?: string;
 	comment:
 		| GetCommentsResultComment
 		| GetCommentsResultComment["comments"][number];
 };
 
-const CommentItem = ({ comment }: Props) => {
+const CommentItem = ({ comment, getRepliesCacheKey }: Props) => {
+	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
 	return (
@@ -36,12 +40,6 @@ const CommentItem = ({ comment }: Props) => {
 			}}
 		>
 			<CommentHeader
-				tweetId={
-					comment.type === "comment"
-						? comment.tweet._id
-						: comment.tweet
-				}
-				commentId={comment._id}
 				owner={comment.owner}
 				createdAt={comment.createdAt}
 				replyTo={
@@ -49,8 +47,22 @@ const CommentItem = ({ comment }: Props) => {
 						? comment.tweet.owner.username
 						: comment.origin.owner.username
 				}
+				action={
+					<CommentOptionsMenu
+						originId={getRepliesCacheKey ?? comment.origin?._id}
+						tweetId={
+							!currentTweetId
+								? comment.type === "comment"
+									? comment.tweet._id
+									: comment.tweet
+								: currentTweetId
+						}
+						commentId={comment._id}
+					/>
+				}
 			/>
 			<CardContent>
+				{/* {comment._id} */}
 				<Typography
 					sx={{
 						fontSize: { xs: 15.5, sm: 16 },
@@ -94,9 +106,14 @@ const CommentItem = ({ comment }: Props) => {
 				{!comment.comments?.length ? (
 					"no replies"
 				) : "tweet" in comment.comments[0] ? (
-					<CommentList comments={comment.comments} />
-				) : (
+					<ReplyList
+						getRepliesCacheKey={getRepliesCacheKey}
+						replies={comment.comments}
+					/>
+				) : showMore ? (
 					<RepliesContainer commentId={comment._id} show={showMore} />
+				) : (
+					"not showing"
 				)}
 			</Box>
 		</Card>

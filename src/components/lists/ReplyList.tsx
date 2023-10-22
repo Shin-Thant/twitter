@@ -6,13 +6,18 @@ import CommentItem from "../cards/comment-card/CommentItem";
 
 type Props = {
 	replies: (GetCommentsResultReply | GetCommentsResultIntroReply)[];
+	getRepliesCacheKey?: string;
 };
 
-const ReplyList = ({ replies }: Props) => {
+const ReplyList = ({ replies, getRepliesCacheKey }: Props) => {
 	return (
 		<>
 			{replies.map((comment) => (
-				<CommentItem key={comment._id} comment={comment} />
+				<CommentItem
+					key={comment._id}
+					comment={comment}
+					getRepliesCacheKey={getRepliesCacheKey}
+				/>
 			))}
 		</>
 	);

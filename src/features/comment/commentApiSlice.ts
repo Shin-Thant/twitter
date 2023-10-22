@@ -13,7 +13,12 @@ type AddCommentArg = { tweetId: string; body: string };
 type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
 type ReplyCommentArg = { tweetId: string; commentId: string; body: string };
 type GetCommentByIdArg = { tweetId: string; commentId: string };
-type UpdateCommentArg = { tweetId: string; commentId: string; body: string };
+type UpdateCommentArg = {
+	tweetId: string;
+	commentId: string;
+	body: string;
+	originId?: string;
+};
 
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -21,7 +26,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			GetCommentsResultComment[],
 			{ tweetId: string }
 		>({
-			query: ({ tweetId }) => `/tweets/${tweetId}/comments`,
+			query: ({ tweetId }) => `/tweets/${tweetId ?? "none"}/comments`,
 			providesTags: (result, _error, { tweetId }) => {
 				if (!result) {
 					return [{ type: "Comments", id: `/${tweetId}/LIST` }];
@@ -141,26 +146,81 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-				const result = dispatch(
+			invalidatesTags: (_res, _err, { commentId, tweetId }) => {
+				return [{ type: "Comments", id: `/${tweetId}/${commentId}` }];
+			},
+			async onQueryStarted(
+				{ tweetId, commentId, body, originId },
+				{ dispatch, queryFulfilled }
+			) {
+				const getCommentsUpdateResult = dispatch(
 					commentApiSlice.util.updateQueryData(
 						"getComments",
-						{ tweetId: arg.tweetId },
+						{ tweetId },
 						(draft) => {
+							// find comment and update
 							const foundComment = draft.find(
-								(comment) => comment._id === arg.commentId
+								(comment) => comment._id === commentId
 							);
 							if (foundComment) {
-								foundComment.body = arg.body;
+								foundComment.body = body;
+								return;
 							}
+
+							// find nested comment and update
+							draft.forEach((comment) => {
+								const reply = comment.comments.find(
+									(reply) => reply._id === commentId
+								);
+								if (reply) {
+									reply.body = body;
+									return;
+								}
+							});
 						}
 					)
 				);
 
+				let getRepliesUpdateResult = undefined;
+				if (originId) {
+					getRepliesUpdateResult = dispatch(
+						commentApiSlice.util.updateQueryData(
+							"getCommentReplies",
+							{ commentId: originId },
+							(draft) => {
+								// find reply and update
+								const foundReply = draft.find(
+									(reply) => reply._id === commentId
+								);
+								if (foundReply) {
+									foundReply.body = body;
+									return;
+								}
+
+								console.log("updating nested reply", {
+									update: commentId,
+								});
+
+								// find nested comment and update
+								draft.forEach((reply) => {
+									const nestedReply = reply?.comments?.find(
+										(reply) => reply._id === commentId
+									);
+									if (nestedReply) {
+										nestedReply.body = body;
+										return;
+									}
+								});
+							}
+						)
+					);
+				}
+
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					result.undo();
+					getCommentsUpdateResult.undo();
+					getRepliesUpdateResult?.undo();
 				}
 			},
 		}),
