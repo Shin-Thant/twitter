@@ -18,12 +18,13 @@ import ReplyButton from "./ReplyButton";
 
 type Props = {
 	getRepliesCacheKey?: string;
+	depth: number;
 	comment:
 		| GetCommentsResultComment
 		| GetCommentsResultComment["comments"][number];
 };
 
-const CommentItem = ({ comment, getRepliesCacheKey }: Props) => {
+const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
@@ -33,10 +34,10 @@ const CommentItem = ({ comment, getRepliesCacheKey }: Props) => {
 			sx={{
 				bgcolor: "transparent",
 				mb: 2,
-				borderWidth: { xs: "0 0 1px 0", sm: "1px 1px 1px 1px" },
+				borderWidth: "1px 1px 1px 1px",
 				borderStyle: "solid",
 				borderColor: "tweet.borderColor",
-				borderRadius: { xs: "0", sm: "10px" },
+				borderRadius: "10px",
 			}}
 		>
 			<CommentHeader
@@ -62,7 +63,7 @@ const CommentItem = ({ comment, getRepliesCacheKey }: Props) => {
 				}
 			/>
 			<CardContent>
-				{/* {comment._id} */}
+				Depth: {depth}
 				<Typography
 					sx={{
 						fontSize: { xs: 15.5, sm: 16 },
@@ -96,6 +97,8 @@ const CommentItem = ({ comment, getRepliesCacheKey }: Props) => {
 			</CardActions>
 
 			<Box px={2}>
+				{depth === 2 && <Button>go to another</Button>}
+
 				{comment.comments?.length &&
 					!("tweet" in comment.comments[0]) && (
 						<Button onClick={() => setShowMore((prev) => !prev)}>
@@ -107,11 +110,16 @@ const CommentItem = ({ comment, getRepliesCacheKey }: Props) => {
 					"no replies"
 				) : "tweet" in comment.comments[0] ? (
 					<ReplyList
+						depth={depth + 1}
 						getRepliesCacheKey={getRepliesCacheKey}
 						replies={comment.comments}
 					/>
 				) : showMore ? (
-					<RepliesContainer commentId={comment._id} show={showMore} />
+					<RepliesContainer
+						depth={depth + 1}
+						commentId={comment._id}
+						show={showMore}
+					/>
 				) : (
 					"not showing"
 				)}

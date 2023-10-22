@@ -2,17 +2,22 @@ import { GetCommentsResultComment } from "../../features/comment/commentTypes";
 import CommentItem from "../cards/comment-card/CommentItem";
 
 type Props = {
+	depth: number;
 	comments: (
 		| GetCommentsResultComment
 		| GetCommentsResultComment["comments"][number]
 	)[];
 };
 
-const CommentList = ({ comments }: Props) => {
+const CommentList = ({ depth, comments }: Props) => {
 	return (
 		<>
 			{comments.map((comment) => (
-				<CommentItem key={comment._id} comment={comment} />
+				<CommentItem
+					depth={depth}
+					key={comment._id}
+					comment={comment}
+				/>
 			))}
 		</>
 	);

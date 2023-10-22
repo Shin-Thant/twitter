@@ -3,11 +3,12 @@ import ReplyList from "../components/lists/ReplyList";
 import { useGetCommentRepliesQuery } from "../features/comment/commentApiSlice";
 
 type Props = {
+	depth: number;
 	commentId: string;
 	show: boolean;
 };
 
-const RepliesContainer = ({ commentId, show }: Props) => {
+const RepliesContainer = ({ depth, commentId, show }: Props) => {
 	const { isFetching, data } = useGetCommentRepliesQuery(
 		{ commentId },
 		{
@@ -26,7 +27,11 @@ const RepliesContainer = ({ commentId, show }: Props) => {
 			) : !data?.length ? (
 				"no data"
 			) : (
-				<ReplyList getRepliesCacheKey={commentId} replies={data} />
+				<ReplyList
+					depth={depth}
+					getRepliesCacheKey={commentId}
+					replies={data}
+				/>
 			)}
 		</Box>
 	);

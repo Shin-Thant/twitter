@@ -10,6 +10,8 @@ type Props = {
 	tweetId: string;
 };
 
+const INITIAL_DEPTH = 0;
+
 const CommentsContainer = ({ tweetId }: Props) => {
 	const { isFetching, data } = useGetCommentsQuery(
 		{ tweetId },
@@ -26,7 +28,7 @@ const CommentsContainer = ({ tweetId }: Props) => {
 			) : !data ? (
 				"no data"
 			) : (
-				<CommentList comments={data} />
+				<CommentList depth={INITIAL_DEPTH} comments={data} />
 			)}
 		</Box>
 	);
