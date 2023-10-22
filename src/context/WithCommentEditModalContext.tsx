@@ -1,29 +1,35 @@
 import { Context, ReactNode, useCallback, useState } from "react";
-import { CommentModalContextState } from "./createCommentModalContext";
+import { CommentEditModalContextState } from "./CommentEditModalContext";
 
-export default function WithCommentModalContext(
-	Context: Context<CommentModalContextState>
+export default function WithCommentEditModalContext(
+	Context: Context<CommentEditModalContextState>
 ) {
-	function ComponentWithCommentModalContext({
+	function ComponentWithCommentEditModalContext({
 		children,
 	}: {
 		children: ReactNode;
 	}) {
 		const [commentId, setCommentId] = useState<string>("");
 		const [tweetId, setTweetId] = useState<string>("");
+		const [originId, setOriginId] = useState<string | undefined>(undefined);
 		const [isOpen, setIsOpen] = useState<boolean>(false);
 
 		const openModal = useCallback(
 			({
 				commentId,
 				tweetId,
+				originId,
 			}: {
 				commentId: string;
 				tweetId: string;
+				originId?: string;
 			}) => {
 				setIsOpen(true);
 				setCommentId(commentId);
 				setTweetId(tweetId);
+				if (originId) {
+					setOriginId(originId);
+				}
 			},
 			[]
 		);
@@ -32,15 +38,23 @@ export default function WithCommentModalContext(
 			setIsOpen(false);
 			setCommentId("");
 			setTweetId("");
+			setOriginId(undefined);
 		}, []);
 
 		return (
 			<Context.Provider
-				value={{ tweetId, commentId, isOpen, openModal, closeModal }}
+				value={{
+					originId,
+					tweetId,
+					commentId,
+					isOpen,
+					openModal,
+					closeModal,
+				}}
 			>
 				{children}
 			</Context.Provider>
 		);
 	}
-	return ComponentWithCommentModalContext;
+	return ComponentWithCommentEditModalContext;
 }

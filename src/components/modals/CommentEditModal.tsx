@@ -17,14 +17,17 @@ import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
 
 const CommentEditModal = () => {
-	const { isOpen, closeModal, tweetId, commentId } = useCommentEditModal();
+	const { isOpen, closeModal, tweetId, commentId, originId } =
+		useCommentEditModal();
 
-	const { data, isFetching: isFetchingComment } = useGetCommentByIdQuery(
-		{ tweetId, commentId },
-		{ skip: !commentId || !isOpen }
-	);
+	const { data: foundComment, isFetching: isFetchingComment } =
+		useGetCommentByIdQuery(
+			{ tweetId, commentId },
+			{ skip: !commentId || !isOpen }
+		);
 
-	const [replyComment, { isLoading }] = useUpdateCommentMutation();
+	const [updateComment, { isLoading: isUpdatingComment }] =
+		useUpdateCommentMutation();
 
 	const {
 		handleSubmit,
@@ -45,30 +48,31 @@ const CommentEditModal = () => {
 	useEffect(() => {
 		let isMounted = true;
 
-		if (isMounted && isOpen && !!data) {
-			setValue("content", data.body);
+		if (isMounted && isOpen && !!foundComment) {
+			setValue("content", foundComment.body);
 		}
 
 		return () => {
 			isMounted = false;
 		};
-	}, [isOpen, setValue, data]);
+	}, [isOpen, setValue, foundComment]);
 
 	const onSubmit: SubmitHandler<CommentCreateInput> = async (data) => {
-		if (isLoading) {
+		if (isUpdatingComment || !foundComment) {
 			return;
 		}
 		try {
-			await replyComment({
+			await updateComment({
 				tweetId,
 				body: data.content,
 				commentId,
+				originId,
 			});
+
 			showToast({
 				message: "Successfully commented!",
 				variant: "success",
 			});
-			reset();
 		} catch (err) {
 			showToast({ message: "Something went wrong", variant: "error" });
 		} finally {

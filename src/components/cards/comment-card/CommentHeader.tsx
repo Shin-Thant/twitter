@@ -1,27 +1,20 @@
 import { CardHeader } from "@mui/material";
+import { ReactElement } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import { userIdSelector } from "../../../features/user/userSlice";
 import { UserWithoutEmail } from "../../../features/user/userTypes";
 import CardAvatar from "../components/CardAvatar";
 import CardTitle from "../components/CardTitle";
-import CommentOptionsMenu from "./CommentOptionsMenu";
 import CommentSubTitle from "./CommentSubTitle";
 
 type Props = {
-	tweetId: string;
-	commentId: string;
 	owner: UserWithoutEmail;
 	createdAt: string;
 	replyTo: string;
+	action: ReactElement;
 };
 
-function CommentHeader({
-	tweetId,
-	commentId,
-	owner,
-	createdAt,
-	replyTo,
-}: Props) {
+function CommentHeader({ action, owner, createdAt, replyTo }: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isCommentOwner = loginUserId === owner._id;
 
@@ -42,14 +35,7 @@ function CommentHeader({
 			}
 			title={<CardTitle owner={owner} createdAt={createdAt} />}
 			subheader={<CommentSubTitle replyTo={replyTo} />}
-			action={
-				isCommentOwner ? (
-					<CommentOptionsMenu
-						tweetId={tweetId}
-						commentId={commentId}
-					/>
-				) : null
-			}
+			action={isCommentOwner ? action : null}
 		/>
 	);
 }
