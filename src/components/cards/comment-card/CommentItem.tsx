@@ -17,6 +17,8 @@ import CommentOptionsMenu from "./CommentOptionsMenu";
 import ReplyButton from "./ReplyButton";
 import { useCommentThreadStore } from "../../../pages/tweet-detail-page/store/CommentThreadStore";
 
+const MAX_DEPTH = 2 as const;
+
 type Props = {
 	getRepliesCacheKey?: string;
 	depth: number;
@@ -106,33 +108,78 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 			</CardActions>
 
 			<Box px={2}>
-				{depth === 2 && (
-					<Button onClick={changeThread}>go to another</Button>
-				)}
+				{!!comment.comments?.length && (
+					<>
+						{depth >= MAX_DEPTH && (
+							<Button
+								sx={{
+									textTransform: "none",
+									mb: 2,
+									display:
+										depth >= MAX_DEPTH
+											? "inline-flex"
+											: "none",
+									// display: {
+									// 	xs: "inline-flex",
+									// 	md: "none",
+									// },
+								}}
+								onClick={changeThread}
+							>
+								go another
+							</Button>
+						)}
+						<Box
+							sx={{
+								display: depth >= MAX_DEPTH ? "none" : "block",
+								// display:
+								// 	depth >= MAX_DEPTH
+								// 		? { xs: "none", md: "block" }
+								// 		: "block",
+							}}
+						>
+							{"comments" in comment.comments[0] ? (
+								<ReplyList
+									depth={depth + 1}
+									getRepliesCacheKey={getRepliesCacheKey}
+									replies={comment.comments}
+								/>
+							) : (
+								<>
+									<Button
+										sx={{
+											textTransform: "none",
+											mb: 2,
+											display:
+												depth >= MAX_DEPTH
+													? "none"
+													: "inline-flex",
+											// display:
+											// 	depth >= MAX_DEPTH
+											// 		? {
+											// 				xs: "none",
+											// 				md: "inline-flex",
+											// 		  }
+											// 		: "inline-flex",
+										}}
+										onClick={() =>
+											setShowMore((prev) => !prev)
+										}
+									>
+										show {showMore ? "less" : "more"}
+									</Button>
 
-				{comment.comments?.length &&
-					!("tweet" in comment.comments[0]) && (
-						<Button onClick={() => setShowMore((prev) => !prev)}>
-							show more
-						</Button>
-					)}
-
-				{!comment.comments?.length ? (
-					"no replies"
-				) : "tweet" in comment.comments[0] ? (
-					<ReplyList
-						depth={depth + 1}
-						getRepliesCacheKey={getRepliesCacheKey}
-						replies={comment.comments}
-					/>
-				) : showMore ? (
-					<RepliesContainer
-						depth={depth + 1}
-						commentId={comment._id}
-						show={showMore}
-					/>
-				) : (
-					"not showing"
+									{showMore && (
+										<RepliesContainer
+											depth={depth + 1}
+											commentId={comment._id}
+											show={showMore}
+										/>
+									)}
+								</>
+							)}
+						</Box>
+					</>
 				)}
 			</Box>
 		</Card>
