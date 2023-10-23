@@ -11,9 +11,15 @@ type Props = {
 	commentId: string;
 	tweetId: string;
 	likes: string[];
+	getRepliesCacheKey?: string;
 };
 
-const CommentLikeButton = ({ tweetId, commentId, likes }: Props) => {
+const CommentLikeButton = ({
+	tweetId,
+	commentId,
+	likes,
+	getRepliesCacheKey,
+}: Props) => {
 	const [handleLike, { isLoading }] = useLikeCommentMutation();
 
 	const loginUserId = useAppSelector(userIdSelector);
@@ -47,6 +53,7 @@ const CommentLikeButton = ({ tweetId, commentId, likes }: Props) => {
 				commentId,
 				tweetId: tweetId ?? "",
 				likes: updatedLikes,
+				getRepliesCacheKey,
 			});
 		} catch (err) {
 			if (import.meta.env.VITE_ENV !== "production") {

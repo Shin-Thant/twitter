@@ -44,8 +44,9 @@ export type GetCommentsResultTweet = Pick<DefaultTweet, "owner" | "_id"> & {
 
 export type GetCommentsResultReply = DefaultComment & {
 	type: "reply";
-	origin: DefaultComment & { owner: UserWithoutEmail };
+	origin: DefaultCommentWithPopulatedUser;
 	owner: UserWithoutEmail;
+	tweet: GetCommentsResultTweet;
 	comments?: (GetCommentsResultReply | GetCommentsResultIntroReply)[];
 };
 

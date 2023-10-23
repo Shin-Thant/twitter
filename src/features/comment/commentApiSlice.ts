@@ -10,7 +10,12 @@ import {
 import { RootState } from "../../app/store";
 
 type AddCommentArg = { tweetId: string; body: string };
-type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
+type LikeCommentArg = {
+	likes: string[];
+	tweetId: string;
+	commentId: string;
+	getRepliesCacheKey?: string;
+};
 type ReplyCommentArg = {
 	tweetId: string;
 	commentId: string;
@@ -106,26 +111,70 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				url: `/comments/${arg.commentId}/likes`,
 				method: "PUT",
 			}),
-			async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-				const result = dispatch(
+			async onQueryStarted(
+				{ commentId, likes, tweetId, getRepliesCacheKey },
+				{ dispatch, queryFulfilled }
+			) {
+				const getCommentsUpdateResult = dispatch(
 					commentApiSlice.util.updateQueryData(
 						"getComments",
-						{ tweetId: arg.tweetId },
+						{ tweetId },
 						(draft) => {
 							const foundComment = draft.find(
-								(comment) => comment._id === arg.commentId
+								(comment) => comment._id === commentId
 							);
+
 							if (foundComment) {
-								foundComment.likes = arg.likes;
+								foundComment.likes = likes;
+								return;
 							}
+
+							draft.forEach((comment) => {
+								const foundReply = comment?.comments?.find(
+									(reply) => reply._id === commentId
+								);
+								if (foundReply) {
+									foundReply.likes = likes;
+								}
+							});
 						}
 					)
 				);
 
+				let getRepliesUpdateResult = undefined;
+				if (getRepliesCacheKey) {
+					getRepliesUpdateResult = dispatch(
+						commentApiSlice.util.updateQueryData(
+							"getCommentReplies",
+							{ commentId: getRepliesCacheKey },
+							(draft) => {
+								const foundReply = draft.find(
+									(reply) => reply._id === commentId
+								);
+								if (foundReply) {
+									foundReply.likes = likes;
+									return;
+								}
+
+								draft.forEach((reply) => {
+									const nestedReply = reply.comments?.find(
+										(nestedReply) =>
+											nestedReply._id === commentId
+									);
+									if (nestedReply) {
+										nestedReply.likes = likes;
+									}
+								});
+							}
+						)
+					);
+				}
+
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					result.undo();
+					getCommentsUpdateResult.undo();
+					getRepliesUpdateResult?.undo();
 				}
 			},
 		}),

@@ -62,7 +62,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 							!currentTweetId
 								? comment.type === "comment"
 									? comment.tweet._id
-									: comment.tweet
+									: comment.tweet._id
 								: currentTweetId
 						}
 						commentId={comment._id}
@@ -83,11 +83,12 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 
 			<CardActions>
 				<CommentLikeButton
+					getRepliesCacheKey={getRepliesCacheKey}
 					commentId={comment._id}
 					tweetId={
 						comment.type === "comment"
 							? comment.tweet._id
-							: comment.tweet
+							: comment.tweet._id
 					}
 					likes={comment.likes}
 				/>
@@ -98,7 +99,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 					tweetId={
 						comment.type === "comment"
 							? comment.tweet._id
-							: comment.tweet
+							: comment.tweet._id
 					}
 					replies={comment.comments ?? []}
 				/>
