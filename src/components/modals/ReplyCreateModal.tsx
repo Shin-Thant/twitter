@@ -22,7 +22,9 @@ const ReplyCreateModal = () => {
 		closeModal,
 		tweetId,
 		commentId: originId,
+		getRepliesCacheKey,
 	} = useReplyCreateModal();
+
 	const [replyComment, { isLoading }] = useReplyCommentMutation();
 	const { data, isFetching } = useGetCommentByIdQuery(
 		{ commentId: originId, tweetId },
@@ -53,6 +55,7 @@ const ReplyCreateModal = () => {
 				tweetId,
 				body: data.content,
 				commentId: originId,
+				getRepliesCacheKey,
 			});
 			showToast({
 				message: "Successfully commented!",

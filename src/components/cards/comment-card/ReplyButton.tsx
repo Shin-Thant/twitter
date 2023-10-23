@@ -9,10 +9,15 @@ type Props = {
 	commentId: string;
 	tweetId: string;
 	replies: GetCommentsResultComment["comments"][number][];
-	// | { _id: string }
+	getRepliesCacheKey?: string;
 };
 
-const ReplyButton = ({ tweetId, commentId, replies }: Props) => {
+const ReplyButton = ({
+	tweetId,
+	commentId,
+	replies,
+	getRepliesCacheKey,
+}: Props) => {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isCommentedByLoginUser: boolean =
 		!replies.length && !loginUserId
@@ -22,7 +27,7 @@ const ReplyButton = ({ tweetId, commentId, replies }: Props) => {
 	const openModal = useReplyCreateModal().openModal;
 
 	const openCommentModal = () => {
-		openModal({ commentId: commentId, tweetId });
+		openModal({ commentId: commentId, tweetId, getRepliesCacheKey });
 	};
 
 	return (

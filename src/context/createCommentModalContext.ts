@@ -7,7 +7,7 @@ export interface CommentModalContextState {
 	openModal(arg: { tweetId: string; commentId: string }): void;
 	closeModal(): void;
 }
-const commentModalContextState: CommentModalContextState = {
+export const commentModalContextState: CommentModalContextState = {
 	commentId: "",
 	tweetId: "",
 	isOpen: false,

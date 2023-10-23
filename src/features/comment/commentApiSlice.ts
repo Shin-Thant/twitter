@@ -11,7 +11,12 @@ import { RootState } from "../../app/store";
 
 type AddCommentArg = { tweetId: string; body: string };
 type LikeCommentArg = { likes: string[]; tweetId: string; commentId: string };
-type ReplyCommentArg = { tweetId: string; commentId: string; body: string };
+type ReplyCommentArg = {
+	tweetId: string;
+	commentId: string;
+	body: string;
+	getRepliesCacheKey?: string;
+};
 type GetCommentByIdArg = { tweetId: string; commentId: string };
 type UpdateCommentArg = {
 	tweetId: string;
@@ -80,19 +85,19 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: (result, _err, { tweetId }) => {
 				const tags = [
-					{ type: "Comments", id: `/${tweetId}/LIST` } as const,
-					{ type: "Tweets", id: tweetId } as const,
-				];
-				if (result) {
-					return [
-						...tags,
-						{
-							type: "Replies" as const,
-							id: `/${result._id}/LIST`,
-						},
-					];
+					{ type: "Comments", id: `/${tweetId}/LIST` },
+					{ type: "Tweets", id: tweetId },
+				] as const;
+				if (!result) {
+					return tags;
 				}
-				return tags;
+				return [
+					...tags,
+					{
+						type: "Replies",
+						id: `/${result._id}/LIST`,
+					},
+				];
 			},
 		}),
 
@@ -133,9 +138,21 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			invalidatesTags: (_res, _err, { tweetId }) => [
-				{ type: "Comments", id: `/${tweetId}/LIST` },
-			],
+			invalidatesTags: (_res, _err, { tweetId, getRepliesCacheKey }) => {
+				const tags = [
+					{ type: "Comments", id: `/${tweetId}/LIST` },
+				] as const;
+				if (!getRepliesCacheKey) {
+					return tags;
+				}
+				return [
+					...tags,
+					{
+						type: "Replies",
+						id: `/${getRepliesCacheKey}/LIST`,
+					},
+				];
+			},
 		}),
 
 		updateComment: builder.mutation<DefaultReply, UpdateCommentArg>({

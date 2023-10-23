@@ -92,6 +92,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 					likes={comment.likes}
 				/>
 				<ReplyButton
+					getRepliesCacheKey={getRepliesCacheKey}
 					commentId={comment._id}
 					ownerId={comment.owner._id}
 					tweetId={
