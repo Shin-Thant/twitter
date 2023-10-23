@@ -31,7 +31,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
-	const setThreadId = useCommentThreadStore().setCommentId;
+	const setThreadId = useCommentThreadStore().setThreadId;
 
 	const changeThread = () => {
 		setThreadId(comment._id);
@@ -43,10 +43,13 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 			sx={{
 				bgcolor: "transparent",
 				mb: 2,
-				borderWidth: "1px 1px 1px 1px",
+				borderWidth: 1,
 				borderStyle: "solid",
-				borderColor: "tweet.borderColor",
+				borderColor: "tweet.borderColorFade",
 				borderRadius: "10px",
+				"&:hover": {
+					borderColor: "tweet.borderColor",
+				},
 			}}
 		>
 			<CommentHeader
@@ -72,7 +75,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 				}
 			/>
 			<CardContent>
-				Depth: {depth}
 				<Typography
 					sx={{
 						fontSize: { xs: 15.5, sm: 16 },

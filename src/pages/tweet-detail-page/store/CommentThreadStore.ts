@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
 type State = {
-	commentId?: string;
+	threadId?: string;
 };
 type Actions = {
-	setCommentId(commentId?: string): void;
+	setThreadId(threadId?: string): void;
 };
 
 export const useCommentThreadStore = create<State & Actions>((set) => ({
-	commentId: undefined,
-	setCommentId: (commentId) => set(() => ({ commentId })),
+	threadId: undefined,
+	setThreadId: (threadId) => set(() => ({ threadId })),
 }));

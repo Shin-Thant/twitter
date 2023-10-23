@@ -13,6 +13,7 @@ declare module "@mui/material/styles" {
 		tweet: {
 			bg: string;
 			borderColor: string;
+			borderColorFade: string;
 			imageBg: string;
 		};
 		option_icon: {
@@ -32,6 +33,7 @@ declare module "@mui/material/styles" {
 		tweet: {
 			bg: string;
 			borderColor: string;
+			borderColorFade: string;
 			imageBg: string;
 		};
 		option_icon: {
@@ -83,6 +85,7 @@ const darkModeColors = {
 	tweet: {
 		bg: "#000",
 		borderColor: "hsl(0, 0%, 25%)",
+		borderColorFade: "hsl(0, 0%, 25%, 0.5)",
 		imageBg: "#95959D",
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
@@ -103,6 +106,7 @@ const lightModeColors = {
 	tweet: {
 		bg: "#fff",
 		borderColor: "hsl(0, 0%, 65%)",
+		borderColorFade: "hsl(0, 0%, 65%, 0.5)",
 		imageBg: "#58585F",
 	},
 	option_icon: { normal: "hsl(0, 0%, 70%)", hover: "hsl(0, 0%, 30%" },
