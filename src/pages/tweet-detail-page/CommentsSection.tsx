@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import CommentsContainer from "../../containers/CommentsContainer";
 import RepliesContainer from "../../containers/RepliesContainer";
 import { useCommentThreadStore } from "./store/CommentThreadStore";
@@ -15,24 +15,31 @@ const CommentsSection = ({ tweetId }: Props) => {
 
 	return (
 		<>
-			{!!threadId && (
-				<Button
-					variant="text"
-					sx={{ textTransform: "none", mb: 2 }}
-					onClick={() => setThreadId(undefined)}
-				>
-					Go back to main thread
-				</Button>
-			)}
-			{threadId ? (
-				<RepliesContainer
-					commentId={threadId}
-					depth={INITIAL_DEPTH}
-					show={SHOW_REPLIES}
-				/>
-			) : (
-				<CommentsContainer tweetId={tweetId} />
-			)}
+			<Box
+				sx={{
+					px: { xs: 1, sm: 0 },
+				}}
+			>
+				{!!threadId && (
+					<Button
+						variant="text"
+						sx={{ textTransform: "none", mb: 2 }}
+						onClick={() => setThreadId(undefined)}
+					>
+						Go back to main thread
+					</Button>
+				)}
+
+				{threadId ? (
+					<RepliesContainer
+						commentId={threadId}
+						depth={INITIAL_DEPTH}
+						show={SHOW_REPLIES}
+					/>
+				) : (
+					<CommentsContainer tweetId={tweetId} />
+				)}
+			</Box>
 		</>
 	);
 };

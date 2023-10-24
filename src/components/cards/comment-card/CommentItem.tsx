@@ -128,7 +128,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 								}}
 								onClick={changeThread}
 							>
-								go another
+								see more
 							</Button>
 						)}
 						<Box
@@ -168,7 +168,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 											setShowMore((prev) => !prev)
 										}
 									>
-										show {showMore ? "less" : "more"}
+										see {showMore ? "less" : "more"}
 									</Button>
 
 									{showMore && (
