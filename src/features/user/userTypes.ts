@@ -22,7 +22,7 @@ export type DefaultUser = Omit<CommonUser, "followers"> & {
 
 export type UserWithoutEmail = Omit<DefaultUser, "email">;
 
-export interface GetMeResultUser extends CommonUser {
+export interface UserWithFollows extends CommonUser {
 	followers: DefaultUser[];
 	following: DefaultUser[];
 }

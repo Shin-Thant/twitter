@@ -2,10 +2,10 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import isTokenErrorPayload from "../../util/isTokenErrorPayload";
 import { checkUserEndpoint } from "../auth/authApiSlice";
-import { GetMeResultUser } from "./userTypes";
+import { UserWithFollows } from "./userTypes";
 
 type State = {
-	user: GetMeResultUser | null;
+	user: UserWithFollows | null;
 };
 
 const initialState: State = { user: null };
@@ -14,7 +14,7 @@ const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
-		setUser: (state, action: PayloadAction<GetMeResultUser | null>) => {
+		setUser: (state, action: PayloadAction<UserWithFollows | null>) => {
 			state.user = action.payload;
 		},
 	},

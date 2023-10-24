@@ -1,7 +1,7 @@
 import apiSlice from "../../app/api/apiSlice";
-import { GetMeResultUser, DefaultUser } from "../user/userTypes";
+import { UserWithFollows } from "../user/userTypes";
 
-type SignUpResponse = DefaultUser;
+type SignUpResponse = UserWithFollows;
 export type SignUpBody = {
 	username: string;
 	name: string;
@@ -9,7 +9,7 @@ export type SignUpBody = {
 	password: string;
 };
 
-type LoginResponse = { accessToken: string; user: DefaultUser };
+type LoginResponse = { accessToken: string; user: UserWithFollows };
 type LoginBody = {
 	email: string;
 	password: string;
@@ -17,7 +17,7 @@ type LoginBody = {
 
 const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		checkUser: builder.query<GetMeResultUser, void>({
+		checkUser: builder.query<UserWithFollows, void>({
 			query: () => ({ url: "/users/me", timeout: 2 * 60 * 1000 }),
 		}),
 

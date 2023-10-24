@@ -1,7 +1,7 @@
 import { Avatar, Box, Paper, Stack } from "@mui/material";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useCreateTweetMutation } from "../../features/tweet/tweetApiSlice";
-import { GetMeResultUser } from "../../features/user/userTypes";
+import { UserWithFollows } from "../../features/user/userTypes";
 import useImageInputHandler from "../../hooks/useImageInputHandler";
 import { useTweetCreateForm } from "../../hooks/useTweetCreateForm";
 import { showToast } from "../../lib/handleToast";
@@ -18,7 +18,7 @@ import ContentInputHandler from "./ContentInputHandler";
 const TOTAL_IMAGE_LIMIT = 4 as const;
 
 type Props = {
-	user: GetMeResultUser;
+	user: UserWithFollows;
 };
 
 const TweetCreator = ({ user }: Props) => {
