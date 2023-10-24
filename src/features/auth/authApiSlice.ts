@@ -1,7 +1,7 @@
 import apiSlice from "../../app/api/apiSlice";
-import { GetMeResultUser, User } from "../user/userTypes";
+import { GetMeResultUser, DefaultUser } from "../user/userTypes";
 
-type SignUpResponse = User;
+type SignUpResponse = DefaultUser;
 export type SignUpBody = {
 	username: string;
 	name: string;
@@ -9,7 +9,7 @@ export type SignUpBody = {
 	password: string;
 };
 
-type LoginResponse = { accessToken: string; user: User };
+type LoginResponse = { accessToken: string; user: DefaultUser };
 type LoginBody = {
 	email: string;
 	password: string;
