@@ -18,8 +18,8 @@ export const QuoteRetweetSchema = z.object({
 	content: z
 		.string({ invalid_type_error: INVALID_TYPE_ERROR })
 		.trim()
-		.nonempty(NON_EMPTY_ERROR)
-		.max(MAX_LIMIT, MAX_LIMIT_ERROR),
+		.max(MAX_LIMIT, MAX_LIMIT_ERROR)
+		.optional(),
 });
 export type ShareTweetInput = z.infer<typeof QuoteRetweetSchema>;
 

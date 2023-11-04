@@ -4,7 +4,7 @@ export function createTweetFormData({
 	images,
 	content,
 }: {
-	images: ImageListType;
+	images?: ImageListType;
 	content?: string;
 }): FormData {
 	const formData = new FormData();
@@ -12,10 +12,12 @@ export function createTweetFormData({
 	if (content) {
 		formData.set("body", content);
 	}
-	images.forEach((image) => {
-		if (image.file) {
-			formData.append(`photos`, image.file);
-		}
-	});
+	if (images?.length) {
+		images.forEach((image) => {
+			if (image.file) {
+				formData.append(`photos`, image.file);
+			}
+		});
+	}
 	return formData;
 }
