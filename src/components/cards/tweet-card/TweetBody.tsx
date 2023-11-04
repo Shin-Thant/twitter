@@ -1,4 +1,4 @@
-import { CardContent, Typography } from "@mui/material";
+import { Box, CardContent, Typography } from "@mui/material";
 import {
 	GetTweetByIdResultTweet,
 	GetTweetsResultTweet,
@@ -29,11 +29,17 @@ const TweetBody = ({ tweet }: Props) => {
 			)}
 
 			{!!tweet.images?.length && (
-				<TweetImageList
-					images={tweet.images}
-					tweetId={tweet._id}
-					rowHeight={100}
-				/>
+				<Box
+					sx={{
+						mb: tweet.type === "share" ? 1 : 0,
+					}}
+				>
+					<TweetImageList
+						images={tweet.images}
+						tweetId={tweet._id}
+						rowHeight={100}
+					/>
+				</Box>
 			)}
 
 			{tweet.type === "share" && !!tweet.origin && (
