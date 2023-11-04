@@ -54,8 +54,8 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			},
 			providesTags: (_result, _error, arg) => {
 				return [
-					{ type: "Tweets", id: arg.tweetId },
-					{ type: "Tweets", id: "LIST" },
+					{ type: "TweetDetails", id: arg.tweetId },
+					{ type: "TweetDetails", id: "LIST" },
 				];
 			},
 		}),
@@ -77,12 +77,15 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags(_res, _err, arg) {
 				const body = arg.body.get("body");
-				const imgs = arg.body.get("photos");
-				if (body && !imgs) {
+				const photos = arg.body.get("photos");
+				if (body && !photos) {
 					return [];
 				}
 
-				return [{ type: "Tweets", id: arg.tweetId }];
+				return [
+					{ type: "Tweets", id: arg.tweetId },
+					{ type: "TweetDetails", id: arg.tweetId },
+				];
 			},
 			async onQueryStarted(arg, { queryFulfilled, dispatch, getState }) {
 				const rootState = getState() as RootState;
@@ -137,7 +140,10 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			}),
 			// TODO: make update optimistic
 			invalidatesTags(_res, _err, arg) {
-				return [{ type: "Tweets", id: arg.tweetId }];
+				return [
+					{ type: "Tweets", id: arg.tweetId },
+					{ type: "TweetDetails", id: arg.tweetId },
+				];
 			},
 		}),
 
@@ -147,7 +153,10 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				method: "DELETE",
 			}),
 			invalidatesTags(_res, _err, arg) {
-				return [{ type: "Tweets", id: arg.tweetId }];
+				return [
+					{ type: "Tweets", id: arg.tweetId },
+					{ type: "TweetDetails", id: arg.tweetId },
+				];
 			},
 		}),
 	}),

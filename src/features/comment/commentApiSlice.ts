@@ -92,6 +92,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				const tags = [
 					{ type: "Comments", id: `/${tweetId}/LIST` },
 					{ type: "Tweets", id: tweetId },
+					{ type: "TweetDetails", id: tweetId },
 				] as const;
 				if (!result) {
 					return tags;
