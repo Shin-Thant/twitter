@@ -14,7 +14,7 @@ type GetTweetByIdQueryArg = { tweetId: string };
 type CreateTweetMutationArg = FormData;
 type EditTweetMutationArg = { tweetId: string; body: FormData };
 type LikeMutationArg = { tweetId: string; likes: string[] };
-type ShareMutationArg = { tweetId: string; body?: string };
+type ShareMutationArg = { tweetId: string; body?: FormData };
 type DeleteMutationArg = { tweetId: string };
 
 const tweetApiSlice = apiSlice.injectEndpoints({
@@ -133,7 +133,7 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 			query: ({ tweetId, body }) => ({
 				url: `/tweets/${tweetId}/share`,
 				method: "POST",
-				body: { body },
+				body,
 			}),
 			// TODO: make update optimistic
 			invalidatesTags(_res, _err, arg) {

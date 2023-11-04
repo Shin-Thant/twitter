@@ -60,7 +60,7 @@ export default function TweetShareModal() {
 
 	const retweet = async () => {
 		try {
-			const response = await handleShare();
+			const response = await shareTweet({ tweetId });
 
 			if (checkResponseError(response)) {
 				handleToast({ variant: "error" });
@@ -74,35 +74,6 @@ export default function TweetShareModal() {
 		} finally {
 			onClose();
 		}
-	};
-
-	const quoteTweet = async (body?: string) => {
-		try {
-			const response = await handleShare(body);
-
-			if (checkResponseError(response)) {
-				showToast({
-					message: "Something went wrong!",
-					variant: "error",
-				});
-				onClose();
-				return;
-			}
-
-			handleToast({ variant: "success" });
-		} catch (err) {
-			handleToast({ variant: "error" });
-		} finally {
-			onClose();
-		}
-	};
-
-	const handleShare = async (body?: string) => {
-		if (isSharing) {
-			return;
-		}
-		const requestBody = body ? { tweetId, body } : { tweetId };
-		return await shareTweet(requestBody);
 	};
 
 	const undoRetweet = async () => {
@@ -133,12 +104,17 @@ export default function TweetShareModal() {
 		closeModal();
 	};
 
+	const resetModalState = () => {
+		setIsQuoteTweet(false);
+	};
+
 	return (
 		<Modal title={"Retweet"} isOpen={isModalOpen} onClose={onClose}>
 			{!isQuoteTweet && (
 				<>
 					{isSharedWithoutBody ? (
 						<Button
+							disabled={isDeleting}
 							startIcon={<HistoryRoundedIcon fontSize="small" />}
 							onClick={undoRetweet}
 							variant="outlined"
@@ -149,6 +125,7 @@ export default function TweetShareModal() {
 						</Button>
 					) : (
 						<Button
+							disabled={isSharing}
 							startIcon={<ReplyIcon fontSize="small" />}
 							onClick={retweet}
 							variant="outlined"
@@ -162,6 +139,7 @@ export default function TweetShareModal() {
 					<Divider sx={{ my: "1rem" }}>or</Divider>
 
 					<Button
+						disabled={isSharing}
 						startIcon={<BorderColorIcon />}
 						onClick={() => {
 							setIsQuoteTweet((prev) => !prev);
@@ -176,7 +154,7 @@ export default function TweetShareModal() {
 			)}
 
 			<Collapse in={isQuoteTweet} timeout={600}>
-				<TweetShareForm handleShare={quoteTweet} closeModal={onClose} />
+				<TweetShareForm resetModalState={resetModalState} />
 			</Collapse>
 		</Modal>
 	);

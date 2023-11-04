@@ -7,7 +7,7 @@ import { IMAGE_URL } from "../../config";
 
 const IMAGE_NAME_REGEX = /^([0-9a-fA-F]{32})-([0-9]+)\.(png|jpeg|jpg)$/;
 
-const imageUrlSchema = z.string().nonempty().trim().regex(IMAGE_NAME_REGEX);
+const imageUrlSchema = z.string().min(1).trim().regex(IMAGE_NAME_REGEX);
 
 type Props = {
 	tweetId: string;
@@ -28,7 +28,7 @@ const TweetImageList = ({ tweetId, images, rowHeight }: Props) => {
 				return;
 			}
 
-			showModal({ imageUrl, tweetId });
+			showModal({ imageUrl, ownerTweetId: tweetId });
 		};
 		return onImageClick;
 	};

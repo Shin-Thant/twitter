@@ -1,26 +1,37 @@
 import { Button, Stack, styled } from "@mui/material";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { IMAGE_URL } from "../../config";
 import { useImageModal } from "../../hooks/useImageModal";
 import ModalCloseButton from "../buttons/ModalCloseButton";
 import Modal from "./Modal";
-import { useLocation, useNavigate } from "react-router-dom";
-import { IMAGE_URL } from "../../config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const regex = /^\/tweet\/[a-zA-Z0-9]+$/;
+const TWEET_DETAIL_PAGE_REGEX = /^\/tweet\/[a-zA-Z0-9]+$/;
 
 const ImageModal = () => {
-	const { isOpen, imageUrl, closeModal } = useImageModal();
+	const { isOpen, imageUrl, ownerTweetId, closeModal } = useImageModal();
+	const [showGoToButton, setShowGoToButton] = useState<boolean>(false);
+
 	const navigate = useNavigate();
 	const currentPathName = useLocation().pathname;
-
-	const isInTweetDetailPage = regex.test(currentPathName);
+	const currentTweetIdParam = useParams().id;
 
 	useEffect(() => {
-		console.log("render image");
-	});
+		if (isOpen) {
+			if (!TWEET_DETAIL_PAGE_REGEX.test(currentPathName)) {
+				setShowGoToButton(true);
+				return;
+			}
+
+			if (currentTweetIdParam !== ownerTweetId) {
+				setShowGoToButton(true);
+			}
+		}
+	}, [isOpen, currentPathName, currentTweetIdParam, ownerTweetId]);
 
 	const onNavigate = () => {
-		navigate("/");
+		navigate(`/tweet/${ownerTweetId}`);
+		closeModal();
 	};
 
 	const onClose = () => {
@@ -41,12 +52,10 @@ const ImageModal = () => {
 		>
 			<Stack
 				direction="row"
-				justifyContent={
-					isInTweetDetailPage ? "flex-end" : "space-between"
-				}
+				justifyContent={!showGoToButton ? "flex-end" : "space-between"}
 				sx={{ mb: 2 }}
 			>
-				{!isInTweetDetailPage && (
+				{showGoToButton && (
 					<Button
 						variant="outlined"
 						sx={{ borderRadius: "50px", textTransform: "none" }}

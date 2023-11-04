@@ -158,7 +158,7 @@ const TweetEditModal = () => {
 										images.length === TOTAL_IMAGE_LIMIT
 									}
 									currentImageCount={images.length}
-									totalImageCount={4}
+									totalImageCount={TOTAL_IMAGE_LIMIT}
 									uploadImage={onImageUpload}
 								/>
 

@@ -2,15 +2,15 @@ import { ReactNode, createContext, useCallback, useState } from "react";
 
 type ContextState = {
 	isOpen: boolean;
-	tweetId: string;
+	ownerTweetId: string;
 	imageUrl: string;
-	showModal: (arg: { tweetId: string; imageUrl: string }) => void;
+	showModal: (arg: { ownerTweetId: string; imageUrl: string }) => void;
 	closeModal: () => void;
 };
 
 const initialState: ContextState = {
 	isOpen: false,
-	tweetId: "",
+	ownerTweetId: "",
 	imageUrl: "",
 	showModal: () => undefined,
 	closeModal: () => undefined,
@@ -22,12 +22,18 @@ type Props = {
 };
 export function ImageModalProvider({ children }: Props) {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [tweetId, setTweetId] = useState<string>("");
+	const [ownerTweetId, setOwnerTweetId] = useState<string>("");
 	const [imageUrl, setImageUrl] = useState<string>("");
 
 	const showModal = useCallback(
-		({ tweetId, imageUrl }: { tweetId: string; imageUrl: string }) => {
-			setTweetId(tweetId);
+		({
+			ownerTweetId,
+			imageUrl,
+		}: {
+			ownerTweetId: string;
+			imageUrl: string;
+		}) => {
+			setOwnerTweetId(ownerTweetId);
 			setImageUrl(imageUrl);
 			setIsOpen(true);
 		},
@@ -35,14 +41,14 @@ export function ImageModalProvider({ children }: Props) {
 	);
 
 	const closeModal = useCallback(() => {
-		setTweetId("");
+		setOwnerTweetId("");
 		setImageUrl("");
 		setIsOpen(false);
 	}, []);
 
 	return (
 		<ImageModalContext.Provider
-			value={{ isOpen, tweetId, imageUrl, showModal, closeModal }}
+			value={{ isOpen, ownerTweetId, imageUrl, showModal, closeModal }}
 		>
 			{children}
 		</ImageModalContext.Provider>
