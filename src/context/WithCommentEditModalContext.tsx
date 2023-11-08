@@ -11,24 +11,27 @@ export default function WithCommentEditModalContext(
 	}) {
 		const [commentId, setCommentId] = useState<string>("");
 		const [tweetId, setTweetId] = useState<string>("");
-		const [originId, setOriginId] = useState<string | undefined>(undefined);
+		const [originIdOrGetRepliesCacheKey, setOriginIdOrGetRepliesCacheKey] =
+			useState<string | undefined>(undefined);
 		const [isOpen, setIsOpen] = useState<boolean>(false);
 
 		const openModal = useCallback(
 			({
 				commentId,
 				tweetId,
-				originId,
+				originIdOrGetRepliesCacheKey,
 			}: {
 				commentId: string;
 				tweetId: string;
-				originId?: string;
+				originIdOrGetRepliesCacheKey?: string;
 			}) => {
 				setIsOpen(true);
 				setCommentId(commentId);
 				setTweetId(tweetId);
-				if (originId) {
-					setOriginId(originId);
+				if (originIdOrGetRepliesCacheKey) {
+					setOriginIdOrGetRepliesCacheKey(
+						originIdOrGetRepliesCacheKey
+					);
 				}
 			},
 			[]
@@ -38,13 +41,13 @@ export default function WithCommentEditModalContext(
 			setIsOpen(false);
 			setCommentId("");
 			setTweetId("");
-			setOriginId(undefined);
+			setOriginIdOrGetRepliesCacheKey(undefined);
 		}, []);
 
 		return (
 			<Context.Provider
 				value={{
-					originId,
+					originIdOrGetRepliesCacheKey,
 					tweetId,
 					commentId,
 					isOpen,

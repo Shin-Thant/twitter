@@ -24,7 +24,7 @@ type ReplyCommentArg = {
 };
 type GetCommentByIdArg = { tweetId: string; commentId: string };
 type UpdateCommentArg = {
-	tweetId: string;
+	tweetId?: string;
 	commentId: string;
 	body: string;
 	originIdOrGetRepliesCacheKey?: string;
@@ -227,35 +227,38 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				{ tweetId, commentId, body, originIdOrGetRepliesCacheKey },
 				{ dispatch, queryFulfilled }
 			) {
-				const getCommentsUpdateResult = dispatch(
-					commentApiSlice.util.updateQueryData(
-						"getComments",
-						{ tweetId },
-						(draft) => {
-							// find comment and update
-							const foundComment = draft.find(
-								(comment) => comment._id === commentId
-							);
-							if (foundComment) {
-								foundComment.body = body;
-								return;
-							}
-
-							// find nested comment and update
-							draft.forEach((comment) => {
-								const reply = comment.comments.find(
-									(reply) => reply._id === commentId
+				let getCommentsUpdateResult;
+				if (tweetId) {
+					getCommentsUpdateResult = dispatch(
+						commentApiSlice.util.updateQueryData(
+							"getComments",
+							{ tweetId },
+							(draft) => {
+								// find comment and update
+								const foundComment = draft.find(
+									(comment) => comment._id === commentId
 								);
-								if (reply) {
-									reply.body = body;
+								if (foundComment) {
+									foundComment.body = body;
 									return;
 								}
-							});
-						}
-					)
-				);
 
-				let getRepliesUpdateResult = undefined;
+								// find nested comment and update
+								draft.forEach((comment) => {
+									const reply = comment.comments.find(
+										(reply) => reply._id === commentId
+									);
+									if (reply) {
+										reply.body = body;
+										return;
+									}
+								});
+							}
+						)
+					);
+				}
+
+				let getRepliesUpdateResult;
 				if (originIdOrGetRepliesCacheKey) {
 					getRepliesUpdateResult = dispatch(
 						commentApiSlice.util.updateQueryData(
@@ -290,10 +293,15 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					);
 				}
 
+				console.log({
+					getCommentsUpdateResult,
+					getRepliesUpdateResult,
+				});
+
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					getCommentsUpdateResult.undo();
+					getCommentsUpdateResult?.undo();
 					getRepliesUpdateResult?.undo();
 				}
 			},

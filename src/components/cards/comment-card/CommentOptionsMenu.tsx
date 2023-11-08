@@ -28,7 +28,7 @@ const CommentOptionsMenu = ({
 	const handleDeleteModal = () => {
 		openDeleteModal({
 			commentId,
-			tweetId: !originIdOrGetRepliesCacheKey ? tweetId : undefined,
+			tweetId,
 			originIdOrGetRepliesCacheKey,
 		});
 	};

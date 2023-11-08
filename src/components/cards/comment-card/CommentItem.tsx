@@ -112,10 +112,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 										depth >= MAX_DEPTH
 											? "inline-flex"
 											: "none",
-									// display: {
-									// 	xs: "inline-flex",
-									// 	md: "none",
-									// },
 								}}
 								onClick={changeThread}
 							>
@@ -125,10 +121,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 						<Box
 							sx={{
 								display: depth >= MAX_DEPTH ? "none" : "block",
-								// display:
-								// 	depth >= MAX_DEPTH
-								// 		? { xs: "none", md: "block" }
-								// 		: "block",
 							}}
 						>
 							{"comments" in comment.comments[0] ? (
@@ -147,13 +139,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 												depth >= MAX_DEPTH
 													? "none"
 													: "inline-flex",
-											// display:
-											// 	depth >= MAX_DEPTH
-											// 		? {
-											// 				xs: "none",
-											// 				md: "inline-flex",
-											// 		  }
-											// 		: "inline-flex",
 										}}
 										onClick={() =>
 											setShowMore((prev) => !prev)
@@ -164,6 +149,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 
 									{showMore && (
 										<RepliesContainer
+											key={`${showMore}`}
 											depth={depth + 1}
 											commentId={comment._id}
 											show={showMore}

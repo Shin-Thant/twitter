@@ -67,6 +67,8 @@ const CommentEditModal = () => {
 			return;
 		}
 		try {
+			console.log({ originIdOrGetRepliesCacheKey, tweetId });
+
 			await updateComment({
 				tweetId,
 				body: data.content,
