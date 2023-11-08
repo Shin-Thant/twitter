@@ -1,8 +1,10 @@
+import { CommonComment } from "../../../features/comment/commentTypes";
 import useCommentDeleteModal from "../../../hooks/useCommentDeleteModal";
 import useCommentEditModal from "../../../hooks/useCommentEditModal";
 import CardOptionsMenu from "../components/CardOptionsMenu";
 
 type Props = {
+	type: CommonComment["type"];
 	tweetId: string;
 	commentId: string;
 	originIdOrGetRepliesCacheKey?: string;
@@ -26,7 +28,7 @@ const CommentOptionsMenu = ({
 	const handleDeleteModal = () => {
 		openDeleteModal({
 			commentId,
-			tweetId,
+			tweetId: !originIdOrGetRepliesCacheKey ? tweetId : undefined,
 			originIdOrGetRepliesCacheKey,
 		});
 	};

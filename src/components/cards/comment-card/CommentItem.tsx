@@ -62,7 +62,10 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 				}
 				action={
 					<CommentOptionsMenu
-						originId={getRepliesCacheKey ?? comment.origin?._id}
+						type={comment.type}
+						originIdOrGetRepliesCacheKey={
+							getRepliesCacheKey ?? comment.origin?._id
+						}
 						tweetId={
 							!currentTweetId ? comment.tweet._id : currentTweetId
 						}
@@ -85,22 +88,14 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 				<CommentLikeButton
 					getRepliesCacheKey={getRepliesCacheKey}
 					commentId={comment._id}
-					tweetId={
-						comment.type === "comment"
-							? comment.tweet._id
-							: comment.tweet._id
-					}
+					tweetId={comment.tweet._id}
 					likes={comment.likes}
 				/>
 				<ReplyButton
 					getRepliesCacheKey={getRepliesCacheKey}
 					commentId={comment._id}
 					ownerId={comment.owner._id}
-					tweetId={
-						comment.type === "comment"
-							? comment.tweet._id
-							: comment.tweet._id
-					}
+					tweetId={comment.tweet._id}
 					replies={comment.comments ?? []}
 				/>
 			</CardActions>

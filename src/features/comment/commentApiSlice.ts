@@ -17,7 +17,7 @@ type LikeCommentArg = {
 	getRepliesCacheKey?: string;
 };
 type ReplyCommentArg = {
-	tweetId: string;
+	tweetId?: string;
 	commentId: string;
 	body: string;
 	getRepliesCacheKey?: string;
@@ -195,19 +195,23 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 			invalidatesTags: (_res, _err, { tweetId, getRepliesCacheKey }) => {
-				const tags = [
-					{ type: "Comments", id: `/${tweetId}/LIST` },
-				] as const;
-				if (!getRepliesCacheKey) {
-					return tags;
+				const tags: {
+					type: "Comments" | "Replies";
+					id: string;
+				}[] = [];
+
+				if (tweetId) {
+					tags.push({ type: "Comments", id: `/${tweetId}/LIST` });
 				}
-				return [
-					...tags,
-					{
+				if (getRepliesCacheKey) {
+					tags.push({
 						type: "Replies",
 						id: `/${getRepliesCacheKey}/LIST`,
-					},
-				];
+					});
+				}
+				console.log(tags);
+
+				return tags;
 			},
 		}),
 
@@ -219,9 +223,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			invalidatesTags: (_res, _err, { commentId, tweetId }) => {
-				return [{ type: "Comments", id: `/${tweetId}/${commentId}` }];
-			},
 			async onQueryStarted(
 				{ tweetId, commentId, body, originIdOrGetRepliesCacheKey },
 				{ dispatch, queryFulfilled }
@@ -329,7 +330,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						id: `/${originIdOrGetRepliesCacheKey}/${commentId}`,
 					});
 				}
-				console.log({ tags });
 
 				return tags;
 			},
