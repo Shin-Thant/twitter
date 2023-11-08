@@ -33,7 +33,7 @@ type DeleteCommentResponse = { message: string };
 type DeleteCommentArg = {
 	tweetId?: string;
 	commentId: string;
-	getRepliesCacheKey?: string;
+	originIdOrGetRepliesCacheKey?: string;
 };
 
 const commentApiSlice = apiSlice.injectEndpoints({
@@ -309,7 +309,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: (
 				_res,
 				_err,
-				{ getRepliesCacheKey, tweetId, commentId }
+				{ originIdOrGetRepliesCacheKey, tweetId, commentId }
 			) => {
 				const tags: {
 					type: "Comments" | "Replies" | "TweetDetails";
@@ -323,10 +323,10 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						id: `/${tweetId}/LIST`,
 					});
 				}
-				if (getRepliesCacheKey) {
+				if (originIdOrGetRepliesCacheKey) {
 					tags.push({
 						type: "Replies",
-						id: `/${getRepliesCacheKey}/${commentId}`,
+						id: `/${originIdOrGetRepliesCacheKey}/${commentId}`,
 					});
 				}
 				console.log({ tags });

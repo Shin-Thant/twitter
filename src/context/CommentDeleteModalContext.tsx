@@ -5,17 +5,17 @@ interface CommentDeleteModalContextState {
 	commentId: string;
 	isOpen: boolean;
 	tweetId?: string;
-	getRepliesCacheKey?: string;
+	originIdOrGetRepliesCacheKey?: string;
 	openModal(arg: {
 		commentId: string;
 		tweetId?: string;
-		getRepliesCacheKey?: string;
+		originIdOrGetRepliesCacheKey?: string;
 	}): void;
 	closeModal(): void;
 }
 const commentDeleteModalContextState: CommentDeleteModalContextState = {
 	...commentModalContextState,
-	getRepliesCacheKey: undefined,
+	originIdOrGetRepliesCacheKey: undefined,
 	tweetId: undefined,
 };
 
@@ -31,25 +31,24 @@ type Props = {
 export function CommentDeleteModalContextProvider({ children }: Props) {
 	const [commentId, setCommentId] = useState<string>("");
 	const [tweetId, setTweetId] = useState<string | undefined>(undefined);
-	const [getRepliesCacheKey, setGetRepliesCacheKey] = useState<
-		string | undefined
-	>(undefined);
+	const [originIdOrGetRepliesCacheKey, setOriginIdOrGetRepliesCacheKey] =
+		useState<string | undefined>(undefined);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
 	const openModal = useCallback(
 		({
 			commentId,
 			tweetId,
-			getRepliesCacheKey,
+			originIdOrGetRepliesCacheKey,
 		}: {
 			commentId: string;
 			tweetId: string;
-			getRepliesCacheKey: string;
+			originIdOrGetRepliesCacheKey: string;
 		}) => {
 			setIsOpen(true);
 			setCommentId(commentId);
 			setTweetId(tweetId);
-			setGetRepliesCacheKey(getRepliesCacheKey);
+			setOriginIdOrGetRepliesCacheKey(originIdOrGetRepliesCacheKey);
 		},
 		[]
 	);
@@ -58,7 +57,7 @@ export function CommentDeleteModalContextProvider({ children }: Props) {
 		setIsOpen(false);
 		setCommentId("");
 		setTweetId("");
-		setGetRepliesCacheKey("");
+		setOriginIdOrGetRepliesCacheKey("");
 	}, []);
 
 	return (
@@ -67,7 +66,7 @@ export function CommentDeleteModalContextProvider({ children }: Props) {
 				isOpen,
 				commentId,
 				tweetId,
-				getRepliesCacheKey,
+				originIdOrGetRepliesCacheKey,
 				openModal,
 				closeModal,
 			}}

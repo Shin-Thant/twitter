@@ -5,18 +5,30 @@ import CardOptionsMenu from "../components/CardOptionsMenu";
 type Props = {
 	tweetId: string;
 	commentId: string;
-	originId?: string;
+	originIdOrGetRepliesCacheKey?: string;
 };
 
-const CommentOptionsMenu = ({ tweetId, commentId, originId }: Props) => {
+const CommentOptionsMenu = ({
+	tweetId,
+	commentId,
+	originIdOrGetRepliesCacheKey,
+}: Props) => {
 	const openEditModal = useCommentEditModal().openModal;
 	const openDeleteModal = useCommentDeleteModal().openModal;
 
 	const handleEditModal = () => {
-		openEditModal({ tweetId, commentId, originId });
+		openEditModal({
+			tweetId,
+			commentId,
+			originId: originIdOrGetRepliesCacheKey,
+		});
 	};
 	const handleDeleteModal = () => {
-		openDeleteModal({ commentId, tweetId, getRepliesCacheKey: originId });
+		openDeleteModal({
+			commentId,
+			tweetId,
+			originIdOrGetRepliesCacheKey,
+		});
 	};
 
 	return (
