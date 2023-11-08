@@ -29,6 +29,12 @@ type UpdateCommentArg = {
 	body: string;
 	originId?: string;
 };
+type DeleteCommentResponse = { message: string };
+type DeleteCommentArg = {
+	tweetId?: string;
+	commentId: string;
+	getRepliesCacheKey?: string;
+};
 
 const commentApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -291,6 +297,43 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
+
+		deleteComment: builder.mutation<
+			DeleteCommentResponse,
+			DeleteCommentArg
+		>({
+			query: ({ commentId }) => ({
+				url: `/comments/${commentId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: (
+				_res,
+				_err,
+				{ getRepliesCacheKey, tweetId, commentId }
+			) => {
+				const tags: {
+					type: "Comments" | "Replies" | "TweetDetails";
+					id: string;
+				}[] = [];
+
+				if (tweetId) {
+					tags.push({ type: "TweetDetails", id: tweetId });
+					tags.push({
+						type: "Comments",
+						id: `/${tweetId}/LIST`,
+					});
+				}
+				if (getRepliesCacheKey) {
+					tags.push({
+						type: "Replies",
+						id: `/${getRepliesCacheKey}/${commentId}`,
+					});
+				}
+				console.log({ tags });
+
+				return tags;
+			},
+		}),
 	}),
 });
 
@@ -337,4 +380,5 @@ export const {
 	useLikeCommentMutation,
 	useReplyCommentMutation,
 	useUpdateCommentMutation,
+	useDeleteCommentMutation,
 } = commentApiSlice;

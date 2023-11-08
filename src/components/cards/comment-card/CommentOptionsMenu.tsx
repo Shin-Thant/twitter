@@ -1,3 +1,4 @@
+import useCommentDeleteModal from "../../../hooks/useCommentDeleteModal";
 import useCommentEditModal from "../../../hooks/useCommentEditModal";
 import CardOptionsMenu from "../components/CardOptionsMenu";
 
@@ -9,12 +10,13 @@ type Props = {
 
 const CommentOptionsMenu = ({ tweetId, commentId, originId }: Props) => {
 	const openEditModal = useCommentEditModal().openModal;
+	const openDeleteModal = useCommentDeleteModal().openModal;
 
 	const handleEditModal = () => {
 		openEditModal({ tweetId, commentId, originId });
 	};
 	const handleDeleteModal = () => {
-		// open delete modal
+		openDeleteModal({ commentId, tweetId, getRepliesCacheKey: originId });
 	};
 
 	return (

@@ -64,11 +64,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 					<CommentOptionsMenu
 						originId={getRepliesCacheKey ?? comment.origin?._id}
 						tweetId={
-							!currentTweetId
-								? comment.type === "comment"
-									? comment.tweet._id
-									: comment.tweet._id
-								: currentTweetId
+							!currentTweetId ? comment.tweet._id : currentTweetId
 						}
 						commentId={comment._id}
 					/>

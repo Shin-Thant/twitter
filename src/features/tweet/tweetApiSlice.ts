@@ -12,7 +12,10 @@ import {
 type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
 type GetTweetByIdQueryArg = { tweetId: string };
 type CreateTweetMutationArg = FormData;
-type EditTweetMutationArg = { tweetId: string; body: FormData };
+type EditTweetMutationArg = {
+	tweetId: string;
+	body: FormData;
+};
 type LikeMutationArg = { tweetId: string; likes: string[] };
 type ShareMutationArg = { tweetId: string; body?: FormData };
 type DeleteMutationArg = { tweetId: string };
@@ -75,13 +78,8 @@ const tweetApiSlice = apiSlice.injectEndpoints({
 				url: `/tweets/${tweetId}`,
 				body,
 			}),
+			// TODO: invalidate only when image changes
 			invalidatesTags(_res, _err, arg) {
-				const body = arg.body.get("body");
-				const photos = arg.body.get("photos");
-				if (body && !photos) {
-					return [];
-				}
-
 				return [
 					{ type: "Tweets", id: arg.tweetId },
 					{ type: "TweetDetails", id: arg.tweetId },
