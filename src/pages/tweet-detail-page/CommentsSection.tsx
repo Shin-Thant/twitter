@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import CommentsContainer from "../../containers/CommentsContainer";
 import RepliesContainer from "../../containers/RepliesContainer";
 import { useCommentThreadStore } from "./store/CommentThreadStore";
@@ -11,7 +11,8 @@ type Props = {
 };
 
 const CommentsSection = ({ tweetId }: Props) => {
-	const { threadId, setThreadId } = useCommentThreadStore();
+	const { threadIds, removeLastThread, resetThread } =
+		useCommentThreadStore();
 
 	return (
 		<>
@@ -20,19 +21,37 @@ const CommentsSection = ({ tweetId }: Props) => {
 					px: { xs: 1, sm: 0 },
 				}}
 			>
-				{!!threadId && (
-					<Button
-						variant="text"
-						sx={{ textTransform: "none", mb: 2 }}
-						onClick={() => setThreadId(undefined)}
+				{!!threadIds.length && (
+					<Stack
+						direction="row"
+						justifyContent={"space-between"}
+						alignItems={"center"}
+						flexWrap={"wrap"}
+						mb={2}
 					>
-						Go back to main thread
-					</Button>
+						<Button
+							variant="text"
+							sx={{ textTransform: "none" }}
+							onClick={() => resetThread()}
+						>
+							Go back to main thread
+						</Button>
+
+						{threadIds.length > 1 && (
+							<Button
+								variant="text"
+								sx={{ textTransform: "none" }}
+								onClick={removeLastThread}
+							>
+								Previous thread
+							</Button>
+						)}
+					</Stack>
 				)}
 
-				{threadId ? (
+				{threadIds.length ? (
 					<RepliesContainer
-						commentId={threadId}
+						commentId={threadIds[threadIds.length - 1]}
 						depth={INITIAL_DEPTH}
 						show={SHOW_REPLIES}
 					/>

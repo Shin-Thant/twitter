@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import ReplyList from "../components/lists/ReplyList";
 import { useGetCommentRepliesQuery } from "../features/comment/commentApiSlice";
-import { useEffect } from "react";
 
 type Props = {
 	depth: number;
@@ -18,10 +17,6 @@ const RepliesContainer = ({ depth, commentId, show }: Props) => {
 			pollingInterval: 15 * 60 * 60 * 1000,
 		}
 	);
-
-	useEffect(() => {
-		console.log({ show });
-	}, [show]);
 
 	return (
 		<Box>

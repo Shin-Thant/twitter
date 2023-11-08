@@ -31,10 +31,10 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
-	const setThreadId = useCommentThreadStore().setThreadId;
+	const addNewThread = useCommentThreadStore().addThread;
 
 	const changeThread = () => {
-		setThreadId(comment._id);
+		addNewThread(comment._id);
 	};
 
 	return (
