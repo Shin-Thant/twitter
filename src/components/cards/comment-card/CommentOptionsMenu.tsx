@@ -20,7 +20,7 @@ const CommentOptionsMenu = ({
 		openEditModal({
 			tweetId,
 			commentId,
-			originId: originIdOrGetRepliesCacheKey,
+			originIdOrGetRepliesCacheKey,
 		});
 	};
 	const handleDeleteModal = () => {

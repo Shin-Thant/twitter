@@ -27,7 +27,7 @@ type UpdateCommentArg = {
 	tweetId: string;
 	commentId: string;
 	body: string;
-	originId?: string;
+	originIdOrGetRepliesCacheKey?: string;
 };
 type DeleteCommentResponse = { message: string };
 type DeleteCommentArg = {
@@ -223,7 +223,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				return [{ type: "Comments", id: `/${tweetId}/${commentId}` }];
 			},
 			async onQueryStarted(
-				{ tweetId, commentId, body, originId },
+				{ tweetId, commentId, body, originIdOrGetRepliesCacheKey },
 				{ dispatch, queryFulfilled }
 			) {
 				const getCommentsUpdateResult = dispatch(
@@ -255,11 +255,11 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				);
 
 				let getRepliesUpdateResult = undefined;
-				if (originId) {
+				if (originIdOrGetRepliesCacheKey) {
 					getRepliesUpdateResult = dispatch(
 						commentApiSlice.util.updateQueryData(
 							"getCommentReplies",
-							{ commentId: originId },
+							{ commentId: originIdOrGetRepliesCacheKey },
 							(draft) => {
 								// find reply and update
 								const foundReply = draft.find(

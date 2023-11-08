@@ -3,18 +3,17 @@ import WithCommentEditModalContext from "./WithCommentEditModalContext";
 import { CommentModalContextState } from "./createCommentModalContext";
 
 export interface CommentEditModalContextState extends CommentModalContextState {
-	originId?: string;
-
+	originIdOrGetRepliesCacheKey?: string;
 	openModal(arg: {
 		tweetId: string;
 		commentId: string;
-		originId?: string;
+		originIdOrGetRepliesCacheKey?: string;
 	}): void;
 }
 const commentEditModalContextState: CommentEditModalContextState = {
 	commentId: "",
 	tweetId: "",
-	originId: undefined,
+	originIdOrGetRepliesCacheKey: undefined,
 	isOpen: false,
 	openModal: () => undefined,
 	closeModal: () => undefined,

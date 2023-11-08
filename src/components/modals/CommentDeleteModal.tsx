@@ -9,8 +9,13 @@ import ConfirmModal from "./ConfirmModal";
 
 const CommentDeleteModal = () => {
 	const [deleteComment, { isLoading }] = useDeleteCommentMutation();
-	const { closeModal, commentId, tweetId, getRepliesCacheKey, isOpen } =
-		useCommentDeleteModal();
+	const {
+		closeModal,
+		commentId,
+		tweetId,
+		originIdOrGetRepliesCacheKey,
+		isOpen,
+	} = useCommentDeleteModal();
 
 	const handleDelete = async () => {
 		if (isLoading) return;
@@ -18,7 +23,7 @@ const CommentDeleteModal = () => {
 			const response = await deleteComment({
 				commentId,
 				tweetId,
-				getRepliesCacheKey,
+				originIdOrGetRepliesCacheKey,
 			});
 			if (
 				"error" in response &&
