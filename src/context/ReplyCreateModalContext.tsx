@@ -54,7 +54,7 @@ export function ReplyCreateModalContextProvider({ children }: Props) {
 		setIsOpen(false);
 		setCommentId("");
 		setTweetId("");
-		setGetRepliesCacheKey("");
+		setGetRepliesCacheKey(undefined);
 	}, []);
 
 	return (

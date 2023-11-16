@@ -7,6 +7,7 @@ import Container from "../../containers/Container";
 import { useGetTweetByIdQuery } from "../../features/tweet/tweetApiSlice";
 import CommentsSection from "./CommentsSection";
 import DetailsSection from "./DetailsSection";
+import CommentDeleteModal from "../../components/modals/CommentDeleteModal";
 
 export default function TweetDetails() {
 	const { id: tweetId } = useParams();
@@ -34,6 +35,7 @@ export default function TweetDetails() {
 
 			<ReplyCreateModal />
 			<CommentEditModal />
+			<CommentDeleteModal />
 
 			<Container sx={{ color: "text.primary" }}>
 				<BackButton text={"Tweet"} spacing={2} sx={{ mb: 4, px: 1 }} />

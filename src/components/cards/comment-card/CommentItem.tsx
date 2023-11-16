@@ -31,10 +31,10 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
-	const setThreadId = useCommentThreadStore().setThreadId;
+	const addNewThread = useCommentThreadStore().addThread;
 
 	const changeThread = () => {
-		setThreadId(comment._id);
+		addNewThread(comment._id);
 	};
 
 	return (
@@ -62,13 +62,12 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 				}
 				action={
 					<CommentOptionsMenu
-						originId={getRepliesCacheKey ?? comment.origin?._id}
+						type={comment.type}
+						originIdOrGetRepliesCacheKey={
+							getRepliesCacheKey ?? comment.origin?._id
+						}
 						tweetId={
-							!currentTweetId
-								? comment.type === "comment"
-									? comment.tweet._id
-									: comment.tweet._id
-								: currentTweetId
+							!currentTweetId ? comment.tweet._id : currentTweetId
 						}
 						commentId={comment._id}
 					/>
@@ -89,22 +88,14 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 				<CommentLikeButton
 					getRepliesCacheKey={getRepliesCacheKey}
 					commentId={comment._id}
-					tweetId={
-						comment.type === "comment"
-							? comment.tweet._id
-							: comment.tweet._id
-					}
+					tweetId={comment.tweet._id}
 					likes={comment.likes}
 				/>
 				<ReplyButton
 					getRepliesCacheKey={getRepliesCacheKey}
 					commentId={comment._id}
 					ownerId={comment.owner._id}
-					tweetId={
-						comment.type === "comment"
-							? comment.tweet._id
-							: comment.tweet._id
-					}
+					tweetId={comment.tweet._id}
 					replies={comment.comments ?? []}
 				/>
 			</CardActions>
@@ -121,10 +112,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 										depth >= MAX_DEPTH
 											? "inline-flex"
 											: "none",
-									// display: {
-									// 	xs: "inline-flex",
-									// 	md: "none",
-									// },
 								}}
 								onClick={changeThread}
 							>
@@ -134,10 +121,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 						<Box
 							sx={{
 								display: depth >= MAX_DEPTH ? "none" : "block",
-								// display:
-								// 	depth >= MAX_DEPTH
-								// 		? { xs: "none", md: "block" }
-								// 		: "block",
 							}}
 						>
 							{"comments" in comment.comments[0] ? (
@@ -156,13 +139,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 												depth >= MAX_DEPTH
 													? "none"
 													: "inline-flex",
-											// display:
-											// 	depth >= MAX_DEPTH
-											// 		? {
-											// 				xs: "none",
-											// 				md: "inline-flex",
-											// 		  }
-											// 		: "inline-flex",
 										}}
 										onClick={() =>
 											setShowMore((prev) => !prev)
@@ -173,6 +149,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 
 									{showMore && (
 										<RepliesContainer
+											key={`${showMore}`}
 											depth={depth + 1}
 											commentId={comment._id}
 											show={showMore}

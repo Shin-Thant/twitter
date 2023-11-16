@@ -17,8 +17,13 @@ import ContentInputHandler from "../forms/ContentInputHandler";
 import Modal from "./Modal";
 
 const CommentEditModal = () => {
-	const { isOpen, closeModal, tweetId, commentId, originId } =
-		useCommentEditModal();
+	const {
+		isOpen,
+		closeModal,
+		tweetId,
+		commentId,
+		originIdOrGetRepliesCacheKey,
+	} = useCommentEditModal();
 
 	const { data: foundComment, isFetching: isFetchingComment } =
 		useGetCommentByIdQuery(
@@ -62,11 +67,13 @@ const CommentEditModal = () => {
 			return;
 		}
 		try {
+			console.log({ originIdOrGetRepliesCacheKey, tweetId });
+
 			await updateComment({
 				tweetId,
 				body: data.content,
 				commentId,
-				originId,
+				originIdOrGetRepliesCacheKey,
 			});
 
 			showToast({

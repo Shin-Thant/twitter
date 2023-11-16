@@ -52,7 +52,7 @@ const ReplyCreateModal = () => {
 		}
 		try {
 			await replyComment({
-				tweetId,
+				tweetId: !getRepliesCacheKey ? tweetId : undefined,
 				body: data.content,
 				commentId: originId,
 				getRepliesCacheKey,

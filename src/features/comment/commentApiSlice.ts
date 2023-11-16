@@ -17,17 +17,23 @@ type LikeCommentArg = {
 	getRepliesCacheKey?: string;
 };
 type ReplyCommentArg = {
-	tweetId: string;
+	tweetId?: string;
 	commentId: string;
 	body: string;
 	getRepliesCacheKey?: string;
 };
 type GetCommentByIdArg = { tweetId: string; commentId: string };
 type UpdateCommentArg = {
-	tweetId: string;
+	tweetId?: string;
 	commentId: string;
 	body: string;
-	originId?: string;
+	originIdOrGetRepliesCacheKey?: string;
+};
+type DeleteCommentResponse = { message: string };
+type DeleteCommentArg = {
+	tweetId?: string;
+	commentId: string;
+	originIdOrGetRepliesCacheKey?: string;
 };
 
 const commentApiSlice = apiSlice.injectEndpoints({
@@ -92,6 +98,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				const tags = [
 					{ type: "Comments", id: `/${tweetId}/LIST` },
 					{ type: "Tweets", id: tweetId },
+					{ type: "TweetDetails", id: tweetId },
 				] as const;
 				if (!result) {
 					return tags;
@@ -188,19 +195,23 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				},
 			}),
 			invalidatesTags: (_res, _err, { tweetId, getRepliesCacheKey }) => {
-				const tags = [
-					{ type: "Comments", id: `/${tweetId}/LIST` },
-				] as const;
-				if (!getRepliesCacheKey) {
-					return tags;
+				const tags: {
+					type: "Comments" | "Replies";
+					id: string;
+				}[] = [];
+
+				if (tweetId) {
+					tags.push({ type: "Comments", id: `/${tweetId}/LIST` });
 				}
-				return [
-					...tags,
-					{
+				if (getRepliesCacheKey) {
+					tags.push({
 						type: "Replies",
 						id: `/${getRepliesCacheKey}/LIST`,
-					},
-				];
+					});
+				}
+				console.log(tags);
+
+				return tags;
 			},
 		}),
 
@@ -212,47 +223,47 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			invalidatesTags: (_res, _err, { commentId, tweetId }) => {
-				return [{ type: "Comments", id: `/${tweetId}/${commentId}` }];
-			},
 			async onQueryStarted(
-				{ tweetId, commentId, body, originId },
+				{ tweetId, commentId, body, originIdOrGetRepliesCacheKey },
 				{ dispatch, queryFulfilled }
 			) {
-				const getCommentsUpdateResult = dispatch(
-					commentApiSlice.util.updateQueryData(
-						"getComments",
-						{ tweetId },
-						(draft) => {
-							// find comment and update
-							const foundComment = draft.find(
-								(comment) => comment._id === commentId
-							);
-							if (foundComment) {
-								foundComment.body = body;
-								return;
-							}
-
-							// find nested comment and update
-							draft.forEach((comment) => {
-								const reply = comment.comments.find(
-									(reply) => reply._id === commentId
+				let getCommentsUpdateResult;
+				if (tweetId) {
+					getCommentsUpdateResult = dispatch(
+						commentApiSlice.util.updateQueryData(
+							"getComments",
+							{ tweetId },
+							(draft) => {
+								// find comment and update
+								const foundComment = draft.find(
+									(comment) => comment._id === commentId
 								);
-								if (reply) {
-									reply.body = body;
+								if (foundComment) {
+									foundComment.body = body;
 									return;
 								}
-							});
-						}
-					)
-				);
 
-				let getRepliesUpdateResult = undefined;
-				if (originId) {
+								// find nested comment and update
+								draft.forEach((comment) => {
+									const reply = comment.comments.find(
+										(reply) => reply._id === commentId
+									);
+									if (reply) {
+										reply.body = body;
+										return;
+									}
+								});
+							}
+						)
+					);
+				}
+
+				let getRepliesUpdateResult;
+				if (originIdOrGetRepliesCacheKey) {
 					getRepliesUpdateResult = dispatch(
 						commentApiSlice.util.updateQueryData(
 							"getCommentReplies",
-							{ commentId: originId },
+							{ commentId: originIdOrGetRepliesCacheKey },
 							(draft) => {
 								// find reply and update
 								const foundReply = draft.find(
@@ -282,12 +293,53 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					);
 				}
 
+				console.log({
+					getCommentsUpdateResult,
+					getRepliesUpdateResult,
+				});
+
 				try {
 					await queryFulfilled;
 				} catch (err) {
-					getCommentsUpdateResult.undo();
+					getCommentsUpdateResult?.undo();
 					getRepliesUpdateResult?.undo();
 				}
+			},
+		}),
+
+		deleteComment: builder.mutation<
+			DeleteCommentResponse,
+			DeleteCommentArg
+		>({
+			query: ({ commentId }) => ({
+				url: `/comments/${commentId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: (
+				_res,
+				_err,
+				{ originIdOrGetRepliesCacheKey, tweetId, commentId }
+			) => {
+				const tags: {
+					type: "Comments" | "Replies" | "TweetDetails";
+					id: string;
+				}[] = [];
+
+				if (tweetId) {
+					tags.push({ type: "TweetDetails", id: tweetId });
+					tags.push({
+						type: "Comments",
+						id: `/${tweetId}/LIST`,
+					});
+				}
+				if (originIdOrGetRepliesCacheKey) {
+					tags.push({
+						type: "Replies",
+						id: `/${originIdOrGetRepliesCacheKey}/${commentId}`,
+					});
+				}
+
+				return tags;
 			},
 		}),
 	}),
@@ -336,4 +388,5 @@ export const {
 	useLikeCommentMutation,
 	useReplyCommentMutation,
 	useUpdateCommentMutation,
+	useDeleteCommentMutation,
 } = commentApiSlice;
