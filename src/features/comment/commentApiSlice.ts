@@ -81,8 +81,8 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			GetCommentByIdArg
 		>({
 			query: ({ commentId }) => `/comments/${commentId}`,
-			providesTags: (_result, _error, { tweetId, commentId }) => [
-				{ type: "Comments", id: `/${tweetId}/${commentId}` },
+			providesTags: (_result, _error, { commentId }) => [
+				{ type: "CommentDetails", id: commentId },
 			],
 		}),
 
@@ -223,6 +223,9 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
+			invalidatesTags: (_res, _err, { commentId }) => {
+				return [{ type: "CommentDetails", id: commentId }];
+			},
 			async onQueryStarted(
 				{ tweetId, commentId, body, originIdOrGetRepliesCacheKey },
 				{ dispatch, queryFulfilled }
@@ -318,12 +321,16 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: (
 				_res,
 				_err,
-				{ originIdOrGetRepliesCacheKey, tweetId }
+				{ originIdOrGetRepliesCacheKey, tweetId, commentId }
 			) => {
 				const tags: {
-					type: "Comments" | "Replies" | "TweetDetails";
+					type:
+						| "Comments"
+						| "CommentDetails"
+						| "Replies"
+						| "TweetDetails";
 					id: string;
-				}[] = [];
+				}[] = [{ type: "CommentDetails", id: commentId }];
 
 				if (tweetId) {
 					tags.push({ type: "TweetDetails", id: tweetId });

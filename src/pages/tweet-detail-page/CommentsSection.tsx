@@ -21,6 +21,8 @@ const CommentsSection = ({ tweetId }: Props) => {
 					px: { xs: 1, sm: 0 },
 				}}
 			>
+				{JSON.stringify(threadIds)}
+
 				{!!threadIds.length && (
 					<Stack
 						direction="row"

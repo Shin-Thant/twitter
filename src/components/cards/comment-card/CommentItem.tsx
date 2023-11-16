@@ -31,10 +31,12 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
-	const addNewThread = useCommentThreadStore().addThread;
+	const { addThread: addNewThread, setCurrentThread } =
+		useCommentThreadStore();
 
 	const changeThread = () => {
-		addNewThread(comment._id);
+		addNewThread(comment.origin?._id ?? comment._id);
+		setCurrentThread(comment._id);
 	};
 
 	return (
@@ -52,6 +54,9 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 				},
 			}}
 		>
+			{JSON.stringify(`id: ${comment._id}`)}
+			<br />
+			{JSON.stringify(`key: ${getRepliesCacheKey}`)}
 			<CommentHeader
 				owner={comment.owner}
 				createdAt={comment.createdAt}
@@ -149,7 +154,7 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 
 									{showMore && (
 										<RepliesContainer
-											key={`${showMore}`}
+											// key={`${showMore}`}
 											depth={depth + 1}
 											commentId={comment._id}
 											show={showMore}
