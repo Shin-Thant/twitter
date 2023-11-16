@@ -318,7 +318,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: (
 				_res,
 				_err,
-				{ originIdOrGetRepliesCacheKey, tweetId, commentId }
+				{ originIdOrGetRepliesCacheKey, tweetId }
 			) => {
 				const tags: {
 					type: "Comments" | "Replies" | "TweetDetails";
@@ -335,7 +335,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				if (originIdOrGetRepliesCacheKey) {
 					tags.push({
 						type: "Replies",
-						id: `/${originIdOrGetRepliesCacheKey}/${commentId}`,
+						id: `/${originIdOrGetRepliesCacheKey}/LIST`,
 					});
 				}
 
