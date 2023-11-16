@@ -209,7 +209,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						id: `/${getRepliesCacheKey}/LIST`,
 					});
 				}
-				console.log(tags);
 
 				return tags;
 			},
@@ -277,10 +276,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 									return;
 								}
 
-								console.log("updating nested reply", {
-									update: commentId,
-								});
-
 								// find nested comment and update
 								draft.forEach((reply) => {
 									const nestedReply = reply?.comments?.find(
@@ -295,11 +290,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						)
 					);
 				}
-
-				console.log({
-					getCommentsUpdateResult,
-					getRepliesUpdateResult,
-				});
 
 				try {
 					await queryFulfilled;
@@ -361,8 +351,6 @@ const getCommentsResultSelector = createSelector(
 		},
 	],
 	(state, res) => {
-		console.log({ res });
-
 		return res?.(state);
 	}
 );

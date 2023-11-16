@@ -154,7 +154,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 
 									{showMore && (
 										<RepliesContainer
-											// key={`${showMore}`}
 											depth={depth + 1}
 											commentId={comment._id}
 											show={showMore}

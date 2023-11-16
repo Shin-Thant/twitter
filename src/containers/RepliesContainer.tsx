@@ -18,7 +18,6 @@ const RepliesContainer = ({ depth, commentId, show }: Props) => {
 			skip: !show,
 			refetchOnFocus: false,
 			pollingInterval: 15 * 60 * 60 * 1000,
-			// refetchOnMountOrArgChange: true,
 		}
 	);
 

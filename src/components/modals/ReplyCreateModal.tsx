@@ -26,7 +26,7 @@ const ReplyCreateModal = () => {
 	} = useReplyCreateModal();
 
 	const [replyComment, { isLoading }] = useReplyCommentMutation();
-	const { data, isFetching } = useGetCommentByIdQuery(
+	const { data: comment, isFetching } = useGetCommentByIdQuery(
 		{ commentId: originId, tweetId },
 		{ skip: !isOpen || !originId || !tweetId }
 	);
@@ -50,12 +50,20 @@ const ReplyCreateModal = () => {
 		if (isLoading) {
 			return;
 		}
+		if (!comment) {
+			onClose();
+			return;
+		}
 		try {
+			const isTopLevelReply =
+				!getRepliesCacheKey && comment.type === "reply";
 			await replyComment({
 				tweetId: !getRepliesCacheKey ? tweetId : undefined,
 				body: data.content,
 				commentId: originId,
-				getRepliesCacheKey,
+				getRepliesCacheKey: isTopLevelReply
+					? comment._id
+					: getRepliesCacheKey,
 			});
 			showToast({
 				message: "Successfully commented!",
@@ -95,7 +103,7 @@ const ReplyCreateModal = () => {
 							color={"primary"}
 							sx={{ fontSize: "inherit", display: "inline" }}
 						>
-							@{data?.owner.username}
+							@{comment?.owner.username}
 						</Typography>
 					</>
 				)
