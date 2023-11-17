@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import ReplyList from "../components/lists/ReplyList";
 import { useGetCommentRepliesQuery } from "../features/comment/commentApiSlice";
+import { useEffect } from "react";
+import { useCommentThreadStore } from "../pages/tweet-detail-page/store/CommentThreadStore";
 
 type Props = {
 	depth: number;
@@ -9,14 +11,26 @@ type Props = {
 };
 
 const RepliesContainer = ({ depth, commentId, show }: Props) => {
+	const removeLastThread = useCommentThreadStore().removeLastThread;
 	const { isFetching, data } = useGetCommentRepliesQuery(
 		{ commentId },
 		{
-			skip: !show,
+			skip: !show || !commentId,
 			refetchOnFocus: false,
 			pollingInterval: 15 * 60 * 60 * 1000,
 		}
 	);
+
+	useEffect(() => {
+		let isMounted = true;
+
+		if (isMounted && !isFetching && !data?.length) {
+			removeLastThread();
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [data, isFetching, removeLastThread]);
 
 	return (
 		<Box>

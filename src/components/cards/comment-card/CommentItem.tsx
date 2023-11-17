@@ -31,10 +31,13 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 	const { id: currentTweetId } = useParams();
 	const [showMore, setShowMore] = useState<boolean>(false);
 
-	const addNewThread = useCommentThreadStore().addThread;
+	const { addThread: addNewThread } = useCommentThreadStore();
 
 	const changeThread = () => {
-		addNewThread(comment._id);
+		addNewThread({
+			commentId: comment._id,
+			getRepliesCacheKey,
+		});
 	};
 
 	return (
@@ -149,7 +152,6 @@ const CommentItem = ({ depth, comment, getRepliesCacheKey }: Props) => {
 
 									{showMore && (
 										<RepliesContainer
-											key={`${showMore}`}
 											depth={depth + 1}
 											commentId={comment._id}
 											show={showMore}

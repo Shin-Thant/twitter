@@ -34,6 +34,7 @@ type DeleteCommentArg = {
 	tweetId?: string;
 	commentId: string;
 	originIdOrGetRepliesCacheKey?: string;
+	additionalCacheKeys?: string[];
 };
 
 const commentApiSlice = apiSlice.injectEndpoints({
@@ -62,6 +63,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			{ commentId: string }
 		>({
 			query: ({ commentId }) => `/comments/${commentId}/replies`,
+			// keepUnusedDataFor: 0,
 			providesTags: (result, error, { commentId }) => {
 				if (error || !result) {
 					return [{ type: "Replies", id: `/${commentId}/LIST` }];
@@ -81,8 +83,8 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			GetCommentByIdArg
 		>({
 			query: ({ commentId }) => `/comments/${commentId}`,
-			providesTags: (_result, _error, { tweetId, commentId }) => [
-				{ type: "Comments", id: `/${tweetId}/${commentId}` },
+			providesTags: (_result, _error, { commentId }) => [
+				{ type: "CommentDetails", id: commentId },
 			],
 		}),
 
@@ -194,11 +196,15 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			invalidatesTags: (_res, _err, { tweetId, getRepliesCacheKey }) => {
+			invalidatesTags: (
+				_res,
+				_err,
+				{ tweetId, getRepliesCacheKey, commentId }
+			) => {
 				const tags: {
 					type: "Comments" | "Replies";
 					id: string;
-				}[] = [];
+				}[] = [{ type: "Replies", id: `/${commentId}/LIST` }];
 
 				if (tweetId) {
 					tags.push({ type: "Comments", id: `/${tweetId}/LIST` });
@@ -209,7 +215,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						id: `/${getRepliesCacheKey}/LIST`,
 					});
 				}
-				console.log(tags);
 
 				return tags;
 			},
@@ -223,6 +228,9 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
+			invalidatesTags: (_res, _err, { commentId }) => {
+				return [{ type: "CommentDetails", id: commentId }];
+			},
 			async onQueryStarted(
 				{ tweetId, commentId, body, originIdOrGetRepliesCacheKey },
 				{ dispatch, queryFulfilled }
@@ -274,10 +282,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 									return;
 								}
 
-								console.log("updating nested reply", {
-									update: commentId,
-								});
-
 								// find nested comment and update
 								draft.forEach((reply) => {
 									const nestedReply = reply?.comments?.find(
@@ -292,11 +296,6 @@ const commentApiSlice = apiSlice.injectEndpoints({
 						)
 					);
 				}
-
-				console.log({
-					getCommentsUpdateResult,
-					getRepliesUpdateResult,
-				});
 
 				try {
 					await queryFulfilled;
@@ -318,12 +317,21 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: (
 				_res,
 				_err,
-				{ originIdOrGetRepliesCacheKey, tweetId, commentId }
+				{
+					originIdOrGetRepliesCacheKey,
+					tweetId,
+					commentId,
+					additionalCacheKeys,
+				}
 			) => {
 				const tags: {
-					type: "Comments" | "Replies" | "TweetDetails";
+					type:
+						| "Comments"
+						| "CommentDetails"
+						| "Replies"
+						| "TweetDetails";
 					id: string;
-				}[] = [];
+				}[] = [{ type: "CommentDetails", id: commentId }];
 
 				if (tweetId) {
 					tags.push({ type: "TweetDetails", id: tweetId });
@@ -335,7 +343,12 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				if (originIdOrGetRepliesCacheKey) {
 					tags.push({
 						type: "Replies",
-						id: `/${originIdOrGetRepliesCacheKey}/${commentId}`,
+						id: `/${originIdOrGetRepliesCacheKey}/LIST`,
+					});
+				}
+				if (additionalCacheKeys?.length) {
+					additionalCacheKeys.forEach((cacheKey) => {
+						tags.push({ type: "Replies", id: `/${cacheKey}/LIST` });
 					});
 				}
 
@@ -354,8 +367,6 @@ const getCommentsResultSelector = createSelector(
 		},
 	],
 	(state, res) => {
-		console.log({ res });
-
 		return res?.(state);
 	}
 );

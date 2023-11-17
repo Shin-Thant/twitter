@@ -11,8 +11,7 @@ type Props = {
 };
 
 const CommentsSection = ({ tweetId }: Props) => {
-	const { threadIds, removeLastThread, resetThread } =
-		useCommentThreadStore();
+	const { threads, removeLastThread, resetThread } = useCommentThreadStore();
 
 	return (
 		<>
@@ -21,7 +20,7 @@ const CommentsSection = ({ tweetId }: Props) => {
 					px: { xs: 1, sm: 0 },
 				}}
 			>
-				{!!threadIds.length && (
+				{!!threads.length && (
 					<Stack
 						direction="row"
 						justifyContent={"space-between"}
@@ -37,7 +36,7 @@ const CommentsSection = ({ tweetId }: Props) => {
 							Go back to main thread
 						</Button>
 
-						{threadIds.length > 1 && (
+						{threads.length > 1 && (
 							<Button
 								variant="text"
 								sx={{ textTransform: "none" }}
@@ -49,9 +48,9 @@ const CommentsSection = ({ tweetId }: Props) => {
 					</Stack>
 				)}
 
-				{threadIds.length ? (
+				{threads.length ? (
 					<RepliesContainer
-						commentId={threadIds[threadIds.length - 1]}
+						commentId={threads[threads.length - 1].commentId}
 						depth={INITIAL_DEPTH}
 						show={SHOW_REPLIES}
 					/>
