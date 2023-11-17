@@ -34,6 +34,7 @@ type DeleteCommentArg = {
 	tweetId?: string;
 	commentId: string;
 	originIdOrGetRepliesCacheKey?: string;
+	additionalCacheKeys?: string[];
 };
 
 const commentApiSlice = apiSlice.injectEndpoints({
@@ -62,6 +63,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			{ commentId: string }
 		>({
 			query: ({ commentId }) => `/comments/${commentId}/replies`,
+			// keepUnusedDataFor: 0,
 			providesTags: (result, error, { commentId }) => {
 				if (error || !result) {
 					return [{ type: "Replies", id: `/${commentId}/LIST` }];
@@ -194,11 +196,15 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
-			invalidatesTags: (_res, _err, { tweetId, getRepliesCacheKey }) => {
+			invalidatesTags: (
+				_res,
+				_err,
+				{ tweetId, getRepliesCacheKey, commentId }
+			) => {
 				const tags: {
 					type: "Comments" | "Replies";
 					id: string;
-				}[] = [];
+				}[] = [{ type: "Replies", id: `/${commentId}/LIST` }];
 
 				if (tweetId) {
 					tags.push({ type: "Comments", id: `/${tweetId}/LIST` });
@@ -311,7 +317,12 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			invalidatesTags: (
 				_res,
 				_err,
-				{ originIdOrGetRepliesCacheKey, tweetId, commentId }
+				{
+					originIdOrGetRepliesCacheKey,
+					tweetId,
+					commentId,
+					additionalCacheKeys,
+				}
 			) => {
 				const tags: {
 					type:
@@ -333,6 +344,11 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					tags.push({
 						type: "Replies",
 						id: `/${originIdOrGetRepliesCacheKey}/LIST`,
+					});
+				}
+				if (additionalCacheKeys?.length) {
+					additionalCacheKeys.forEach((cacheKey) => {
+						tags.push({ type: "Replies", id: `/${cacheKey}/LIST` });
 					});
 				}
 

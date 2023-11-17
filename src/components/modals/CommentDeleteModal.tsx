@@ -1,13 +1,22 @@
 import { useDeleteCommentMutation } from "../../features/comment/commentApiSlice";
 import useCommentDeleteModal from "../../hooks/useCommentDeleteModal";
 import { showToast } from "../../lib/handleToast";
+import { useCommentThreadStore } from "../../pages/tweet-detail-page/store/CommentThreadStore";
 import {
 	isBaseQueryResponseError,
 	isValidResponseErrorData,
 } from "../../util/errorHelpers";
 import ConfirmModal from "./ConfirmModal";
 
+function showErrorToast(message?: string) {
+	showToast({
+		message: message ?? "Deleting comment failed!",
+		variant: "error",
+	});
+}
+
 const CommentDeleteModal = () => {
+	const { threads, removeLastThread } = useCommentThreadStore();
 	const [deleteComment, { isLoading }] = useDeleteCommentMutation();
 	const {
 		closeModal,
@@ -20,37 +29,37 @@ const CommentDeleteModal = () => {
 	const handleDelete = async () => {
 		if (isLoading) return;
 		try {
+			// to invalidate parent comment and its cache key
+			const additionalCacheKeys = threads.reduce((acc, thread) => {
+				if (thread.getRepliesCacheKey) {
+					acc.push(thread.getRepliesCacheKey);
+				}
+				return acc;
+			}, [] as string[]);
+
 			const response = await deleteComment({
 				commentId,
 				tweetId,
 				originIdOrGetRepliesCacheKey,
+				additionalCacheKeys,
 			});
-			if (
-				"error" in response &&
-				isBaseQueryResponseError(response.error)
-			) {
-				if (isValidResponseErrorData(response.error.data)) {
-					showToast({
-						message: response.error.data.message,
-						variant: "error",
-					});
-				} else {
-					showToast({
-						message: "Deleting comment failed!",
-						variant: "error",
-					});
-				}
-				closeModal();
+			if ("data" in response) {
 				return;
 			}
-
-			closeModal();
+			if (!isBaseQueryResponseError(response.error)) {
+				showErrorToast();
+				return;
+			}
+			if (isValidResponseErrorData(response.error.data)) {
+				showErrorToast(response.error.data.message);
+				return;
+			}
+			showErrorToast();
 		} catch (err) {
-			console.error(err);
-			showToast({
-				message: "Deleting comment failed!",
-				variant: "error",
-			});
+			showErrorToast();
+		} finally {
+			closeModal();
+			removeLastThread();
 		}
 	};
 
