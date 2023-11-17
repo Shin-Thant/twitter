@@ -15,7 +15,7 @@ const RepliesContainer = ({ depth, commentId, show }: Props) => {
 	const { isFetching, data } = useGetCommentRepliesQuery(
 		{ commentId },
 		{
-			skip: !show,
+			skip: !show || !commentId,
 			refetchOnFocus: false,
 			pollingInterval: 15 * 60 * 60 * 1000,
 		}
@@ -34,10 +34,6 @@ const RepliesContainer = ({ depth, commentId, show }: Props) => {
 
 	return (
 		<Box>
-			{commentId}
-			<br />
-			{`${show}`}
-			<br />
 			{!show ? (
 				"hiding"
 			) : isFetching ? (

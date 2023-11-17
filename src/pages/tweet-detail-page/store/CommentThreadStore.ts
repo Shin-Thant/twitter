@@ -1,38 +1,28 @@
 import { create } from "zustand";
 
+type Thread = { commentId: string; getRepliesCacheKey?: string };
 type State = {
-	currentThread: string | undefined;
-	threadIds: string[];
+	threads: Thread[];
 };
 type Actions = {
-	setCurrentThread(threadId: string): void;
-	addThread(newThreadId: string): void;
+	addThread(newThread: Thread): void;
 	removeLastThread(): void;
 	resetThread(): void;
 };
 
 export const useCommentThreadStore = create<State & Actions>((set) => ({
-	currentThread: undefined,
-	threadIds: [],
-	setCurrentThread(threadId) {
-		return set((state) => ({
-			...state,
-			currentThread: threadId,
-		}));
-	},
+	threads: [],
 	addThread(newThreadId) {
 		return set((state) => ({
-			...state,
-			threadIds: [...state.threadIds, newThreadId],
+			threads: [...state.threads, newThreadId],
 		}));
 	},
 	removeLastThread() {
 		return set((state) => ({
-			...state,
-			threadIds: state.threadIds.slice(0, state.threadIds.length - 1),
+			threads: state.threads.slice(0, state.threads.length - 1),
 		}));
 	},
 	resetThread() {
-		return set(() => ({ setCurrentThread: undefined, threadIds: [] }));
+		return set(() => ({ threads: [] }));
 	},
 }));
