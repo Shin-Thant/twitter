@@ -65,7 +65,7 @@ const ReplyCreateModal = () => {
 				getRepliesCacheKey: isTopLevelReply
 					? parentComment._id
 					: getRepliesCacheKey,
-				invalidateTopLevelQuery: !getRepliesCacheKey,
+				invalidateTopLevelCommentsAndReplies: !getRepliesCacheKey,
 			});
 			showToast({
 				message: "Successfully commented!",

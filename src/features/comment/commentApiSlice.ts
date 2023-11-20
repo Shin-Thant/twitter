@@ -22,7 +22,7 @@ type ReplyCommentArg = {
 	commentId: string;
 	body: string;
 	getRepliesCacheKey?: string;
-	invalidateTopLevelQuery: boolean;
+	invalidateTopLevelCommentsAndReplies: boolean;
 };
 type GetCommentByIdArg = { tweetId: string; commentId: string };
 type UpdateCommentArg = {
@@ -222,7 +222,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					tweetId,
 					getRepliesCacheKey,
 					commentId,
-					invalidateTopLevelQuery,
+					invalidateTopLevelCommentsAndReplies,
 				}
 			) => {
 				const tags: {
@@ -234,7 +234,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				];
 
 				// invalidate top level comment and reply
-				if (invalidateTopLevelQuery) {
+				if (invalidateTopLevelCommentsAndReplies) {
 					tags.push({ type: "Comments", id: `/${tweetId}/LIST` });
 				}
 
