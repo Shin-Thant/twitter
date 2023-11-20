@@ -84,6 +84,7 @@ const TweetCard = forwardRef(
 							}
 							commentBtn={
 								<TweetCommentButton
+									commentCount={tweet.commentCount}
 									comments={tweet.comments}
 									tweetId={tweet._id}
 								/>

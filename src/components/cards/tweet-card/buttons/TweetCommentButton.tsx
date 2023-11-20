@@ -5,11 +5,16 @@ import { useCommentCreateModal } from "../../../../hooks/useCommentCreateModal";
 import CommentButton from "../../../buttons/CommentButton";
 
 type Props = {
+	commentCount: number;
 	comments: GetTweetsResultComment[];
 	tweetId: string;
 };
 
-export default function TweetCommentBtn({ tweetId, comments }: Props) {
+export default function TweetCommentBtn({
+	tweetId,
+	comments,
+	commentCount,
+}: Props) {
 	const loginUserId = useAppSelector(userIdSelector);
 	const isCommentedByLoginUser: boolean =
 		loginUserId && !!comments.length
@@ -26,7 +31,7 @@ export default function TweetCommentBtn({ tweetId, comments }: Props) {
 		<CommentButton
 			loginUserId={loginUserId}
 			isCommentedByLoginUser={isCommentedByLoginUser}
-			count={comments.length}
+			count={commentCount}
 			openCommentModal={openCommentModal}
 		/>
 	);

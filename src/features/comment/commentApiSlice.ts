@@ -8,6 +8,7 @@ import {
 	GetCommentsResultReply,
 } from "./commentTypes";
 import { RootState } from "../../app/store";
+import tweetApiSlice from "../tweet/tweetApiSlice";
 
 type AddCommentArg = { tweetId: string; body: string };
 type LikeCommentArg = {
@@ -17,10 +18,11 @@ type LikeCommentArg = {
 	getRepliesCacheKey?: string;
 };
 type ReplyCommentArg = {
-	tweetId?: string;
+	tweetId: string;
 	commentId: string;
 	body: string;
 	getRepliesCacheKey?: string;
+	invalidateTopLevelQuery: boolean;
 };
 type GetCommentByIdArg = { tweetId: string; commentId: string };
 type UpdateCommentArg = {
@@ -31,7 +33,7 @@ type UpdateCommentArg = {
 };
 type DeleteCommentResponse = { message: string };
 type DeleteCommentArg = {
-	tweetId?: string;
+	tweetId: string;
 	commentId: string;
 	originIdOrGetRepliesCacheKey?: string;
 	additionalCacheKeys?: string[];
@@ -196,19 +198,46 @@ const commentApiSlice = apiSlice.injectEndpoints({
 					body,
 				},
 			}),
+			async onQueryStarted({ tweetId }, { dispatch, queryFulfilled }) {
+				const updateResult = dispatch(
+					tweetApiSlice.util.updateQueryData(
+						"getTweetById",
+						{ tweetId },
+						(draft) => {
+							draft.commentCount += 1;
+						}
+					)
+				);
+
+				try {
+					await queryFulfilled;
+				} catch (err) {
+					updateResult.undo();
+				}
+			},
 			invalidatesTags: (
 				_res,
 				_err,
-				{ tweetId, getRepliesCacheKey, commentId }
+				{
+					tweetId,
+					getRepliesCacheKey,
+					commentId,
+					invalidateTopLevelQuery,
+				}
 			) => {
 				const tags: {
-					type: "Comments" | "Replies";
+					type: "Tweets" | "Comments" | "Replies";
 					id: string;
-				}[] = [{ type: "Replies", id: `/${commentId}/LIST` }];
+				}[] = [
+					{ type: "Tweets", id: tweetId }, // invalidate tweets query
+					{ type: "Replies", id: `/${commentId}/LIST` },
+				];
 
-				if (tweetId) {
+				// invalidate top level comment and reply
+				if (invalidateTopLevelQuery) {
 					tags.push({ type: "Comments", id: `/${tweetId}/LIST` });
 				}
+
 				if (getRepliesCacheKey) {
 					tags.push({
 						type: "Replies",
@@ -326,6 +355,8 @@ const commentApiSlice = apiSlice.injectEndpoints({
 			) => {
 				const tags: {
 					type:
+						| "Tweets"
+						| "TweetDetails"
 						| "Comments"
 						| "CommentDetails"
 						| "Replies"
@@ -334,6 +365,7 @@ const commentApiSlice = apiSlice.injectEndpoints({
 				}[] = [{ type: "CommentDetails", id: commentId }];
 
 				if (tweetId) {
+					tags.push({ type: "Tweets", id: tweetId });
 					tags.push({ type: "TweetDetails", id: tweetId });
 					tags.push({
 						type: "Comments",

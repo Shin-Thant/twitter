@@ -35,6 +35,7 @@ const DetailsSection = ({ data }: Props) => {
 				likeBtn={<TweetLikeBtn likes={data.likes} tweetId={data._id} />}
 				commentBtn={
 					<TweetCommentBtn
+            commentCount={data.commentCount}
 						comments={data.comments}
 						tweetId={data._id}
 					/>

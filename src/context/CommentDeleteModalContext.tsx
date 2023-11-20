@@ -4,7 +4,7 @@ import { commentModalContextState } from "./createCommentModalContext";
 interface CommentDeleteModalContextState {
 	commentId: string;
 	isOpen: boolean;
-	tweetId?: string;
+	tweetId: string;
 	originIdOrGetRepliesCacheKey?: string;
 	openModal(arg: {
 		commentId: string;
@@ -16,7 +16,7 @@ interface CommentDeleteModalContextState {
 const commentDeleteModalContextState: CommentDeleteModalContextState = {
 	...commentModalContextState,
 	originIdOrGetRepliesCacheKey: undefined,
-	tweetId: undefined,
+	tweetId: "",
 };
 
 export const CommentDeleteModalContext =
@@ -30,7 +30,7 @@ type Props = {
 
 export function CommentDeleteModalContextProvider({ children }: Props) {
 	const [commentId, setCommentId] = useState<string>("");
-	const [tweetId, setTweetId] = useState<string | undefined>(undefined);
+	const [tweetId, setTweetId] = useState<string>("");
 	const [originIdOrGetRepliesCacheKey, setOriginIdOrGetRepliesCacheKey] =
 		useState<string | undefined>(undefined);
 	const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -9,6 +9,7 @@ export interface CommonTweet {
 	owner: string | CommonUser | DefaultUser | GetTweetsUser;
 	images: string[];
 	likes: string[];
+	commentCount: number;
 	comments?: (CommonComment | DefaultComment | GetTweetsResultComment)[];
 	shares: (string | CommonTweet | DefaultTweet | GetTweetsResultShare)[];
 	createdAt: string;
