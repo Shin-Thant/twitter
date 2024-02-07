@@ -1,11 +1,12 @@
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { AppBar, IconButton, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import DrawerToggle from "../../components/buttons/DrawerToggle";
-import SearchInput from "../../components/forms/SearchInput";
-import AuthButton from "./AuthButton";
 import { useAppSelector } from "../../app/hooks";
+import DrawerToggle from "../../components/buttons/DrawerToggle";
+import NotiButton from "../../components/buttons/NotiButton";
+import SearchInput from "../../components/forms/SearchInput";
 import { authStatusSelector } from "../../features/auth/authSlice";
+import AuthButton from "./AuthButton";
 
 const Navbar = () => {
 	const navigate = useNavigate();
@@ -55,8 +56,14 @@ const Navbar = () => {
 						/>
 					</IconButton>
 
-					<SearchInput />
-					{authStatus === "logout" && <AuthButton />}
+					<Stack direction={"row"} alignItems={"center"} spacing={2}>
+						<SearchInput />
+						{authStatus === "logout" ? (
+							<AuthButton />
+						) : (
+							<NotiButton />
+						)}
+					</Stack>
 				</Stack>
 			</Toolbar>
 		</AppBar>
