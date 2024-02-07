@@ -13,6 +13,7 @@ import TweetDetails from "./pages/tweet-detail-page/TweetDetails";
 import { ReplyCreateModalContextProvider } from "./context/ReplyCreateModalContext";
 import { CommentEditModalContextProvider } from "./context/CommentEditModalContext";
 import { CommentDeleteModalContextProvider } from "./context/CommentDeleteModalContext";
+import { SocketConnection } from "./containers/SocketConnection";
 const EmailVerify = lazy(() => import("./pages/EmailVerify"));
 const Layout = lazy(() => import("./containers/Layout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
 function App() {
 	return (
 		<>
+			<SocketConnection />
 			<HelmetProvider>
 				<ColorModeProvider>
 					<DrawerControllerProvider>
