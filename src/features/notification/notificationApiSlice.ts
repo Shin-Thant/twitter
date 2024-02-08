@@ -2,7 +2,7 @@ import apiSlice from "../../app/api/apiSlice";
 import { Pagination, PaginationArg } from "../paginationType";
 import { CommonNoti } from "./notificationTypes";
 
-interface GetNotisResult extends Pagination {
+export interface GetNotisResult extends Pagination {
 	data: CommonNoti[];
 }
 
