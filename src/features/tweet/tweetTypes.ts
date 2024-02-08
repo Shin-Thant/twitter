@@ -1,4 +1,5 @@
 import { CommonComment, DefaultComment } from "../comment/commentTypes";
+import { Pagination } from "../paginationType";
 import { CommonUser, DefaultUser, UserWithoutEmail } from "../user/userTypes";
 
 export interface CommonTweet {
@@ -53,15 +54,6 @@ type GetTweetByIdResultComment = DefaultComment & {
 	type: "comment";
 	owner: UserWithoutEmail;
 };
-
-export interface Pagination {
-	totalPages: number;
-	totalDocs: number;
-	hasNextPage: boolean;
-	hasPrevPage: boolean;
-	currentPage: number;
-	limit: number;
-}
 
 export interface GetTweetsResponse extends Pagination {
 	data: GetTweetsResultTweet[];
