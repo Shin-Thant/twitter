@@ -20,6 +20,11 @@ export type DefaultUser = Omit<CommonUser, "followers"> & {
 	folowing: string[];
 };
 
+export type NotiTriggerUser = Pick<
+	CommonUser,
+	"_id" | "avatar" | "username" | "name"
+>;
+
 export type UserWithoutEmail = Omit<DefaultUser, "email">;
 
 export interface UserWithFollows extends CommonUser {

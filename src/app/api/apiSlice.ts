@@ -10,6 +10,7 @@ const apiSlice = createApi({
 		"Comments",
 		"CommentDetails",
 		"Replies",
+		"Notis",
 	],
 	endpoints: () => ({}),
 });
