@@ -16,6 +16,9 @@ declare module "@mui/material/styles" {
 			borderColorFade: string;
 			imageBg: string;
 		};
+		noti: {
+			menuItemBorder: string;
+		};
 		option_icon: {
 			normal: string;
 			hover: string;
@@ -35,6 +38,9 @@ declare module "@mui/material/styles" {
 			borderColor: string;
 			borderColorFade: string;
 			imageBg: string;
+		};
+		noti: {
+			menuItemBorder: string;
 		};
 		option_icon: {
 			normal: string;
@@ -89,6 +95,9 @@ const darkModeColors = {
 		imageBg: "#95959D",
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
+	noti: {
+		menuItemBorder: "hsl(0, 0%, 30%)",
+	},
 	btn: {
 		grey: { normal: grey[600], hover: grey[400] },
 	},
@@ -110,6 +119,9 @@ const lightModeColors = {
 		imageBg: "#58585F",
 	},
 	option_icon: { normal: "hsl(0, 0%, 70%)", hover: "hsl(0, 0%, 30%" },
+	noti: {
+		menuItemBorder: "hsl(0, 0%, 70%)",
+	},
 	btn: {
 		grey: { normal: grey[600], hover: grey[800] },
 	},

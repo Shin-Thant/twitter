@@ -13,9 +13,8 @@ const NotiMenuItem = ({ noti }: Props) => {
 			sx={{
 				px: 2,
 				py: 2,
-				bgcolor: noti.isRead
-					? "transparent"
-					: "hsl(255, 100%, 100%, 0.1)",
+				borderBottom: "1px solid",
+				borderColor: "noti.menuItemBorder",
 			}}
 		>
 			<Stack
