@@ -1,9 +1,17 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Badge, Box, IconButton, Menu, Typography } from "@mui/material";
+import {
+	Badge,
+	Box,
+	Button,
+	IconButton,
+	Menu,
+	Stack,
+	Typography,
+} from "@mui/material";
 import { useMemo } from "react";
 import { useGetNotisQuery } from "../../features/notification/notificationApiSlice";
 import { useMenuController } from "../../hooks/useMenuController";
-import { NotiMenuList } from "../lists/NotiMenuList";
+import { NotiMenuList } from "../notification/NotiMenuList";
 
 const NotiButton = () => {
 	const { anchorEl, open, handleOpen, handleClose } = useMenuController();
@@ -35,7 +43,7 @@ const NotiButton = () => {
 			<Menu
 				PaperProps={{
 					style: {
-						width: 300,
+						width: 350,
 						height: 350,
 					},
 				}}
@@ -43,10 +51,45 @@ const NotiButton = () => {
 				anchorEl={anchorEl}
 				onClose={handleClose}
 			>
-				<Box px={2}>
+				<Box px={2} sx={{ height: 30 }}>
 					<Typography variant="h6">Notification</Typography>
 				</Box>
-				<NotiMenuList data={data} />
+
+				<Box
+					sx={{
+						py: 1,
+						height: 250,
+						overflow: "scroll",
+					}}
+				>
+					<NotiMenuList data={data} />
+				</Box>
+
+				<Stack
+					direction={"row"}
+					justifyContent={"space-between"}
+					alignItems={"center"}
+					px={1}
+					sx={{
+						height: 50,
+					}}
+				>
+					<Button
+						sx={{ textTransform: "none", borderRadius: "50px" }}
+						variant="outlined"
+					>
+						Mark all as read
+					</Button>
+					<Button
+						sx={{
+							width: { xs: "100%", sm: "max-content" },
+							textTransform: "none",
+						}}
+						variant="contained"
+					>
+						View all
+					</Button>
+				</Stack>
 			</Menu>
 		</>
 	);
