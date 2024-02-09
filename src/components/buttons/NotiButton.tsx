@@ -1,6 +1,5 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
-	Badge,
 	Box,
 	Button,
 	IconButton,
@@ -8,7 +7,8 @@ import {
 	Stack,
 	Typography,
 } from "@mui/material";
-import { useMemo } from "react";
+import { useEffect } from "react";
+import { socket } from "../../app/socket";
 import { useGetNotisQuery } from "../../features/notification/notificationApiSlice";
 import { useMenuController } from "../../hooks/useMenuController";
 import { NotiMenuList } from "../notification/NotiMenuList";
@@ -16,28 +16,38 @@ import { NotiMenuList } from "../notification/NotiMenuList";
 const NotiButton = () => {
 	const { anchorEl, open, handleOpen, handleClose } = useMenuController();
 
-	const { data, isFetching } = useGetNotisQuery(
+	const { data, isFetching, refetch } = useGetNotisQuery(
 		{ currentPage: 1, itemsPerPage: 10 },
 		{
 			pollingInterval: 15 * 60 * 1000,
 		}
 	);
 
-	const unReadNotis = useMemo(() => {
-		return data?.data?.reduce((acc, noti) => {
-			if (!noti.isRead) {
-				acc++;
-			}
-			return acc;
-		}, 0);
-	}, [data]);
+	useEffect(() => {
+		let isMounted = true;
+		let timeoutId: NodeJS.Timeout | undefined;
+
+		function onNotify() {
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => {
+				refetch();
+			}, 3000);
+		}
+
+		if (isMounted) {
+			socket.on("notify", onNotify);
+		}
+
+		return () => {
+			isMounted = false;
+			socket.off("notify", onNotify);
+		};
+	}, [refetch]);
 
 	return (
 		<>
 			<IconButton onClick={handleOpen}>
-				<Badge badgeContent={unReadNotis} color="primary">
-					<NotificationsIcon />
-				</Badge>
+				<NotificationsIcon />
 			</IconButton>
 
 			<Menu
@@ -57,12 +67,27 @@ const NotiButton = () => {
 
 				<Box
 					sx={{
-						py: 1,
+						py: 2,
 						height: 250,
 						overflow: "scroll",
 					}}
 				>
 					<NotiMenuList data={data} />
+
+					{!!data?.hasNextPage && (
+						<Box sx={{ px: 2 }}>
+							<Button
+								fullWidth
+								sx={{
+									mt: 2,
+									textTransform: "none",
+								}}
+								variant="contained"
+							>
+								View more
+							</Button>
+						</Box>
+					)}
 				</Box>
 
 				<Stack
@@ -72,6 +97,7 @@ const NotiButton = () => {
 					px={1}
 					sx={{
 						height: 50,
+						bgcolor: "hsl(255, 100%, 100%, 0.1)",
 					}}
 				>
 					<Button
@@ -79,15 +105,6 @@ const NotiButton = () => {
 						variant="outlined"
 					>
 						Mark all as read
-					</Button>
-					<Button
-						sx={{
-							width: { xs: "100%", sm: "max-content" },
-							textTransform: "none",
-						}}
-						variant="contained"
-					>
-						View all
 					</Button>
 				</Stack>
 			</Menu>
