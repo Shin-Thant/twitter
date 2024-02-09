@@ -12,6 +12,7 @@ import { socket } from "../../app/socket";
 import { useGetNotisQuery } from "../../features/notification/notificationApiSlice";
 import { useMenuController } from "../../hooks/useMenuController";
 import { NotiMenuList } from "../notification/NotiMenuList";
+import { ViewMoreNotiButton } from "./ViewMoreNotiButton";
 
 const NotiButton = () => {
 	const { anchorEl, open, handleOpen, handleClose } = useMenuController();
@@ -54,22 +55,39 @@ const NotiButton = () => {
 				PaperProps={{
 					style: {
 						width: 350,
-						height: 350,
+						height: 400,
+					},
+				}}
+				sx={{
+					"& .MuiPaper-root": {
+						bgcolor: "noti.menuBg",
 					},
 				}}
 				open={open}
 				anchorEl={anchorEl}
 				onClose={handleClose}
 			>
-				<Box px={2} sx={{ height: 30 }}>
+				<Stack
+					direction={"row"}
+					justifyContent={"space-between"}
+					alignItems={"center"}
+					px={2}
+					sx={{
+						height: 50,
+						position: "sticky",
+						top: 0,
+						zIndex: 2,
+						bgcolor: "noti.menuBg",
+						boxShadow: "0px 4px 8px 1px rgba(0,0,0,0.05);",
+					}}
+				>
 					<Typography variant="h6">Notification</Typography>
-				</Box>
+					<ViewMoreNotiButton />
+				</Stack>
 
 				<Box
 					sx={{
 						py: 2,
-						height: 250,
-						overflow: "scroll",
 					}}
 				>
 					<NotiMenuList data={data} />
@@ -89,24 +107,6 @@ const NotiButton = () => {
 						</Box>
 					)}
 				</Box>
-
-				<Stack
-					direction={"row"}
-					justifyContent={"space-between"}
-					alignItems={"center"}
-					px={1}
-					sx={{
-						height: 50,
-						bgcolor: "hsl(255, 100%, 100%, 0.1)",
-					}}
-				>
-					<Button
-						sx={{ textTransform: "none", borderRadius: "50px" }}
-						variant="outlined"
-					>
-						Mark all as read
-					</Button>
-				</Stack>
 			</Menu>
 		</>
 	);

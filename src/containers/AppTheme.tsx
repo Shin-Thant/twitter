@@ -17,6 +17,7 @@ declare module "@mui/material/styles" {
 			imageBg: string;
 		};
 		noti: {
+			menuBg: string;
 			menuItemBorder: string;
 		};
 		option_icon: {
@@ -40,6 +41,7 @@ declare module "@mui/material/styles" {
 			imageBg: string;
 		};
 		noti: {
+			menuBg: string;
 			menuItemBorder: string;
 		};
 		option_icon: {
@@ -96,6 +98,7 @@ const darkModeColors = {
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
 	noti: {
+		menuBg: "hsl(0, 0%, 5%)",
 		menuItemBorder: "hsl(0, 0%, 30%)",
 	},
 	btn: {
@@ -120,6 +123,7 @@ const lightModeColors = {
 	},
 	option_icon: { normal: "hsl(0, 0%, 70%)", hover: "hsl(0, 0%, 30%" },
 	noti: {
+		menuBg: "hsl(0, 0%, 100%)",
 		menuItemBorder: "hsl(0, 0%, 70%)",
 	},
 	btn: {
