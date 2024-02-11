@@ -15,6 +15,14 @@ const NotiMenuItem = ({ noti }: Props) => {
 				py: 2,
 				borderBottom: "1px solid",
 				borderColor: "noti.menuItemBorder",
+				...(noti.isRead
+					? {}
+					: {
+							bgcolor: "hsl(203, 100%, 70%, 0.08)",
+							"&:hover": {
+								bgcolor: "hsl(203, 100%, 70%, 0.2)",
+							},
+					  }),
 			}}
 		>
 			<Stack

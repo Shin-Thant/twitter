@@ -98,7 +98,7 @@ const darkModeColors = {
 	},
 	option_icon: { normal: "hsl(0, 0%, 30%)", hover: "hsl(0, 0%, 70%)" },
 	noti: {
-		menuBg: "hsl(0, 0%, 5%)",
+		menuBg: "hsl(0, 0%, 8%)",
 		menuItemBorder: "hsl(0, 0%, 30%)",
 	},
 	btn: {

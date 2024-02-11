@@ -12,7 +12,7 @@ import { socket } from "../../app/socket";
 import { useGetNotisQuery } from "../../features/notification/notificationApiSlice";
 import { useMenuController } from "../../hooks/useMenuController";
 import { NotiMenuList } from "../notification/NotiMenuList";
-import { ViewMoreNotiButton } from "./ViewMoreNotiButton";
+import { MarkAllNotiReadButton } from "./MarkAllNotiReadButton";
 
 const NotiButton = () => {
 	const { anchorEl, open, handleOpen, handleClose } = useMenuController();
@@ -56,6 +56,7 @@ const NotiButton = () => {
 					style: {
 						width: 350,
 						height: 400,
+						backgroundImage: "none",
 					},
 				}}
 				sx={{
@@ -82,7 +83,7 @@ const NotiButton = () => {
 					}}
 				>
 					<Typography variant="h6">Notification</Typography>
-					<ViewMoreNotiButton />
+					<MarkAllNotiReadButton />
 				</Stack>
 
 				<Box
