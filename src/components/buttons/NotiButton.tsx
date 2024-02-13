@@ -4,6 +4,7 @@ import {
 	Button,
 	IconButton,
 	Menu,
+	Skeleton,
 	Stack,
 	Typography,
 } from "@mui/material";
@@ -83,7 +84,16 @@ const NotiButton = () => {
 					}}
 				>
 					<Typography variant="h6">Notification</Typography>
-					<MarkAllNotiReadButton />
+					{isFetching ? (
+						<Skeleton
+							variant="rectangular"
+							width={85}
+							height={30}
+							sx={{ borderRadius: "50px" }}
+						/>
+					) : (
+						<MarkAllNotiReadButton />
+					)}
 				</Stack>
 
 				<Box
@@ -91,9 +101,9 @@ const NotiButton = () => {
 						py: 2,
 					}}
 				>
-					<NotiMenuList data={data} />
+					<NotiMenuList data={data} isFetching={isFetching} />
 
-					{!!data?.hasNextPage && (
+					{!isFetching && !!data?.hasNextPage && (
 						<Box sx={{ px: 2 }}>
 							<Button
 								fullWidth
