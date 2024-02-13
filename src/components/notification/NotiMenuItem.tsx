@@ -1,6 +1,7 @@
 import { Avatar, Box, MenuItem, Stack, Typography } from "@mui/material";
 import { CommonNoti } from "../../features/notification/notificationTypes";
 import { getRelativeTime } from "../../lib/formatTime";
+import { NotiMenuItemOption } from "./NotiMenuItemOption";
 
 type Props = {
 	noti: CommonNoti;
@@ -9,6 +10,11 @@ type Props = {
 const NotiMenuItem = ({ noti }: Props) => {
 	return (
 		<MenuItem
+			disableRipple
+			onClick={(e) => {
+				e.preventDefault();
+				console.log("clicked");
+			}}
 			key={noti._id}
 			sx={{
 				px: 2,
@@ -44,7 +50,7 @@ const NotiMenuItem = ({ noti }: Props) => {
 					{noti.triggerBy.name[0].toUpperCase()}
 				</Avatar>
 
-				<Box>
+				<Box sx={{ flex: 1 }}>
 					<Box>
 						<Typography variant="body2">{noti.message}</Typography>
 					</Box>
@@ -55,6 +61,8 @@ const NotiMenuItem = ({ noti }: Props) => {
 						})}
 					</Typography>
 				</Box>
+
+				<NotiMenuItemOption id={noti._id} isRead={noti.isRead} />
 			</Stack>
 		</MenuItem>
 	);

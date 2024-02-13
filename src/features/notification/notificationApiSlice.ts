@@ -32,8 +32,18 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
 				return [{ type: "Notis", id: "LIST" }];
 			},
 		}),
+		markNotiRead: builder.mutation<{ message: string }, { id: string }>({
+			query: ({ id }) => ({
+				url: `/notis/${id}/mark-read`,
+				method: "PATCH",
+			}),
+			invalidatesTags: [{ type: "Notis", id: "LIST" }],
+		}),
 	}),
 });
 
-export const { useGetNotisQuery, useMarkAllAsReadMutation } =
-	notificationApiSlice;
+export const {
+	useGetNotisQuery,
+	useMarkAllAsReadMutation,
+	useMarkNotiReadMutation,
+} = notificationApiSlice;
