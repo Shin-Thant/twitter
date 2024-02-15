@@ -1,3 +1,4 @@
+import { DefaultTweet } from "../tweet/tweetTypes";
 import { NotiTriggerUser } from "../user/userTypes";
 
 export type NotiType = "like:tweet" | "like:comment" | "comment" | "reply";
@@ -8,7 +9,7 @@ export interface CommonNoti {
 	triggerBy: NotiTriggerUser;
 	isRead: boolean;
 	type: NotiType;
-	doc: string;
+	doc: DefaultTweet;
 	message: string;
 	createdAt: string;
 	updatedAt: string;

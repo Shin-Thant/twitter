@@ -27,11 +27,12 @@ export const NotiMenuItemOption = ({ id, isRead }: Props) => {
 				disabled={isLoading}
 				size="small"
 				onMouseDown={(e) => {
+					e.preventDefault();
 					e.stopPropagation();
 				}}
 				onClick={(e) => {
-					handleOpen(e);
 					e.stopPropagation();
+					handleOpen(e);
 				}}
 			>
 				<MoreHorizRounded />

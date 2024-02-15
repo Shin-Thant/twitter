@@ -1,4 +1,6 @@
 import { Avatar, Box, MenuItem, Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useMarkNotiReadMutation } from "../../features/notification/notificationApiSlice";
 import { CommonNoti } from "../../features/notification/notificationTypes";
 import { getRelativeTime } from "../../lib/formatTime";
 import { NotiMenuItemOption } from "./NotiMenuItemOption";
@@ -8,6 +10,13 @@ type Props = {
 };
 
 const NotiMenuItem = ({ noti }: Props) => {
+	const [markNotiAsRead, { isLoading }] = useMarkNotiReadMutation();
+
+	const handleMenuItemClick = async () => {
+		if (isLoading) return;
+		await markNotiAsRead({ id: noti._id });
+	};
+
 	return (
 		<MenuItem
 			disableRipple
@@ -38,29 +47,43 @@ const NotiMenuItem = ({ noti }: Props) => {
 				alignItems={"center"}
 				spacing={2}
 			>
-				<Avatar
-					src={noti.triggerBy.avatar}
-					sx={{
-						fontSize: "0.9rem",
-						width: 28,
-						height: 28,
-						bgcolor: "hsl(330, 100%, 50%)",
+				<Link
+					to={`/tweet/${noti.doc._id}`}
+					onClick={handleMenuItemClick}
+					style={{
+						display: "flex",
+						alignItems: "center",
+						gap: 10,
+						textDecoration: "none",
 					}}
 				>
-					{noti.triggerBy.name[0].toUpperCase()}
-				</Avatar>
+					<Avatar
+						src={noti.triggerBy.avatar}
+						sx={{
+							textDecoration: "none",
+							fontSize: "0.9rem",
+							width: 28,
+							height: 28,
+							bgcolor: "hsl(330, 100%, 50%)",
+						}}
+					>
+						{noti.triggerBy.name[0].toUpperCase()}
+					</Avatar>
 
-				<Box sx={{ flex: 1 }}>
-					<Box>
-						<Typography variant="body2">{noti.message}</Typography>
+					<Box sx={{ flex: 1, color: "text.primary" }}>
+						<Box>
+							<Typography variant="body2">
+								{noti.message}
+							</Typography>
+						</Box>
+
+						<Typography variant="caption">
+							{getRelativeTime({
+								date: noti.createdAt,
+							})}
+						</Typography>
 					</Box>
-
-					<Typography variant="caption">
-						{getRelativeTime({
-							date: noti.createdAt,
-						})}
-					</Typography>
-				</Box>
+				</Link>
 
 				<NotiMenuItemOption id={noti._id} isRead={noti.isRead} />
 			</Stack>
