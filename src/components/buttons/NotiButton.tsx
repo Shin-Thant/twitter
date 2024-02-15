@@ -11,12 +11,12 @@ import {
 import { useEffect } from "react";
 import { socket } from "../../app/socket";
 import { useGetNotisQuery } from "../../features/notification/notificationApiSlice";
-import { useMenuController } from "../../hooks/useMenuController";
+import { useNotiMenuContext } from "../../hooks/useNotiMenuContext";
 import { NotiMenuList } from "../notification/NotiMenuList";
 import { MarkAllNotiReadButton } from "./MarkAllNotiReadButton";
 
 const NotiButton = () => {
-	const { anchorEl, open, handleOpen, handleClose } = useMenuController();
+	const { anchorEl, open, handleOpen, handleClose } = useNotiMenuContext();
 
 	const { data, isFetching, refetch } = useGetNotisQuery(
 		{ currentPage: 1, itemsPerPage: 10 },

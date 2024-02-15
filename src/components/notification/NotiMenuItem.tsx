@@ -4,6 +4,7 @@ import { useMarkNotiReadMutation } from "../../features/notification/notificatio
 import { CommonNoti } from "../../features/notification/notificationTypes";
 import { getRelativeTime } from "../../lib/formatTime";
 import { NotiMenuItemOption } from "./NotiMenuItemOption";
+import { useNotiMenuContext } from "../../hooks/useNotiMenuContext";
 
 type Props = {
 	noti: CommonNoti;
@@ -11,9 +12,11 @@ type Props = {
 
 const NotiMenuItem = ({ noti }: Props) => {
 	const [markNotiAsRead, { isLoading }] = useMarkNotiReadMutation();
+	const handleClose = useNotiMenuContext().handleClose;
 
 	const handleMenuItemClick = async () => {
 		if (isLoading) return;
+		handleClose();
 		await markNotiAsRead({ id: noti._id });
 	};
 
@@ -51,6 +54,7 @@ const NotiMenuItem = ({ noti }: Props) => {
 					to={`/tweet/${noti.doc._id}`}
 					onClick={handleMenuItemClick}
 					style={{
+						flex: 1,
 						display: "flex",
 						alignItems: "center",
 						gap: 10,
