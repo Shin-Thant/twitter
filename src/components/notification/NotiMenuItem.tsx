@@ -17,6 +17,7 @@ const NotiMenuItem = ({ noti }: Props) => {
 	const handleMenuItemClick = async () => {
 		if (isLoading) return;
 		handleClose();
+		if (noti.isRead) return;
 		await markNotiAsRead({ id: noti._id });
 	};
 
@@ -25,7 +26,6 @@ const NotiMenuItem = ({ noti }: Props) => {
 			disableRipple
 			onClick={(e) => {
 				e.preventDefault();
-				console.log("clicked");
 			}}
 			key={noti._id}
 			sx={{
