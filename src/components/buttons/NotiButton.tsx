@@ -43,6 +43,7 @@ const NotiButton = () => {
 		return () => {
 			isMounted = false;
 			socket.off("notify", onNotify);
+			clearTimeout(timeoutId);
 		};
 	}, [refetch]);
 
