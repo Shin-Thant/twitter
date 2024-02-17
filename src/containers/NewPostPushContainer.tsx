@@ -50,9 +50,10 @@ export const NewPostPushContainer = ({ refetch, children }: Props) => {
 		let timeoutId: NodeJS.Timeout | undefined;
 
 		function onNewPostCreated() {
+			clearTimeout(timeoutId);
 			timeoutId = setTimeout(() => {
 				showNewPostNoti({ onToastClick });
-			}, 1000 * 30);
+			}, 1000 * 10);
 		}
 
 		if (isMounted && !!userId) {
