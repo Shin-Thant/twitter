@@ -11,7 +11,7 @@ declare module "notistack" {
 		};
 	}
 }
-export type OnToastClick = (snackbarID: string) => void;
+export type OnToastClick = (key: string | number) => void;
 
 export default function Toast() {
 	return (

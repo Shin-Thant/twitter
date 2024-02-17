@@ -1,12 +1,16 @@
-import { ReactNode, useEffect } from "react";
-import { useAppSelector } from "../app/hooks";
-import { socket } from "../app/socket";
-import { userIdSelector } from "../features/user/userSlice";
-import { QueryActionCreatorResult } from "@reduxjs/toolkit/dist/query/core/buildInitiate";
+import { Box } from "@mui/material";
 import { QueryDefinition } from "@reduxjs/toolkit/dist/query";
+import { QueryActionCreatorResult } from "@reduxjs/toolkit/dist/query/core/buildInitiate";
+import { closeSnackbar } from "notistack";
+import { ReactNode, useCallback, useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { socket } from "../app/socket";
+import { setTweetCurrentPage } from "../features/currentPageSlice";
 import { GetTweetsQueryArg } from "../features/tweet/tweetApiSlice";
-import { BaseQueryWithReauth } from "../lib/baseQueryWithReauth";
 import { GetTweetsResult } from "../features/tweet/tweetTypes";
+import { userIdSelector } from "../features/user/userSlice";
+import { BaseQueryWithReauth } from "../lib/baseQueryWithReauth";
+import { showNewPostNoti } from "../lib/handleToast";
 
 type Props = {
 	refetch: () => QueryActionCreatorResult<
@@ -28,6 +32,18 @@ type Props = {
 
 export const NewPostPushContainer = ({ refetch, children }: Props) => {
 	const userId = useAppSelector(userIdSelector);
+	const dispatch = useAppDispatch();
+	const anchorEleRef = useRef<HTMLDivElement>(null);
+
+	const onToastClick = useCallback(
+		(key: string | number) => {
+			anchorEleRef.current?.scrollIntoView({ block: "end" });
+			dispatch(setTweetCurrentPage(1));
+			refetch();
+			closeSnackbar(key);
+		},
+		[dispatch, refetch]
+	);
 
 	useEffect(() => {
 		let isMounted = true;
@@ -35,8 +51,8 @@ export const NewPostPushContainer = ({ refetch, children }: Props) => {
 
 		function onNewPostCreated() {
 			timeoutId = setTimeout(() => {
-				refetch();
-			}, 1000 * 60);
+				showNewPostNoti({ onToastClick });
+			}, 1000 * 30);
 		}
 
 		if (isMounted && !!userId) {
@@ -48,7 +64,12 @@ export const NewPostPushContainer = ({ refetch, children }: Props) => {
 			socket.off("new-post", onNewPostCreated);
 			clearTimeout(timeoutId);
 		};
-	}, [userId, refetch]);
+	}, [userId, refetch, onToastClick]);
 
-	return <>{children}</>;
+	return (
+		<>
+			<Box ref={anchorEleRef}></Box>
+			{children}
+		</>
+	);
 };

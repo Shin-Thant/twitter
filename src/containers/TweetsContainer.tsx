@@ -20,6 +20,7 @@ export default function TweetsContainer() {
 		{
 			pollingInterval: 30 * 60 * 1000,
 			refetchOnReconnect: true,
+			refetchOnMountOrArgChange: true,
 			skip: currentPage < 1,
 		}
 	);
@@ -54,10 +55,8 @@ export default function TweetsContainer() {
 
 	return (
 		<NewPostPushContainer refetch={refetch}>
-			<>
-				{tweetsList}
-				{isFetching && "Loading..."}
-			</>
+			{tweetsList}
+			{isFetching && "Loading..."}
 		</NewPostPushContainer>
 	);
 }

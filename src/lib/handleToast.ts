@@ -19,8 +19,8 @@ export function showNewPostNoti({
 }: {
 	onToastClick: OnToastClick;
 }) {
-	enqueueSnackbar({
-		autoHideDuration: 3000,
+	return enqueueSnackbar({
+		autoHideDuration: 5000,
 		variant: "postNoti",
 		onToastClick,
 	});

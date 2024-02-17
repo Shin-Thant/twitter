@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
+import ArrowUpwardRoundedIcon from "@mui/icons-material/ArrowUpwardRounded";
 import { CustomContentProps, SnackbarContent } from "notistack";
 import { forwardRef } from "react";
 import { OnToastClick } from "./Toast";
@@ -9,15 +9,28 @@ interface PostSnackBarProps extends CustomContentProps {
 }
 
 const PostNotiSnackBar = forwardRef<HTMLDivElement, PostSnackBarProps>(
-	({ id, onToastClick, ...props }, ref) => {
+	({ onToastClick, ...props }, ref) => {
 		return (
-			<SnackbarContent ref={ref} role="button" {...props}>
+			<SnackbarContent
+				ref={ref}
+				role="alert"
+				className={props.className}
+				style={props.style}
+			>
 				<Button
 					variant="contained"
-					onClick={() => onToastClick(id.toString())}
-					sx={{ borderRadius: 50, width: "max-content", mx: "auto" }}
+					onClick={() => {
+						onToastClick(props.id);
+					}}
+					sx={{
+						borderRadius: 50,
+						width: "max-content",
+						mx: "auto",
+						textTransform: "none",
+					}}
 				>
-					<NorthRoundedIcon /> new posts
+					<ArrowUpwardRoundedIcon fontSize="small" sx={{ mr: 1 }} />{" "}
+					New posts
 				</Button>
 			</SnackbarContent>
 		);
