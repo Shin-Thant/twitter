@@ -12,7 +12,7 @@ import {
 } from "../util/errorHelpers";
 import { baseQuery } from "./baseQuery";
 
-type BaseQueryWithReauth = BaseQueryFn<
+export type BaseQueryWithReauth = BaseQueryFn<
 	string | FetchArgs,
 	unknown,
 	FetchBaseQueryError,

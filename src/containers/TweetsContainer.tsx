@@ -7,6 +7,7 @@ import {
 } from "../features/currentPageSlice";
 import { useGetTweetsQuery } from "../features/tweet/tweetApiSlice";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import { NewPostPushContainer } from "./NewPostPushContainer";
 
 export default function TweetsContainer() {
 	const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ export default function TweetsContainer() {
 		currentPageSelector(state, "tweet")
 	);
 
-	const { isLoading, isFetching, data } = useGetTweetsQuery(
+	const { isLoading, isFetching, data, refetch } = useGetTweetsQuery(
 		{ itemsPerPage: 10, currentPage: currentPage },
 		{
 			pollingInterval: 30 * 60 * 1000,
@@ -52,9 +53,11 @@ export default function TweetsContainer() {
 		  });
 
 	return (
-		<>
-			{tweetsList}
-			{isFetching && "Loading..."}
-		</>
+		<NewPostPushContainer refetch={refetch}>
+			<>
+				{tweetsList}
+				{isFetching && "Loading..."}
+			</>
+		</NewPostPushContainer>
 	);
 }

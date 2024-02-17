@@ -9,7 +9,7 @@ import {
 	GetTweetsResult,
 } from "./tweetTypes";
 
-type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
+export type GetTweetsQueryArg = { itemsPerPage: number; currentPage: number };
 type GetTweetByIdQueryArg = { tweetId: string };
 type CreateTweetMutationArg = FormData;
 type EditTweetMutationArg = {
