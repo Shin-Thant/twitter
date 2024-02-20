@@ -1,15 +1,17 @@
-import { Button } from "@mui/material";
+import { AvatarGroup, Button } from "@mui/material";
 import ArrowUpwardRoundedIcon from "@mui/icons-material/ArrowUpwardRounded";
 import { CustomContentProps, SnackbarContent } from "notistack";
 import { forwardRef } from "react";
-import { OnToastClick } from "./Toast";
+import { OnToastClick, PostNotiPayload } from "./Toast";
+import { Avatar } from "../avatar/Avatar";
 
 interface PostSnackBarProps extends CustomContentProps {
+	notiPayloads: PostNotiPayload[];
 	onToastClick: OnToastClick;
 }
 
 const PostNotiSnackBar = forwardRef<HTMLDivElement, PostSnackBarProps>(
-	({ onToastClick, ...props }, ref) => {
+	({ notiPayloads, onToastClick, ...props }, ref) => {
 		return (
 			<SnackbarContent
 				ref={ref}
@@ -30,7 +32,36 @@ const PostNotiSnackBar = forwardRef<HTMLDivElement, PostSnackBarProps>(
 					}}
 				>
 					<ArrowUpwardRoundedIcon fontSize="small" sx={{ mr: 1 }} />{" "}
-					New posts
+					<AvatarGroup
+						max={3}
+						sx={{
+							mr: 1,
+							"& .MuiAvatarGroup-avatar": {
+								width: 26,
+								height: 26,
+								fontSize: 13,
+							},
+						}}
+					>
+						{notiPayloads.map((payload) => (
+							<Avatar
+								key={payload.id}
+								sx={{
+									width: 26,
+									height: 26,
+									fontSize: 10,
+									objectFit: "cover",
+									bgcolor: payload.avatar
+										? "transparent"
+										: "hsl(330, 100%, 50%)",
+								}}
+								src={payload.avatar}
+								alt={`${payload.username} avatar image`}
+								text={payload.username[0].toUpperCase()}
+							/>
+						))}
+					</AvatarGroup>
+					posted
 				</Button>
 			</SnackbarContent>
 		);

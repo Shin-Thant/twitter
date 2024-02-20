@@ -1,3 +1,4 @@
+import { PostNotiPayload } from "./../components/feedbacks/Toast";
 import { enqueueSnackbar } from "notistack";
 import { OnToastClick } from "../components/feedbacks/Toast";
 
@@ -16,12 +17,16 @@ export function showToast({
 
 export function showNewPostNoti({
 	onToastClick,
+	notiPayloads,
 }: {
 	onToastClick: OnToastClick;
+	notiPayloads: PostNotiPayload[];
 }) {
 	return enqueueSnackbar({
 		autoHideDuration: 5000,
 		variant: "postNoti",
 		onToastClick,
+		notiPayloads,
+		preventDuplicate: true,
 	});
 }

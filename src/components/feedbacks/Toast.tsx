@@ -7,10 +7,12 @@ import PostNotiSnackBar from "./PostNotiSnackBar";
 declare module "notistack" {
 	interface VariantOverrides {
 		postNoti: {
+			notiPayloads: PostNotiPayload[];
 			onToastClick: OnToastClick;
 		};
 	}
 }
+export type PostNotiPayload = { id: string; username: string; avatar?: string };
 export type OnToastClick = (key: string | number) => void;
 
 export default function Toast() {
