@@ -4,7 +4,7 @@ import { QueryActionCreatorResult } from "@reduxjs/toolkit/dist/query/core/build
 import { closeSnackbar } from "notistack";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { socket } from "../app/socket";
+import { ListenTo, socket } from "../app/socket";
 import { setTweetCurrentPage } from "../features/currentPageSlice";
 import { GetTweetsQueryArg } from "../features/tweet/tweetApiSlice";
 import { GetTweetsResult } from "../features/tweet/tweetTypes";
@@ -73,12 +73,12 @@ export const NewPostPushContainer = ({ refetch, children }: Props) => {
 		}
 
 		if (isMounted && !!userId) {
-			socket.on("new-post", onNewPostCreated);
+			socket.on(ListenTo.NEW_POST, onNewPostCreated);
 		}
 
 		return () => {
 			isMounted = false;
-			socket.off("new-post", onNewPostCreated);
+			socket.off(ListenTo.NEW_POST, onNewPostCreated);
 			clearTimeout(timeoutId);
 		};
 	}, [userId, showNoti]);

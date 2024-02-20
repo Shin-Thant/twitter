@@ -9,7 +9,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { useEffect } from "react";
-import { socket } from "../../app/socket";
+import { ListenTo, socket } from "../../app/socket";
 import { useGetNotisQuery } from "../../features/notification/notificationApiSlice";
 import { useNotiMenuContext } from "../../hooks/useNotiMenuContext";
 import { NotiMenuList } from "../notification/NotiMenuList";
@@ -37,12 +37,12 @@ const NotiButton = () => {
 		}
 
 		if (isMounted) {
-			socket.on("notify", onNotify);
+			socket.on(ListenTo.REACT, onNotify);
 		}
 
 		return () => {
 			isMounted = false;
-			socket.off("notify", onNotify);
+			socket.off(ListenTo.REACT, onNotify);
 			clearTimeout(timeoutId);
 		};
 	}, [refetch]);
